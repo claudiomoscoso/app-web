@@ -1,0 +1,128 @@
+USE BSframework;
+
+DROP TABLE IF EXISTS tUser;
+DROP TABLE IF EXISTS tRol;
+DROP TABLE IF EXISTS tR_UserRol;
+DROP TABLE IF EXISTS tOption;
+DROP TABLE IF EXISTS tR_RolOption;
+DROP TABLE IF EXISTS tPerson;
+DROP TABLE IF EXISTS tFile;
+DROP TABLE IF EXISTS tFileCategory;
+
+/**
+http://www.mysqltutorial.org/mysql-stored-procedure-tutorial.aspx
+
+http://dev.mysql.com/doc/refman/5.5/en/connector-j-reference-type-conversions.html
+Los tipos de datos que vamos a usar...
+MYSQL				Java
+-----------------------------
+BIT					java.lang.Boolean
+INTEGER [UNSIGNED]	java.lang.Integer, if UNSIGNED java.lang.Long
+BIGINT [UNSIGNED]	java.lang.Long, if UNSIGNED java.math.BigInteger
+DOUBLE				java.lang.Double
+DATE				java.sql.Date
+TIMESTAMP			java.sql.Timestamp
+VARCHAR				java.lang.String
+LONGTEXT			java.lang.String
+*/
+
+CREATE TABLE IF NOT EXISTS tFile (
+	cId				BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cDesc			VARCHAR(100),
+	cContent		LONGTEXT,
+    cFileName		VARCHAR(100) NOT NULL,
+    cSize			BIGINT,
+    cCategory		BIGINT
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tFileCategory (
+	cId				BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName			VARCHAR(100) NOT NULL,
+    cContentType	VARCHAR(100) NOT NULL
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tPerson (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName		VARCHAR(100) NULL,
+	cBorn		DATE,
+	cLastLogin	TIMESTAMP,
+	cSalary		DOUBLE,
+	cActive		BIT
+) ENGINE=innoDB;
+
+
+CREATE TABLE IF NOT EXISTS tUser (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cMail 		VARCHAR(50) NOT NULL ,
+	cName		VARCHAR(100) NULL ,
+	cPassword	VARCHAR(64)
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tRol (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName		VARCHAR(50) NULL ,
+	cDeleted	BIT NOT NULL DEFAULT 0
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tR_UserRol (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cUser 		BIGINT NOT NULL,
+	cRol		BIGINT NOT NULL
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tOption (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cKey		VARCHAR(20) NOT NULL,
+	cLabel 		VARCHAR(50) NOT NULL,
+	cUrl		VARCHAR(100) NULL,
+	cParent		BIGINT NULL
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tR_RolOption (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cRol		BIGINT NOT NULL,
+	cOption		BIGINT NOT NULL
+) ENGINE=innoDB;
+
+INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
+SET @userId = LAST_INSERT_ID();
+
+INSERT INTO tRol(cName) VALUES('Contador');
+INSERT INTO tRol(cName) VALUES('Secretaria');
+INSERT INTO tRol(cName) VALUES('Administrador');
+SET @rolId = LAST_INSERT_ID();
+
+INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
+
+/** Creación del menu básico */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ADMIN', 'Administracion', NULL, NULL);
+SET @menuId1 = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/servlet/admin/UserManager', @menuId1);
+SET @menuId2 = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuId1);
+SET @menuId3 = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ACCESS', 'Accesos', '/servlet/admin/Access', @menuId1);
+SET @menuId4 = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/ChangePassword', @menuId1);
+SET @menuId5 = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId1);
+SET @menuId6 = LAST_INSERT_ID();
+
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId3);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId4);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId5);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId6);
+
+/** Creación del menu Remuneraciones */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
+SET @menuId1 = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId1);
+SET @menuId2 = LAST_INSERT_ID();
+
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
