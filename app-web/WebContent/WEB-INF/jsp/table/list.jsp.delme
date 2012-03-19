@@ -1,0 +1,89 @@
+<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="cl.buildersoft.framework.beans.BSField"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%!private String writeValues(Object[] values, BSField[] fields, int rowCount,
+			boolean canEdit, String ctxPath) {
+		String out = "<tr>";
+		Object value = null;
+		int i = 1;
+
+		String color = null;
+		for (BSField field : fields) {
+			if (field.isVisible()) {
+				color = rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
+				value = field.isPk() ? values[0] : values[i++];
+				out += "<td class='" + color + "'>";
+
+				if (canEdit) {
+					out += "<a href='" + ctxPath + "/admin/EditRecord?id="
+							+ values[0] + "'>";
+				}
+				out += value;
+				if (canEdit) {
+					out += "</a>";
+				}
+				out += "</td>";
+			}
+		}
+
+		out += "</tr>";
+
+		return out;
+	}
+
+	private Object[] values2Array(ResultSet rs, String pkName, BSField[] fields)
+			throws Exception {
+		String name = null;
+		Object value = null;
+		int i = 1;
+		Object[] out = new Object[fields.length];
+
+		for (BSField field : fields) {
+			name = field.getName();
+			value = rs.getObject(name);
+
+			if (field.getName().equals(pkName)) {
+				out[0] = value;
+			} else {
+				out[i++] = value;
+			}
+
+			//			i++;
+		}
+		return out;
+	}%>
+
+<table class="cList" cellpadding="0" cellspacing="0">
+	<%
+		BSField[] fields = table.getFields();
+		String name = null;
+		String pkName = null;
+
+		Boolean canEdit = table.isCanEdit();
+		int rowCount = 0;
+		Object[] values = null;
+		out.println("<tr>");
+		for (BSField field : fields) {
+			if (field.isVisible()) {
+				out.println("<td class='cHeadTD'>" + field.getLabel()
+						+ "</td>");
+			}
+			if (field.isPk()) {
+				pkName = field.getName();
+			}
+		}
+		out.println("</tr>");
+
+		while (rs.next()) {
+			values = values2Array(rs, pkName, fields);
+
+			out.print(writeValues(values, fields, rowCount, canEdit,
+					ctxPath));
+			rowCount++;
+		}
+
+		rs.close();
+	%>
+</table>
