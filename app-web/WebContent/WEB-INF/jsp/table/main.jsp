@@ -12,33 +12,46 @@
 	ResultSet rs = (ResultSet) request.getAttribute("Data");
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
+
+	BSAction[] tableActions = table.getActions(BSActionType.Table);
+	BSAction[] recordActions = table.getActions(BSActionType.Record);
+	BSAction[] multirecordActions = table
+			.getActions(BSActionType.MultiRecord);
+
+	Integer selectorType = 0;
+	selectorType += recordActions.length > 0 ? 1 : 0;
+	selectorType += multirecordActions.length > 0 ? 1 : 0;
 %>
 
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <%@ include file="/WEB-INF/jsp/table/functions.jsp"%>
 
-<script src="${pageContext.request.contextPath}/js/table/table.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/table/table.js?<%=Math.random()%>"></script>
 <h1 class="cTitle">
 	<%=table.getTitle()%>
 </h1>
 <form method="post"
 	action="${pageContext.request.contextPath}/servlet/table/DeleteRecords"
 	id='frm'>
+
+
 	<table class="cList" cellpadding="0" cellspacing="0">
 		<%
 			BSField[] fields = table.getFields();
 			String name = null;
 			String pkName = null;
 
-			Boolean canEdit = table.isCanEdit();
-			Boolean canDelete = table.isCanDelete();
 			int rowCount = 0;
 			Object[] values = null;
 			out.println("<tr>");
 
-			if (canDelete) {
-				out.print("<td  align='center' class='cHeadTD'><input id='mainCheck' type='CHECKBOX' onclick='javascript:swapCheck(this);'></td>");
+			if (selectorType > 0) {
+				String type = selectorType == 1 ? "radio" : "CHECKBOX";
+				out.print("<td  align='center' class='cHeadTD'><input id='mainCheck' type='"
+						+ type
+						+ "' onclick='javascript:swapCheck(this);'></td>");
 			}
 			for (BSField field : fields) {
 				if (showColumn(field)) {
@@ -57,8 +70,8 @@
 			while (rs.next()) {
 				values = values2Array(rs, pkName, fields);
 
-				out.print(writeValues(values, fields, rowCount, canEdit,
-						ctxPath, request, canDelete));
+				out.print(writeValues(values, fields, rowCount, 
+						ctxPath, request, selectorType));
 				rowCount++;
 			}
 
@@ -68,30 +81,50 @@
 </form>
 <%
 	out.print("<br>");
-	BSAction[] actions = table.getActions(BSActionType.Table);
-	for (BSAction action : actions) {
-		out.print("<input type='button' value='" + action.getLabel()
-				+ "' onclick=\"javascript:window.location.href='"
-				+ ctxPath + action.getUrl() + "'\">");
+
+	for (BSAction action : tableActions) {
+		String id = capitalize(action.getCode());
+		out.print("<input type='button' ");
+		out.print("value='" + action.getLabel() + "' ");
+		out.print("id='o" + id + "' ");
+		out.print("onclick='javascript:window.location.href=\""
+				+ ctxPath + action.getUrl() + "\"'");
+		out.print(">");
+
 	}
-	if (table.isCanDelete()) {
-		out.print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id='deleteButton' disabled type='button' value='Borrar' onclick='javascript:deleteRecords();'>");
+
+	for (BSAction action : recordActions) {
+		String id = capitalize(action.getCode());
+		out.print("<input disabled type='button' ");
+		out.print("value='" + action.getLabel() + "' ");
+		out.print("id='o" + id + "' ");
+		out.print("onclick='javascript:f" + id + "();'");
+		out.print(">");
+	}
+
+	for (BSAction action : multirecordActions) {
+		String id = capitalize(action.getCode());
+		out.print("<input disabled type='button' ");
+		out.print("value='" + action.getLabel() + "' ");
+		out.print("id='o" + id + "' ");
+		out.print("onclick='javascript:f" + id + "();'");
+		out.print(">");
 	}
 %>
 
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
 
-<%!private String writeValues(Object[] values, BSField[] fields, int rowCount,
-			boolean canEdit, String ctxPath, HttpServletRequest request,
-			Boolean canDelete) {
+<%!private String writeValues(Object[] values, BSField[] fields,
+			Integer rowCount, String ctxPath, HttpServletRequest request,
+			Integer selectorType) {
 		String out = "<tr>";
 		Object value = null;
 		int i = 1;
 		BSFieldType type = null;
 		String color = rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
 
-		if (canDelete) {
+		if (selectorType > 0) {
 			out += "<td align='center' class='"
 					+ color
 					+ "'><input type='CHECKBOX' onclick='javascript:verifyDeleteButton();' name='cId' value='"
@@ -111,7 +144,7 @@
 
 				out += ">";
 
-				if (canEdit) {
+				if (selectorType>0) {
 					out += "<a href='" + ctxPath
 							+ "/servlet/table/SearchRecord?cId=" + values[0]
 							+ "'>";
@@ -140,7 +173,7 @@
 				} else {
 					out += value;
 				}
-				if (canEdit) {
+				if (selectorType>0) {
 					out += "</a>";
 				}
 				out += "</td>";

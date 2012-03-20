@@ -27,15 +27,7 @@
 		}
 		return out;
 	}
-/**
-	private Boolean haveActions(BSTableConfig table, BSActionType actionType) {
-		Boolean out = Boolean.FALSE;
-		BSAction[] actions = table.getActions();
-		for (BSAction action : actions) {
-			if (action.getActionType().equals(BSActionType.Table)) {
-				out = Boolean.TRUE;
-				break;
-			}
-		}
-		return out;
-	}*/%>
+
+	private String capitalize(String s) {
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}%>

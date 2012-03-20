@@ -10,9 +10,9 @@ function verifyDeleteButton() {
 	if (elementsSelected.size() == 1
 			&& 'mainCheck' == elementsSelected.get(0).id) {
 		$('#mainCheck').attr('checked', false);
-		$('#deleteButton').attr('disabled', true);
+		$('#oDelete').attr('disabled', true);
 	} else {
-		$('#deleteButton').attr('disabled', elementsSelected.size() == 0);
+		$('#oDelete').attr('disabled', elementsSelected.size() == 0);
 	}
 }
 
@@ -23,7 +23,7 @@ function swap(i, o) {
 	}
 }
 
-function deleteRecords(){
+function fDelete(){
 	var elements = $("input:checked");
 	var mainChecked = $('#mainCheck').prop("checked");
 	var count = elements.size();

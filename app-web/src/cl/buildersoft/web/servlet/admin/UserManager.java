@@ -2,11 +2,8 @@ package cl.buildersoft.web.servlet.admin;
 
 import javax.servlet.annotation.WebServlet;
 
-import cl.buildersoft.framework.beans.BSAction;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
-import cl.buildersoft.framework.type.BSActionType;
-import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
 /**
@@ -35,7 +32,7 @@ public class UserManager extends BSHttpServlet {
 
 		field = new BSField("cName", "Nombre");
 		table.addField(field);
-		
+
 		return table;
 	}
 }

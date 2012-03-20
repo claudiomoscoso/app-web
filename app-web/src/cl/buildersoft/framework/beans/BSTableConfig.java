@@ -9,10 +9,6 @@ public class BSTableConfig {
 
 	private BSAction[] actions = null;
 
-	// private Boolean canInsert = Boolean.TRUE;
-	private Boolean canEdit = Boolean.TRUE;
-	private Boolean canDelete = Boolean.TRUE;
-
 	public BSTableConfig(String tableName) {
 		this.fields = new BSField[0];
 		this.actions = new BSAction[0];
@@ -92,22 +88,6 @@ public class BSTableConfig {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public Boolean isCanEdit() {
-		return canEdit;
-	}
-
-	public void setCanEdit(Boolean canEdit) {
-		this.canEdit = canEdit;
-	}
-
-	public Boolean isCanDelete() {
-		return canDelete;
-	}
-
-	public void setCanDelete(Boolean canDelete) {
-		this.canDelete = canDelete;
 	}
 
 }
