@@ -31,7 +31,9 @@ public class BSTableConfig {
 	private void createEdit() {
 		BSAction edit = new BSAction("EDIT", BSActionType.Record);
 		edit.setLabel("Modificar");
+		
 		edit.setUrl("/servlet/table/SearchRecord");
+//		edit.setUrl("/servlet/ShowParameters");
 		this.addAction(edit);
 	}
 
@@ -79,6 +81,17 @@ public class BSTableConfig {
 		BSAction[] target = new BSAction[this.actions.length + 1];
 		System.arraycopy(this.actions, 0, target, 0, this.actions.length);
 		target[target.length - 1] = action;
+		this.actions = target;
+	}
+
+	public void removeAction(String code) {
+		BSAction[] target = new BSAction[this.actions.length - 1];
+		Integer i = 0;
+		for (BSAction action : this.actions) {
+			if (!action.getCode().equals(code)) {
+				target[i++] = action;
+			}
+		}
 		this.actions = target;
 	}
 

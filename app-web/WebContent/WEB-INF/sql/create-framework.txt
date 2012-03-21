@@ -104,7 +104,8 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servle
 SET @menuId3 = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ACCESS', 'Accesos', '/servlet/admin/Access', @menuId1);
 SET @menuId4 = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/ChangePassword', @menuId1);
+/*INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/ChangePassword', @menuId1);*/
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/jsp/TestPage.jsp', @menuId1);
 SET @menuId5 = LAST_INSERT_ID();
 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId1);
