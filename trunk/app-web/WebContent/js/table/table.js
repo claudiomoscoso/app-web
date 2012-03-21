@@ -32,6 +32,10 @@ function fDelete(){
 	if(confirm('¿Esta seguro de querer borrar ' + elements.size() + elementoString + '?')){
 		$('#frm').submit();		
 	}
-	
+}
 
+function doAction(url){
+//	alert(url);
+	$('#frm').prop("action", url);
+	$('#frm').submit();
 }

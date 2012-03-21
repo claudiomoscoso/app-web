@@ -13,6 +13,8 @@
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
 
+//	String ctxPath = request.getContextPath();
+	
 	BSAction[] tableActions = table.getActions(BSActionType.Table);
 	BSAction[] recordActions = table.getActions(BSActionType.Record);
 	BSAction[] multirecordActions = table
@@ -49,10 +51,14 @@
 
 			if (selectorType > 0) {
 				String type = selectorType == 1 ? "radio" : "CHECKBOX";
-				out.print("<td  align='center' class='cHeadTD'><input id='mainCheck' type='"
-						+ type
-						+ "' onclick='javascript:swapCheck(this);'></td>");
+				out.print("<td  align='center' class='cHeadTD'>");
+				if (selectorType == 2) {
+					out.print("<input id='mainCheck' type='" + type
+							+ "' onclick='javascript:swapCheck(this);'>");
+				}
+				out.print("</td>");
 			}
+
 			for (BSField field : fields) {
 				if (showColumn(field)) {
 					out.print("<td class='cHeadTD'");
@@ -70,47 +76,56 @@
 			while (rs.next()) {
 				values = values2Array(rs, pkName, fields);
 
-				out.print(writeValues(values, fields, rowCount, 
-						ctxPath, request, selectorType));
+				out.println(writeValues(values, fields, rowCount, ctxPath,
+						request, selectorType));
 				rowCount++;
 			}
 
 			rs.close();
 		%>
 	</table>
+	<%
+		out.print("<br>");
+
+		out.print("<div id='TableActions' style='float:left;'>");
+		for (BSAction action : tableActions) {
+			String id = capitalize(action.getCode());
+			out.print("<input type='button' ");
+			out.print("value='" + action.getLabel() + "' ");
+			out.print("id='o" + id + "' ");
+
+			out.print("onclick='javascript:window.location.href=\""
+					+ ctxPath + action.getUrl() + "\"'");
+			out.print(">");
+		}
+		out.print("</div>");
+
+		out.print("<div id='RecordActions' style='float:left;display:none;'>");
+		for (BSAction action : recordActions) {
+			String id = capitalize(action.getCode());
+			out.print("<input type='button' ");
+			out.print("value='" + action.getLabel() + "' ");
+			out.print("id='o" + id + "' ");
+			out.print("onclick='javascript:doAction(\"" + ctxPath+action.getUrl()
+					+ "\");'");
+			//out.print("onclick='javascript:f" + id + "();'");
+
+			out.print(">");
+		}
+		out.print("</div>");
+
+		out.print("<div id='MultirecordActions' style='float:left;'>");
+		for (BSAction action : multirecordActions) {
+			String id = capitalize(action.getCode());
+			out.print("<input type='button' ");
+			out.print("value='" + action.getLabel() + "' ");
+			out.print("id='o" + id + "' ");
+			out.print("onclick='javascript:f" + id + "();'");
+			out.print(">");
+		}
+		out.print("</div>");
+	%>
 </form>
-<%
-	out.print("<br>");
-
-	for (BSAction action : tableActions) {
-		String id = capitalize(action.getCode());
-		out.print("<input type='button' ");
-		out.print("value='" + action.getLabel() + "' ");
-		out.print("id='o" + id + "' ");
-		out.print("onclick='javascript:window.location.href=\""
-				+ ctxPath + action.getUrl() + "\"'");
-		out.print(">");
-
-	}
-
-	for (BSAction action : recordActions) {
-		String id = capitalize(action.getCode());
-		out.print("<input disabled type='button' ");
-		out.print("value='" + action.getLabel() + "' ");
-		out.print("id='o" + id + "' ");
-		out.print("onclick='javascript:f" + id + "();'");
-		out.print(">");
-	}
-
-	for (BSAction action : multirecordActions) {
-		String id = capitalize(action.getCode());
-		out.print("<input disabled type='button' ");
-		out.print("value='" + action.getLabel() + "' ");
-		out.print("id='o" + id + "' ");
-		out.print("onclick='javascript:f" + id + "();'");
-		out.print(">");
-	}
-%>
 
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
@@ -121,34 +136,44 @@
 		String out = "<tr>";
 		Object value = null;
 		int i = 1;
-		BSFieldType type = null;
 		String color = rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
 
 		if (selectorType > 0) {
-			out += "<td align='center' class='"
-					+ color
-					+ "'><input type='CHECKBOX' onclick='javascript:verifyDeleteButton();' name='cId' value='"
-					+ values[0] + "'></td>";
+			String type = selectorType == 1 ? "radio" : "CHECKBOX";
+			out += "<td align='center' class='" + color + "'>";
+
+			out += "<input type='" + type + "' ";
+			out += "name='cId' ";
+			out += "value='" + values[0] + "' ";
+			if (selectorType == 1) {
+				//				out += "onclick='javascript:document.getElementById(\"RecordActions\").style.visibility=\"visible\";' ";
+				out += "onclick='javascript:$(\"#RecordActions\").show();' ";
+			} else {
+				out += "onclick='javascript:swapCheck(this);' ";
+			}
+			out += ">";
+
+			out += "</td>";
 		}
+		BSFieldType type = null;
 
 		for (BSField field : fields) {
 			type = field.getType();
 
 			if (showColumn(field)) {
-				//			if (field.isVisible() && !type.equals(BSType .Password)) {
-
 				value = field.isPk() ? values[0] : values[i++];
 
 				out += "<td class='" + color + "'";
 				out += getAlign(field);
-
 				out += ">";
 
-				if (selectorType>0) {
+				/**
+				if (selectorType > 0) {
 					out += "<a href='" + ctxPath
 							+ "/servlet/table/SearchRecord?cId=" + values[0]
 							+ "'>";
 				}
+				 */
 				if (type.equals(BSFieldType.Boolean)) {
 					Boolean b = (Boolean) value;
 					if (b.booleanValue() == Boolean.TRUE) {
@@ -173,9 +198,11 @@
 				} else {
 					out += value;
 				}
-				if (selectorType>0) {
+				/**
+				if (selectorType > 0) {
 					out += "</a>";
 				}
+				 */
 				out += "</td>";
 			}
 		}

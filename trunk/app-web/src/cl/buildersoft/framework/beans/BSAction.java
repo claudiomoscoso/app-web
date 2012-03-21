@@ -39,4 +39,10 @@ public class BSAction {
 		this.url = url;
 	}
 
+	@Override
+	public String toString() {
+		return "BSAction [code=" + code + ", label=" + label + ", actionType="
+				+ actionType + ", url=" + url + "]";
+	}
+
 }
