@@ -1,0 +1,15 @@
+#summary One-sentence summary of this page.
+
+= Introducción =
+
+El espíritu de este proyecto, tiene dos frentes:
+# por un lado es tener una plataforma de desarrollo base para implementar proyectos a medida con una base ya establecida, en la cual debemos contar con las principales funciones que todo sistema implementa, como por ejemplo, la creación de usuarios, control de sesión, etc.
+# Aprender a usar la plataforma de forma nativa, sin usar librerías de terceros, por ejemplo log4j, ya que la plataforma misma provee un mecanismo para implementar. También es cierto que el uso de algunos frameworks, aumentan complejidad y tiempos innecesarios de llamadas.
+
+= Details =
+
+Para el uso de la plataforma, estamos basando el desarrollo en Java EE 1.6.
+
+A continuación algunos links que pueden servir para consultar sobre temas específicos a usar de la plataforma o manuales.
+
+[http://java.sun.com/j2ee/docs.html Java 2 Platform, Enterprise Edition - Documentation]
