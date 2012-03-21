@@ -12,8 +12,8 @@ Para el uso de la plataforma, estamos basando el desarrollo en Java EE 1.6.
 
 A continuación algunos links que pueden servir para consultar sobre temas específicos a usar de la plataforma o manuales.
 
-* [http://java.sun.com/j2ee/docs.html Java 2 Platform, Enterprise Edition - Documentation]
-* [http://docs.oracle.com/javaee/6/tutorial/doc/docinfo.html Tutorial  oficial de Java EE 6]
-* [http://es.wikipedia.org/wiki/Java_EE Definición de Wikipeda]
+  * [http://java.sun.com/j2ee/docs.html Java 2 Platform, Enterprise Edition - Documentation]
+  * [http://docs.oracle.com/javaee/6/tutorial/doc/docinfo.html Tutorial  oficial de Java EE 6]
+  * [http://es.wikipedia.org/wiki/Java_EE Definición de Wikipeda]
 
 Para este desarrollo inicialmente, estamos usando eclipse como IDE de desarrollo y tomcat como Servlet Container, lo que no implica en que el futuro cambiemos el uso de estas herramientas por las propuestas por los manuales de referencia.
