@@ -16,7 +16,7 @@
 
 </head>
 <body marginwidth="25" marginheight="25" bgcolor="#EDEDED"
-	onload="javaScript:loadFormat();try{onLoadPage();}catch(e){}">
+	onload="javaScript:try{onLoadPage();}catch(e){}">
 
 	<table border="0" style="width: 100%">
 		<tr>
