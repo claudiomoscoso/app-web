@@ -11,6 +11,7 @@ public class BSField {
 	private Integer length = null;
 	private BSFieldType type = null;
 	private Object value = null;
+	private String validationOnBlur = null;
 
 	public BSField(String name, String label) {
 		super();
@@ -81,4 +82,12 @@ public class BSField {
 	public void setUnique(Boolean unique) {
 		this.unique = unique;
 	}
+	
+	public String getValidationOnBlur() {
+		return validationOnBlur;
+	}
+
+	public void setValidationOnBlur(String validationOnBlur) {
+		this.validationOnBlur = validationOnBlur;
+	}	
 }
