@@ -34,7 +34,7 @@
   </context-param>
   <context-param>
     <param-name>bsframework.database.password</param-name>
-    <param-value>admin</param-value>
+    <param-value>12870668</param-value>
   </context-param>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>

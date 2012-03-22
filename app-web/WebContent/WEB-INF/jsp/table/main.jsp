@@ -22,7 +22,7 @@
 
 	Integer selectorType = 0;
 	selectorType += recordActions.length > 0 ? 1 : 0;
-	selectorType += multirecordActions.length > 0 ? 1 : 0;
+	selectorType += multirecordActions.length > 0 ? 2 : 0;
 %>
 
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
@@ -52,9 +52,9 @@
 			if (selectorType > 0) {
 				String type = selectorType == 1 ? "radio" : "CHECKBOX";
 				out.print("<td  align='center' class='cHeadTD'>");
-				if (selectorType == 2) {
+				if (selectorType >= 2) {
 					out.print("<input id='mainCheck' type='" + type
-							+ "' onclick='javascript:swapCheck(this);'>");
+							+ "' onclick='javascript:swapAllCheck(this);'>");
 				}
 				out.print("</td>");
 			}
@@ -114,7 +114,7 @@
 		}
 		out.print("</div>");
 
-		out.print("<div id='MultirecordActions' style='float:left;'>");
+		out.print("<div id='MultirecordActions' style='float:left;display:none;'>");
 		for (BSAction action : multirecordActions) {
 			String id = capitalize(action.getCode());
 			out.print("<input type='button' ");
@@ -147,7 +147,8 @@
 			out += "value='" + values[0] + "' ";
 			if (selectorType == 1) {
 				//				out += "onclick='javascript:document.getElementById(\"RecordActions\").style.visibility=\"visible\";' ";
-				out += "onclick='javascript:$(\"#RecordActions\").show();' ";
+				out += "onclick=\"javascript:$('#RecordActions').show();\" ";
+//				out += "onclick=\"javascript:alert(1);\" ";
 			} else {
 				out += "onclick='javascript:swapCheck(this);' ";
 			}

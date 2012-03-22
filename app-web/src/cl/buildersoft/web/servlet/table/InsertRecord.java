@@ -16,7 +16,6 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.DataBaseException;
 import cl.buildersoft.framework.exception.NestedException;
-import cl.buildersoft.framework.exception.UserExistException;
 import cl.buildersoft.framework.util.BSWeb;
 
 @WebServlet("/servlet/table/InsertRecord")
