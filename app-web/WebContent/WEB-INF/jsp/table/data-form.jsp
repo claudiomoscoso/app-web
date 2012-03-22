@@ -1,3 +1,4 @@
+<%@page import="cl.buildersoft.framework.beans.BSCss"%>
 <%@page import="cl.buildersoft.framework.beans.BSScript"%>
 <%@page import="cl.buildersoft.framework.beans.BSHeadConfig"%>
 <%@page import="cl.buildersoft.framework.util.BSWeb"%>
@@ -16,11 +17,16 @@
 	<%
 	BSHeadConfig head = (BSHeadConfig)session.getAttribute("BSHead");
 	BSScript script = head.getScript();
+	BSCss css = head.getCss();
 	for(String oneScript: script.getListScriptNames())
 	{
-		out.print("<script src='"+request.getContextPath()+script.getPath()+oneScript+".js'></script>");
+		out.print("<script src='"+request.getContextPath()+script.getPath()+oneScript+".js'></script>");	
 	}
-		
+	
+	for(String oneCss: css.getListCssNames())
+	{
+		out.print("<LINK rel='stylesheet' type='text/css' src='"+request.getContextPath()+css.getPath()+oneCss+".css'/>");	
+	}		
 	%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <h1 class="cTitle">Creacion de información</h1>
