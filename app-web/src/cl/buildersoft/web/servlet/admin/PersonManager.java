@@ -4,6 +4,7 @@ import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
 
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
@@ -43,6 +44,12 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 //		table.removeAction("EDIT");
 		
 		return table;
+	}
+
+	@Override
+	protected BSHeadConfig getBSHeadConfig() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

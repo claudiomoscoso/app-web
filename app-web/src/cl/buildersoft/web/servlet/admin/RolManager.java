@@ -3,6 +3,7 @@ package cl.buildersoft.web.servlet.admin;
 import javax.servlet.annotation.WebServlet;
 
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
@@ -30,5 +31,11 @@ public class RolManager extends BSHttpServlet {
 		table.addField(field);
 		
 		return table;
+	}
+
+	@Override
+	protected BSHeadConfig getBSHeadConfig() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

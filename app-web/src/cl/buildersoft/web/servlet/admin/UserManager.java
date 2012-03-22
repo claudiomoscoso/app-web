@@ -1,8 +1,14 @@
 package cl.buildersoft.web.servlet.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.annotation.WebServlet;
 
+import cl.buildersoft.framework.beans.BSCss;
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.beans.BSHeadConfig;
+import cl.buildersoft.framework.beans.BSScript;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
@@ -28,6 +34,7 @@ public class UserManager extends BSHttpServlet {
 		table.addField(field);
 
 		field = new BSField("cMail", "Correo electrónico/usuario");
+		field.setValidationOnBlur("validationUser");
 		table.addField(field);
 
 		field = new BSField("cName", "Nombre");
@@ -37,5 +44,25 @@ public class UserManager extends BSHttpServlet {
 		/**		table.removeAction("EDIT");
 		*/
 		return table;
+	}
+
+	@Override
+	protected BSHeadConfig getBSHeadConfig() {
+		BSHeadConfig head = new BSHeadConfig();
+		BSScript bsScript = new BSScript("/js/user/");
+		BSCss bsCss = new BSCss("/css/user/");
+		
+		List<String> listScripts = new ArrayList<String>();
+		listScripts.add("UserScript");
+		List<String> listCss = new ArrayList<String>();
+		listCss.add("UserCss");
+		
+		bsScript.setListScriptNames(listScripts);
+		bsCss.setListCssNames(listCss);		
+		
+		head.setCss(bsCss);
+		head.setScript(bsScript);
+		
+		return head;
 	}
 }
