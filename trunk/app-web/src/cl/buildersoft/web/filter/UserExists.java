@@ -32,9 +32,6 @@ public class UserExists implements Filter {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		Boolean goHome = Boolean.FALSE;
-		// String ctxPath = request.getContextPath() + "/";
-		// String uri = request.getRequestURI();
-		// Boolean homeCalled = ctxPath.equalsIgnoreCase(uri);
 
 //		System.out.println(request.getRequestURI());
 
@@ -43,7 +40,6 @@ public class UserExists implements Filter {
 		if (session == null) {
 			goHome = Boolean.TRUE;
 		} else {
-//			Object menu = session.getAttribute("Menu");
 			Object user = session.getAttribute("User");
 			Object rol = session.getAttribute("Rol");
 			if (user == null || rol == null ) {
@@ -51,8 +47,6 @@ public class UserExists implements Filter {
 			}
 		}
 
-		// System.out.println("goHome " + goHome);
-		// if (false) {
 		if (goHome) {
 			response.sendRedirect(request.getContextPath());
 		} else {
