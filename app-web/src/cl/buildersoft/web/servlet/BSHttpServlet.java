@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
 
 public abstract class BSHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected abstract BSTableConfig getBSTableConfig();
+	protected abstract BSHeadConfig getBSHeadConfig();
 
 	public BSHttpServlet() {
 		super();
@@ -22,11 +24,13 @@ public abstract class BSHttpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		BSHeadConfig head = getBSHeadConfig();
 		BSTableConfig table = getBSTableConfig();
 
 		HttpSession session = request.getSession();
 		synchronized (session) {
 			session.setAttribute("BSTable", table);
+			session.setAttribute("BSHead", head);
 		}
 
 		request.getRequestDispatcher("/servlet/table/LoadTable").forward(request,
