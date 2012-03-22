@@ -40,6 +40,8 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		field = new BSField("cActive", "Activo");
 		table.addField(field);
 
+//		table.removeAction("EDIT");
+		
 		return table;
 	}
 
