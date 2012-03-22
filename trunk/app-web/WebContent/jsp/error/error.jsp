@@ -1,18 +1,20 @@
-  <%@ page isErrorPage="true" import="java.io.PrintWriter" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page isErrorPage="true" import="java.io.PrintWriter"%>
 
-  <html><body>
+<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 
-  <h1 style="color: red">Error</h1>
+<h1 class="cTitle" style="color: red">Error</h1>
 
-  <pre>
+<pre>
   <%
-  // unwrap ServletExceptions.
-  while (exception instanceof ServletException)
-    exception = ((ServletException) exception).getRootCause();
+  	// unwrap ServletExceptions.
+  	while (exception instanceof ServletException)
+  		exception = ((ServletException) exception).getRootCause();
 
-  // print stack trace.
-  out.print(exception.getMessage());
+  	// print stack trace.
+  	out.print(exception.getMessage());
   %>
   </pre>
 
-  </body></html>
+<%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
