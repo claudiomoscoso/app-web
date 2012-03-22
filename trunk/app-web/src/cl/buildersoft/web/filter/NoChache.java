@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter("/admin/*,/table/*")
+@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*" })
 public class NoChache implements Filter {
 
 	public NoChache() {
@@ -31,6 +31,7 @@ public class NoChache implements Filter {
 		response.setHeader("Cache-Control",
 				"no-cache, must-revalidate, s-maxage=0, proxy-revalidate, private");
 		response.setHeader("Pragma", "no-cache");
+		response.setContentType("text/html");
 
 		chain.doFilter(servletRequest, servletResponse);
 	}
