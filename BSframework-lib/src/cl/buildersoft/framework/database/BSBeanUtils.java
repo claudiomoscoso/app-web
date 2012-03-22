@@ -29,11 +29,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Object[] params = getValues4Insert(theClass, objectFields, bean);
 
 		Long newId;
-		try {
-			newId = insert(conn, sql, array2List(params));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		newId = insert(conn, sql, array2List(params));
 
 		String idField = getIdField(getObjectFields(theClass));
 		fillField(theClass, idField, newId, bean);
@@ -51,11 +47,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Object[] params = getValues4Update(theClass, objectFields, bean);
 
 		Integer out;
-		try {
-			out = update(conn, sql, array2List(params));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		out = update(conn, sql, array2List(params));
 
 		return out;
 
@@ -81,11 +73,7 @@ public class BSBeanUtils extends BSDataUtils {
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields, bean);
 
-		try {
-			update(conn, sql, array2List(idValue));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		update(conn, sql, array2List(idValue));
 
 		Object[] prms = new Object[objectFields.length];
 

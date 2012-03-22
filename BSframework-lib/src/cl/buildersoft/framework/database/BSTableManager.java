@@ -43,11 +43,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		Object[] params = getValues4Insert(theClass, objectFields);
 
 		Long newId;
-		try {
-			newId = insert(this.connection, sql, array2List(params));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		newId = insert(this.connection, sql, array2List(params));
 
 		String idField = getIdField(getObjectFields(theClass));
 		fillField(theClass, idField, newId);
@@ -56,7 +52,6 @@ public abstract class BSTableManager extends BSDataUtils {
 	}
 
 	public Integer update() {
-
 		String[] tableFields = getTableFields(this.theClass);
 		String[] objectFields = getObjectFields(this.theClass);
 
@@ -65,11 +60,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		Object[] params = getValues4Update(this.theClass, objectFields);
 
 		Integer out;
-		try {
-			out = update(this.connection, sql, array2List(params));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		out = update(this.connection, sql, array2List(params));
 
 		return out;
 
@@ -95,11 +86,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields);
 
-		try {
-			update(this.connection, sql, array2List(idValue));
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		update(this.connection, sql, array2List(idValue));
 
 		Object[] prms = new Object[objectFields.length];
 
