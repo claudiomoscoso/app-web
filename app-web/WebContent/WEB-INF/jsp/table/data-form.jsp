@@ -1,3 +1,5 @@
+<%@page import="cl.buildersoft.framework.beans.BSScript"%>
+<%@page import="cl.buildersoft.framework.beans.BSHeadConfig"%>
 <%@page import="cl.buildersoft.framework.util.BSWeb"%>
 <%@page import="cl.buildersoft.framework.type.BSFieldType"%>
 <%@page import="cl.buildersoft.framework.beans.BSField"%>
@@ -11,13 +13,17 @@
 	BSField[] fields = table.getFields();
 %>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
+	<%
+	BSHeadConfig head = (BSHeadConfig)session.getAttribute("BSHead");
+	BSScript script = head.getScript();
+	for(String oneScript: script.getListScriptNames())
+	{
+		out.print("<script src='"+request.getContextPath()+script.getPath()+oneScript+".js'></script>");
+	}
+		
+	%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <h1 class="cTitle">Creacion de información</h1>
-<script>
-	function onLoadPage() {
-
-	}
-</script>
 <%
 	String nextServlet = (String) request.getAttribute("Action");
 	if ("insert".equalsIgnoreCase(nextServlet)) {
@@ -62,6 +68,7 @@
 		String afterInput = "";
 		Boolean isPk = field.isPk();
 		Boolean isReadOnly = isPk ? Boolean.TRUE : field.isReadonly();
+		String validationOnBlur = field.getValidationOnBlur() != null ? field.getValidationOnBlur() : "";
 
 		if (type.equals(BSFieldType.Boolean)) {
 			out += "<SELECT name='" + name + "' ";
@@ -115,7 +122,7 @@
 			}
 
 			out += drawInputText("text", name, maxlength, isReadOnly, value,
-					size, afterInput);
+					size, afterInput,validationOnBlur);
 		}
 		return out;
 	}
@@ -144,14 +151,15 @@
 	}
 </code>*/
 	private String drawInputText(String type, String name, Integer maxlength,
-			Boolean isReadonly, Object value, Integer size, String afterInput) {
+			Boolean isReadonly, Object value, Integer size, String afterInput, String validationOnBlur) {
 		String out = "<input type='" + type + "' name='";
 		out += name;
 		out += "' ";
 		out += "maxlength='" + maxlength + "' ";
 		out += isReadonly ? "READONLY " : "";
 		out += "value='" + value + "' ";
-		out += "size='" + size + "px'";
+		out += "size='" + size + "px' ";
+		out += "onBlur='javascript:"+validationOnBlur+"(this)'";
 		out += ">&nbsp;" + afterInput;
 		return out;
 	}%>
