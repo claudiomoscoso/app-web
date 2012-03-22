@@ -14,23 +14,21 @@ function verifyButtons() {
 
 	if (elementsSelected.size() == 1
 			&& 'mainCheck' == elementsSelected.get(0).id) {
-		$("#MultirecordActions").hide();
-		$("#RecordActions").hide();
+		$("#MultirecordActions").hide(speed);
+		$("#RecordActions").hide(speed);
 	} else {
 		if (elementsSelected.size() == 0) {
-			$("#RecordActions").hide();
-			$("#MultirecordActions").hide();
+			$("#RecordActions").hide(speed);
+			$("#MultirecordActions").hide(speed);
 		} else {
 			if (elementsSelected.size() == 1) {
-				$("#RecordActions").show();
-			}else{
-				$("#RecordActions").hide();
+				$("#RecordActions").show(speed);
+			} else {
+				$("#RecordActions").hide(speed);
 			}
-			$("#MultirecordActions").show();
+			$("#MultirecordActions").show(speed);
 		}
-
 	}
-
 }
 
 function swap(i, o) {

@@ -147,7 +147,7 @@
 			out += "value='" + values[0] + "' ";
 			if (selectorType == 1) {
 				//				out += "onclick='javascript:document.getElementById(\"RecordActions\").style.visibility=\"visible\";' ";
-				out += "onclick=\"javascript:$('#RecordActions').show();\" ";
+				out += "onclick=\"javascript:$('#RecordActions').show(speed);\" ";
 //				out += "onclick=\"javascript:alert(1);\" ";
 			} else {
 				out += "onclick='javascript:swapCheck(this);' ";

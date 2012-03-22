@@ -23,20 +23,34 @@ public class ShowParameters extends HttpServlet {
 
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
+		request.getRequestDispatcher("/WEB-INF/jsp/common/head.jsp").include(
+				request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/common/menu.jsp").include(
+				request, response);
+
 		PrintWriter out = response.getWriter();
 		Enumeration<String> names = request.getParameterNames();
 
+		out.print("<ul class='cLabel'>");
 		while (names.hasMoreElements()) {
 			String name = (String) names.nextElement();
 
-			out.println(name + "<br>");
+			out.println("<li>" + name);
 			String[] values = request.getParameterValues(name);
 
+			out.print("<ul>");
 			for (String value : values) {
-				out.println(value);
+				out.println("<li class='cData'>" + value + "</li>");
 			}
+			out.print("</ul></li>");
 
 		}
+		out.print("</ul>");
+
+		request.getRequestDispatcher("/WEB-INF/jsp/common/footer.jsp").include(
+				request, response);
+
 		out.flush();
 	}
 

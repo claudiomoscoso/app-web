@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 
+import cl.buildersoft.framework.beans.BSAction;
 import cl.buildersoft.framework.beans.BSCss;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSScript;
 import cl.buildersoft.framework.beans.BSTableConfig;
+import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
 /**
@@ -39,10 +41,12 @@ public class UserManager extends BSHttpServlet {
 
 		field = new BSField("cName", "Nombre");
 		table.addField(field);
-		
-//		table.removeAction("DELETE");
-		/**		table.removeAction("EDIT");
-		*/
+
+		BSAction changePassword = new BSAction("CH_PASS", BSActionType.Record);
+		changePassword.setLabel("Cambio de clave");
+		changePassword.setUrl("/servlet/changePassword/SearchPassword");
+		table.addAction(changePassword);
+
 		return table;
 	}
 

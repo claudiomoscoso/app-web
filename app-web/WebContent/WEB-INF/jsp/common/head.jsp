@@ -9,6 +9,7 @@
 <title>Buildersoft &radic;</title>
 <script>
 	var contextPath = "${pageContext.request.contextPath}";
+	var speed = "fast";
 </script>
 <script src="${pageContext.request.contextPath}/js/common/framework.js"></script>
 <script src="${pageContext.request.contextPath}/js/common/menu.js"></script>
@@ -16,7 +17,7 @@
 
 </head>
 <body marginwidth="25" marginheight="25" bgcolor="#EDEDED"
-	onload="javaScript:try{onLoadPage();}catch(e){}">
+	onload="javaScript:loadFormat();try{onLoadPage();}catch(e){}">
 
 	<table border="0" style="width: 100%">
 		<tr>

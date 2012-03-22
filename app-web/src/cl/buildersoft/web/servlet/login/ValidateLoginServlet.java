@@ -23,7 +23,6 @@ import cl.buildersoft.framework.util.BSDataUtils;
 public class ValidateLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = -4481703270849068766L;
 
-	 
 	public ValidateLoginServlet() {
 		super();
 	}
@@ -51,7 +50,11 @@ public class ValidateLoginServlet extends HttpServlet {
 			conn = dau.getConnection(getServletContext(), "bsframework");
 			user = userService.login(conn, mail, password);
 			if (user != null) {
-				rol = userService.getRol(conn, user);
+				try {
+					rol = userService.getRol(conn, user);
+				} catch (Exception e) {
+					throw new RuntimeException("Usuario no tiene rol asignado");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
