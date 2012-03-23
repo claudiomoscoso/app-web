@@ -29,7 +29,7 @@ public class UserManager extends BSHttpServlet {
 	@Override
 	protected BSTableConfig getBSTableConfig() {
 		BSTableConfig table = new BSTableConfig("tUser");
-		table.setTitle("Mantenimeito de usuarios");
+		table.setTitle("Mantenimiento de usuarios");
 
 		BSField field = null;
 		field = new BSField("cId", "ID");
@@ -47,6 +47,11 @@ public class UserManager extends BSHttpServlet {
 		changePassword.setUrl("/servlet/changePassword/SearchPassword");
 		table.addAction(changePassword);
 
+		BSAction rolRelation = new BSAction("ROL_RELATION", null);
+		rolRelation.setNatTable("tR_UserRol", "tRol");
+		rolRelation.setLabel("Roles de usuario");
+		table.addAction(rolRelation);
+
 		return table;
 	}
 
@@ -55,18 +60,20 @@ public class UserManager extends BSHttpServlet {
 		BSHeadConfig head = new BSHeadConfig();
 		BSScript bsScript = new BSScript("/js/user/");
 		BSCss bsCss = new BSCss("/css/user/");
-		
+
 		List<String> listScripts = new ArrayList<String>();
 		listScripts.add("UserScript");
+//		listScripts.add("relation");
+		
 		List<String> listCss = new ArrayList<String>();
 		listCss.add("UserCss");
-		
+
 		bsScript.setListScriptNames(listScripts);
-		bsCss.setListCssNames(listCss);		
-		
+		bsCss.setListCssNames(listCss);
+
 		head.setCss(bsCss);
 		head.setScript(bsScript);
-		
+
 		return head;
 	}
 }

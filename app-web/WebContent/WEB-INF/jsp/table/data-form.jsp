@@ -14,20 +14,23 @@
 	BSField[] fields = table.getFields();
 %>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
-	<%
-	BSHeadConfig head = (BSHeadConfig)session.getAttribute("BSHead");
-	BSScript script = head.getScript();
-	BSCss css = head.getCss();
-	for(String oneScript: script.getListScriptNames())
-	{
-		out.print("<script src='"+request.getContextPath()+script.getPath()+oneScript+".js'></script>");	
+<%
+	BSHeadConfig head = (BSHeadConfig) session.getAttribute("BSHead");
+	if (head != null) {
+		BSScript script = head.getScript();
+		BSCss css = head.getCss();
+		for (String oneScript : script.getListScriptNames()) {
+			out.print("<script src='" + request.getContextPath()
+					+ script.getPath() + oneScript + ".js'></script>");
+		}
+
+		for (String oneCss : css.getListCssNames()) {
+			out.print("<LINK rel='stylesheet' type='text/css' src='"
+					+ request.getContextPath() + css.getPath() + oneCss
+					+ ".css'/>");
+		}
 	}
-	
-	for(String oneCss: css.getListCssNames())
-	{
-		out.print("<LINK rel='stylesheet' type='text/css' src='"+request.getContextPath()+css.getPath()+oneCss+".css'/>");	
-	}		
-	%>
+%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <h1 class="cTitle">Creacion de información</h1>
 <%
@@ -74,7 +77,8 @@
 		String afterInput = "";
 		Boolean isPk = field.isPk();
 		Boolean isReadOnly = isPk ? Boolean.TRUE : field.isReadonly();
-		String validationOnBlur = field.getValidationOnBlur() != null ? field.getValidationOnBlur() : "";
+		String validationOnBlur = field.getValidationOnBlur() != null ? field
+				.getValidationOnBlur() : "";
 
 		if (type.equals(BSFieldType.Boolean)) {
 			out += "<SELECT name='" + name + "' ";
@@ -128,15 +132,14 @@
 			}
 
 			out += drawInputText("text", name, maxlength, isReadOnly, value,
-					size, afterInput,validationOnBlur);
+					size, afterInput, validationOnBlur);
 		}
 		return out;
 	}
 
 	private String writeOptionHTML(String option, String display, Object value) {
 		String out = "<OPTION value='" + option + "'";
-		out += (value != null && value.toString().equals(option)
-				? " selected"
+		out += (value != null && value.toString().equals(option) ? " selected"
 				: "");
 		out += ">" + display + "</OPTION>";
 		return out;
@@ -155,9 +158,10 @@
 
 		return out;
 	}
-</code>*/
+	</code>*/
 	private String drawInputText(String type, String name, Integer maxlength,
-			Boolean isReadonly, Object value, Integer size, String afterInput, String validationOnBlur) {
+			Boolean isReadonly, Object value, Integer size, String afterInput,
+			String validationOnBlur) {
 		String out = "<input type='" + type + "' name='";
 		out += name;
 		out += "' ";
@@ -165,7 +169,7 @@
 		out += isReadonly ? "READONLY " : "";
 		out += "value='" + value + "' ";
 		out += "size='" + size + "px' ";
-		out += "onBlur='javascript:"+validationOnBlur+"(this)'";
+		out += "onBlur='javascript:" + validationOnBlur + "(this)'";
 		out += ">&nbsp;" + afterInput;
 		return out;
 	}%>

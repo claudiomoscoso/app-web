@@ -50,7 +50,7 @@ function fDelete() {
 	}
 }
 
-function doAction(url) {
-	$('#frm').prop("action", url);
+function doAction(url, actionCode) {
+	$('#frm').prop("action", url + "?CodeAction=" + actionCode);
 	$('#frm').submit();
 }

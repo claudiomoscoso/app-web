@@ -13,8 +13,8 @@
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
 
-//	String ctxPath = request.getContextPath();
-	
+	//	String ctxPath = request.getContextPath();
+
 	BSAction[] tableActions = table.getActions(BSActionType.Table);
 	BSAction[] recordActions = table.getActions(BSActionType.Record);
 	BSAction[] multirecordActions = table
@@ -100,19 +100,6 @@
 		}
 		out.print("</div>");
 
-		out.print("<div id='RecordActions' style='float:left;display:none;'>");
-		for (BSAction action : recordActions) {
-			String id = capitalize(action.getCode());
-			out.print("<input type='button' ");
-			out.print("value='" + action.getLabel() + "' ");
-			out.print("id='o" + id + "' ");
-			out.print("onclick='javascript:doAction(\"" + ctxPath+action.getUrl()
-					+ "\");'");
-			//out.print("onclick='javascript:f" + id + "();'");
-
-			out.print(">");
-		}
-		out.print("</div>");
 
 		out.print("<div id='MultirecordActions' style='float:left;display:none;'>");
 		for (BSAction action : multirecordActions) {
@@ -124,6 +111,22 @@
 			out.print(">");
 		}
 		out.print("</div>");
+		
+		out.print("<div id='RecordActions' style='float:left;display:none;'>");
+		for (BSAction action : recordActions) {
+			String id = capitalize(action.getCode());
+			out.print("<input type='button' ");
+			out.print("value='" + action.getLabel() + "' ");
+			out.print("id='o" + id + "' ");
+			out.print("onclick='javascript:doAction(\"" + ctxPath
+					+ action.getUrl() + "\", \"" + action.getCode()
+					+ "\");'");
+			//out.print("onclick='javascript:f" + id + "();'");
+
+			out.print(">");
+		}
+		out.print("</div>");
+
 	%>
 </form>
 
@@ -148,7 +151,7 @@
 			if (selectorType == 1) {
 				//				out += "onclick='javascript:document.getElementById(\"RecordActions\").style.visibility=\"visible\";' ";
 				out += "onclick=\"javascript:$('#RecordActions').show(speed);\" ";
-//				out += "onclick=\"javascript:alert(1);\" ";
+				//				out += "onclick=\"javascript:alert(1);\" ";
 			} else {
 				out += "onclick='javascript:swapCheck(this);' ";
 			}
