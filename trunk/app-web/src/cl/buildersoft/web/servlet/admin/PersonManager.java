@@ -48,7 +48,6 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 	@Override
 	protected BSHeadConfig getBSHeadConfig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

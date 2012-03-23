@@ -31,9 +31,9 @@ public class BSTableConfig {
 	private void createEdit() {
 		BSAction edit = new BSAction("EDIT", BSActionType.Record);
 		edit.setLabel("Modificar");
-		
+
 		edit.setUrl("/servlet/table/SearchRecord");
-//		edit.setUrl("/servlet/ShowParameters");
+		// edit.setUrl("/servlet/ShowParameters");
 		this.addAction(edit);
 	}
 
@@ -66,7 +66,17 @@ public class BSTableConfig {
 				out = aux;
 			}
 		}
+		return out;
+	}
 
+	public BSAction getAction(String code) {
+		BSAction out = null;
+		for (BSAction action : this.actions) {
+			if (action.getCode().equals(code)) {
+				out = action;
+				break;
+			}
+		}
 		return out;
 	}
 
