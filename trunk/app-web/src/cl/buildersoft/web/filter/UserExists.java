@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class UserExists
  */
-@WebFilter(urlPatterns = { "/servlet/*", "/WEB-INF/jsp/*" }, dispatcherTypes = {
+@WebFilter(urlPatterns = { "/servlet/*" }, dispatcherTypes = {
 		DispatcherType.REQUEST, DispatcherType.FORWARD })
 public class UserExists implements Filter {
 	public UserExists() {
@@ -42,7 +42,7 @@ public class UserExists implements Filter {
 		} else {
 			Object user = session.getAttribute("User");
 			Object rol = session.getAttribute("Rol");
-			if (user == null || rol == null ) {
+			if (user == null || rol == null) {
 				goHome = Boolean.TRUE;
 			}
 		}

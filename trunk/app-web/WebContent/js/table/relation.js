@@ -1,25 +1,11 @@
 function add() {
 	moveElement("left", "right");
 	return;
-	var value = $('#left option:selected').val();
-	var html = $('#left option:selected').html();
-
-	$('#right').append($('<option></option>').val(value).html(html));
-
-	$('#left option:selected').remove();
-
 }
 
 function remove() {
 	moveElement("right", "left");
 	return;
-
-	var value = $('#right option:selected').val();
-	var html = $('#right option:selected').html();
-
-	$('#left').append($('<option></option>').val(value).html(html));
-
-	$('#right option:selected').remove();
 }
 
 function moveElement(source, target) {
@@ -31,4 +17,10 @@ function moveElement(source, target) {
 
 		$('#' + source + ' option:selected').remove();
 	}
+}
+
+function save(){
+	$('#right').attr('multiple', 'yes');
+	$('#right option').prop('selected',true);
+	$('#frm').submit();
 }
