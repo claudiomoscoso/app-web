@@ -6,7 +6,7 @@ public class BSTableConfig {
 	private String tableName = null;
 	private BSField[] fields = null;
 	private String title = null;
-
+	private String uri = null;
 	private BSAction[] actions = null;
 
 	public BSTableConfig(String tableName) {
@@ -111,6 +111,14 @@ public class BSTableConfig {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 }

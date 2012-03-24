@@ -36,7 +36,6 @@ public class NatTable extends HttpServlet {
 			session = request.getSession();
 		}
 
-
 		String code = request.getParameter("CodeAction");
 		Long id = Long.parseLong(request.getParameter("cId"));
 
@@ -56,10 +55,8 @@ public class NatTable extends HttpServlet {
 
 		request.setAttribute("List", list);
 
-		
-		
 		request.getRequestDispatcher("/WEB-INF/jsp/table/relation-nat.jsp")
-		.forward(request, response);
+				.forward(request, response);
 	}
 
 	private ResultSet getList(BSAction action, BSmySQL mysql, Connection conn) {
@@ -86,13 +83,13 @@ LEFT JOIN tRol AS c ON b.cRol = c.cId;
 		  </code>
 		 */
 		String tables[] = action.getNatTable();
-		String sql = "SELECT b.*, c.* FROM " + tableName + " AS a ";
+		String sql = "SELECT c.* FROM " + tableName + " AS a ";
 		sql += "LEFT JOIN " + tables[0] + " AS b ON a.cId = b."
 				+ table2Field(tableName) + " ";
 		sql += "LEFT JOIN " + tables[1] + " AS c ON b."
 				+ table2Field(tables[1]) + " = c.cId ";
-		sql += "WHERE a.cId=? AND b.cId IS NOT NULL";
-		//System.out.println(sql);
+		sql += "WHERE a.cId=? AND c.cId IS NOT NULL";
+//		System.out.println(sql);
 		return sql;
 	}
 
