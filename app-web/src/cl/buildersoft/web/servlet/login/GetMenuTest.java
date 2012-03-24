@@ -3,6 +3,7 @@ package cl.buildersoft.web.servlet.login;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -27,8 +28,8 @@ public class GetMenuTest {
 					"12870668", "root");
 
 			BSUserService userService = new BSUserServiceImpl();
-			Rol rol = userService.getRol(conn, user);
-			menu = userService.getMenu(conn, rol);
+			List<Rol> rols = userService.getRols(conn, user);
+			menu = userService.getMenu(conn, rols);
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);

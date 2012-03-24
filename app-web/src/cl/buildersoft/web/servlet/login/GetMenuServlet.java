@@ -2,6 +2,7 @@ package cl.buildersoft.web.servlet.login;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,14 +39,14 @@ public class GetMenuServlet extends HttpServlet {
 			Connection conn = new BSDataUtils().getConnection(
 					getServletContext(), "bsframework");
 
-			Rol rol = null;
+			List<Rol> rols = null;
 			synchronized (session) {
-				rol = (Rol) session.getAttribute("Rol");
+				rols = (List<Rol>) session.getAttribute("Rol");
 			}
 
 			BSUserService userService = new BSUserServiceImpl();
 			
-			Menu menu = userService.getMenu(conn, rol);
+			Menu menu = userService.getMenu(conn, rols);
 			synchronized (session) {
 				session.setAttribute("Menu", menu);
 			}
