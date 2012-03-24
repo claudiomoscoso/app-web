@@ -55,16 +55,13 @@
 				onclick="javascript:remove();" style="width: 100%"></td>
 
 			<td style="width: 30%" align="center"><span class="cLabel"
-				align="center">Seleccionados</span><br>
-
-				<select name="Relation" SIZE="10" id="right" style="width: 100%">
+				align="center">Seleccionados</span><br> <select name="Relation"
+				SIZE="10" id="right" style="width: 100%">
 					<%
 						for (String[] row : relationArray) {
-							if (exists(row, listArray)) {
 					%>
 					<option value="<%=row[0]%>"><%=row[1]%></option>
 					<%
-						}
 						}
 					%>
 			</select></td>
@@ -119,10 +116,10 @@
 				break;
 			}
 		}
-			/*
+		/*
 		System.out.println(Arrays.toString(element) + "in" + showList(list)
-				+ "->" + out);
-			*/
+			+ "->" + out);
+		 */
 		return out;
 	}
 
