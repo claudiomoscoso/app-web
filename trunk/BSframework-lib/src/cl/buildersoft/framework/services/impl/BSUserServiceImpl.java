@@ -43,28 +43,30 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 	}
 
 	@Override
-	public Rol getRol(Connection conn, User user) throws Exception {
+	public List<Rol> getRols(Connection conn, User user) throws Exception {
 		String sql = "SELECT cRol FROM tR_UserRol WHERE cUser=?";
-
-		String rolId = queryField(conn, sql, user.getId());
-		Rol rol = new Rol();
-		rol.setId(Long.parseLong(rolId));
+		List<Rol> out = new ArrayList<Rol>();
 
 		BSBeanUtils bu = new BSBeanUtils();
-		if (!bu.search(conn, rol)) {
-			rol = null;
+		ResultSet rols = queryResultSet(conn, sql, user.getId());
+		while (rols.next()) {
+			Rol rol = new Rol();
+			rol.setId(rols.getLong(1));
+
+			bu.search(conn, rol);
+			out.add(rol);
 		}
 
-		return rol;
+		return out;
 	}
 
 	@Override
-	public Menu getMenu(Connection conn, Rol rol) throws Exception {
-		List<Submenu> mainMenu = getMainMenu(conn, rol);
+	public Menu getMenu(Connection conn, List<Rol> rols) throws Exception {
+		List<Submenu> mainMenu = getMainMenu(conn, rols);
 		Menu menu = new Menu();
 		addMainMenuToMenu(mainMenu, menu);
 
-//		List<Submenu> submenuList = null;
+		// List<Submenu> submenuList = null;
 		for (Submenu submenu : mainMenu) {
 			fillSubmenu(conn, submenu);
 		}
@@ -100,8 +102,8 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 	private void fillSubmenu(Connection conn, Submenu menu) throws Exception {
 		List<Submenu> submenuList = getSubmenu(conn, menu.getOption());
 		menu.addSubmenu(submenuList);
-		
-		for(Submenu submenu : submenuList){
+
+		for (Submenu submenu : submenuList) {
 			fillSubmenu(conn, submenu);
 		}
 
@@ -112,8 +114,6 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 			menu.addSubmenu(submenu);
 		}
 	}
-
-	 
 
 	private List<Submenu> getSubmenu(Connection conn, Option opt)
 			throws Exception {
@@ -127,16 +127,22 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 		return getSubmenuList(conn, sql, prms);
 	}
 
-	private List<Submenu> getMainMenu(Connection conn, Rol rol)
+	private List<Submenu> getMainMenu(Connection conn, List<Rol> rols)
 			throws Exception {
+		List<Submenu> out = new ArrayList<Submenu>();
 		String sql = "SELECT cOption ";
 		sql += "FROM tR_RolOption r ";
 		sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
 		sql += "WHERE o.cParent IS NULL AND r.cRol = ?";
 
-		List<Object> prms = array2List(rol.getId());
-
-		return getSubmenuList(conn, sql, prms);
+		List<Object> prms = new ArrayList<Object>();
+		for (Rol rol : rols) {
+			prms.add(rol.getId());
+			List<Submenu> aux = getSubmenuList(conn, sql, prms);
+			prms.clear();
+			out.addAll(aux);
+		}
+		return out;
 	}
 
 	private List<Submenu> getSubmenuList(Connection conn, String sql,
@@ -163,25 +169,4 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 
 		return submenuList;
 	}
-
-	/**
-	 * <code>
-	 * 
-	 * @Override public Option[] getSubMenu(Connection conn, Option parentMenu,
-	 *           Rol rol) throws Exception { String sql =
-	 *           "SELECT cMenu FROM tR_RolMenu r LEFT JOIN tMenu m ON r.cMenu=m.cId WHERE m.cParent = ? AND r.cRol = ?"
-	 *           ; BSBeanUtils bu = new BSBeanUtils();
-	 * 
-	 *           List<Long> ids = new ArrayList<Long>();
-	 * 
-	 *           ResultSet rs = queryResultSet(conn, sql,
-	 *           array2List(parentMenu.getId(), rol.getId())); while (rs.next())
-	 *           { ids.add(rs.getLong("cMenu")); }
-	 * 
-	 *           Option[] out = new Option[ids.size()]; Option menu = null; int
-	 *           i = 0; for (Long id : ids) { menu = new Option();
-	 *           menu.setId(id); bu.search(conn, menu); out[i++] = menu; }
-	 * 
-	 *           return out; } </code>
-	 */
 }

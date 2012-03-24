@@ -2,6 +2,7 @@ package cl.buildersoft.web.servlet.login;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +44,7 @@ public class ValidateLoginServlet extends HttpServlet {
 		BSDataUtils dau = new BSDataUtils();
 
 		User user = null;
-		Rol rol = null;
+		List<Rol> rols = null;
 		Connection conn = null;
 
 		try {
@@ -51,7 +52,7 @@ public class ValidateLoginServlet extends HttpServlet {
 			user = userService.login(conn, mail, password);
 			if (user != null) {
 				try {
-					rol = userService.getRol(conn, user);
+					rols = userService.getRols(conn, user);
 				} catch (Exception e) {
 					throw new RuntimeException("Usuario no tiene rol asignado");
 				}
@@ -67,7 +68,7 @@ public class ValidateLoginServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			synchronized (session) {
 				session.setAttribute("User", user);
-				session.setAttribute("Rol", rol);
+				session.setAttribute("Rol", rols);
 			}
 			page = "/servlet/login/GetMenuServlet";
 		} else {
