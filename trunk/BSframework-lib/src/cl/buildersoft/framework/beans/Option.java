@@ -38,4 +38,10 @@ public class Option extends BSBean {
 	public void setParent(Long parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public String toString() {
+		return "\n\tOption [id=" + super.getId() + ", key=" + key + ", label=" + label
+				+ ", url=" + url + ", parent=" + parent + "]";
+	}
 }

@@ -1,6 +1,5 @@
 package cl.buildersoft.framework.beans;
 
-
 public class Rol extends BSBean {
 	private String TABLE = "tRol";
 
@@ -21,6 +20,12 @@ public class Rol extends BSBean {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public String toString() {
+		return "Rol [id=" + getId() + ", name=" + name + ", deleted=" + deleted
+				+ "]";
 	}
 
 }
