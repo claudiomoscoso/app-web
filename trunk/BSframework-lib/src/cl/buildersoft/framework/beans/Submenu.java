@@ -39,19 +39,27 @@ public class Submenu {
 
 	public void addSubmenu(List<Submenu> submenuList, Menu menu) {
 		for (Submenu submenu : submenuList) {
-			if (!optionInMenu(submenu.getOption(), menu.list())) {
+			if (menu != null) {
+				if (!optionInMenu(submenu.getOption(), menu.list())) {
+					this.submenuList.add(submenu);
+				}
+			} else {
 				this.submenuList.add(submenu);
 			}
+
 		}
 
 	}
-/**<code>
+
+	/**
+	 * <code>
 	public void addSubmenu(List<Submenu> submenuList) {
 		for (Submenu submenu : submenuList) {
 			this.submenuList.add(submenu);
 		}
 	}
-</code>*/
+</code>
+	 */
 	public void addSubmenu(Submenu submenu) {
 		this.submenuList.add(submenu);
 	}
