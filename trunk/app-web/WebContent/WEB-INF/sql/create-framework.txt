@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS tR_UserRol (
 
 CREATE TABLE IF NOT EXISTS tOption (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cKey		VARCHAR(20) NOT NULL,
+	cKey		VARCHAR(20) NOT NULL UNIQUE,
 	cLabel 		VARCHAR(50) NOT NULL,
 	cUrl		VARCHAR(100) NULL,
 	cParent		BIGINT NULL
@@ -88,10 +88,10 @@ CREATE TABLE IF NOT EXISTS tR_RolOption (
 INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
 SET @userId = LAST_INSERT_ID();
 
-INSERT INTO tRol(cName) VALUES('Contador');
-INSERT INTO tRol(cName) VALUES('Secretaria');
 INSERT INTO tRol(cName) VALUES('Administrador');
 SET @rolId = LAST_INSERT_ID();
+INSERT INTO tRol(cName) VALUES('Contador');
+INSERT INTO tRol(cName) VALUES('Secretaria');
 
 INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
 
@@ -103,7 +103,7 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/se
 SET @menuId2 = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuId1);
 SET @menuId3 = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ACCESS', 'Accesos', '/servlet/admin/Access', @menuId1);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuId1);
 SET @menuId4 = LAST_INSERT_ID();
 /*INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/ChangePassword', @menuId1);*/
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/jsp/TestPage.jsp', @menuId1);
@@ -128,3 +128,7 @@ SET @menuId2 = LAST_INSERT_ID();
 
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId2);
+/*SET @menuId2 = LAST_INSERT_ID();*/

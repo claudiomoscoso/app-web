@@ -44,7 +44,7 @@ public class UserManager extends BSHttpServlet {
 
 		BSAction changePassword = new BSAction("CH_PASS", BSActionType.Record);
 		changePassword.setLabel("Cambio de clave");
-		changePassword.setUrl("/servlet/changePassword/SearchPassword");
+		changePassword.setUrl("/servlet/admin/SearchPassword");
 		table.addAction(changePassword);
 
 		BSAction rolRelation = new BSAction("ROL_RELATION", null);
