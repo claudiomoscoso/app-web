@@ -17,8 +17,8 @@ import cl.buildersoft.framework.beans.Menu;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.services.BSUserService;
-import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
+import cl.buildersoft.framework.services.BSMenuService;
+import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 
 /**
  * Servlet implementation class RoleDef
@@ -44,10 +44,10 @@ public class RoleDef extends HttpServlet {
 		Long idRolLong = getRolId(request, rolsArray);
 		List<Rol> rols = getRol(conn, idRolLong);
 
-		BSUserService userService = new BSUserServiceImpl();
+		BSMenuService menuService = new BSMenuServiceImpl();
 
-		Menu fullMenu = userService.getMenu(conn, null);
-		Menu rolMenu = userService.getMenu(conn, rols);
+		Menu fullMenu = menuService.getMenu(conn, null);
+		Menu rolMenu = menuService.getMenu(conn, rols);
 
 //		System.out.println(rolMenu.list().toString());
 		

@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.framework.beans.Menu;
 import cl.buildersoft.framework.beans.Rol;
-import cl.buildersoft.framework.services.BSUserService;
-import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
+import cl.buildersoft.framework.services.BSMenuService;
+import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.framework.util.BSDataUtils;
 
 /**
@@ -44,9 +44,9 @@ public class GetMenuServlet extends HttpServlet {
 				rols = (List<Rol>) session.getAttribute("Rol");
 			}
 
-			BSUserService userService = new BSUserServiceImpl();
+			BSMenuService menuService = new BSMenuServiceImpl();
 			
-			Menu menu = userService.getMenu(conn, rols);
+			Menu menu = menuService.getMenu(conn, rols);
 			synchronized (session) {
 				session.setAttribute("Menu", menu);
 			}
