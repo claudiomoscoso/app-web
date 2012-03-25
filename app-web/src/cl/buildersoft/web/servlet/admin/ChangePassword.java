@@ -1,4 +1,4 @@
-package cl.buildersoft.web.servlet.changePassword;
+package cl.buildersoft.web.servlet.admin;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ import cl.buildersoft.framework.util.BSSecurity;
 /**
  * Servlet implementation class ChangePassword
  */
-@WebServlet("/servlet/changePassword/ChangePassword")
+@WebServlet("/servlet/admin/ChangePassword")
 public class ChangePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

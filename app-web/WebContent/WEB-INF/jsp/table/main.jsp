@@ -13,7 +13,7 @@
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
 
-	//	String ctxPath = request.getContextPath();
+	
 
 	BSAction[] tableActions = table.getActions(BSActionType.Table);
 	BSAction[] recordActions = table.getActions(BSActionType.Record);

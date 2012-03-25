@@ -34,8 +34,6 @@
 			startTag = "<a ";
 			if (url.startsWith("/")) {
 				url = contextPath + url;
-//				out += startTag;
-//				out += "href=\"" + url + "\">";
 				endTag = "</a>";
 			}
 			out += startTag;
@@ -47,27 +45,29 @@
 		}
 
 		out += label + endTag + "</li>";
-	 
+
 		return out;
-	}%>
+	}
 
-<ul>
-	<%
-		Menu menu = (Menu) session.getAttribute("Menu");
-
+	private String writeMenuForUser(HttpSession session, HttpServletRequest request) {
+		Menu menuUser = (Menu) session.getAttribute("Menu");
+		String out = "";
 		String ctxPath = request.getContextPath();
-		List<Submenu> main = menu.list();
+		List<Submenu> main = menuUser.list();
 		Option opt = null;
 		String url = null;
 		String label = null;
 		for (Submenu submenu : main) {
 			opt = submenu.getOption();
 
-			out.print(option2String(opt, ctxPath));
-
-			out.print(writeSubMenu(submenu, ctxPath));
+			out += option2String(opt, ctxPath);
+			out += writeSubMenu(submenu, ctxPath);
 		}
-	%>
+		return out;
+	}%>
+
+<ul>
+	<%=writeMenuForUser(session, request)%>
 </ul>
 
 

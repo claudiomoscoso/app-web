@@ -1,3 +1,4 @@
+<%@page import="cl.buildersoft.framework.beans.BSField"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.util.ArrayList"%>
@@ -14,6 +15,7 @@
 
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
+	BSField[] fields = table.getFields();
 
 	List<String[]> listArray = resultSet2Matrix(list);
 	list.close();
@@ -26,6 +28,20 @@
 
 <h1 class="cTitle"><%=table.getTitle()%></h1>
 
+<!-- 
+<table>
+	<%
+		for (BSField field : fields) {
+	%>
+	<tr>
+		<td class="cLabel" valign='top'><%=field.getLabel()%>:</td>
+		<td class="cData"><%=field.getValue()%></td>
+	</tr>
+	<%
+		}
+	%>
+</table>
+ -->
 <!--
 <form action="${pageContext.request.contextPath}/servlet/ShowParameters">
   -->
@@ -34,7 +50,7 @@
 	id="frm" method="post">
 	<input type="hidden" name="cId"
 		value="<%=request.getParameter("cId")%>">
-	<table border="1">
+	<table border="0">
 		<tr>
 			<td style="width: 30%" align="center"><span class="cLabel">Disponibles</span><br>
 				<select SIZE="10" id="left" style="width: 100%">

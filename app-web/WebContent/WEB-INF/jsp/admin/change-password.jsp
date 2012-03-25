@@ -11,11 +11,11 @@
 
 <h1 class="cTitle">Cambio de clave</h1>
 <!-- 
-action="${pageContext.request.contextPath}/servlet/changePassword/ChangePassword"
+action="${pageContext.request.contextPath}/servlet/admin/ChangePassword"
 action="${pageContext.request.contextPath}/servlet/ShowParameters"
  -->
 <form
-	action="${pageContext.request.contextPath}/servlet/changePassword/ChangePassword"
+	action="${pageContext.request.contextPath}/servlet/admin/ChangePassword"
 	method="post">
 	<input type="hidden" name="cId" value="<%=id%>">
 	<table>
