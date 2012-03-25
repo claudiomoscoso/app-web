@@ -17,70 +17,60 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 
 	@Override
 	public Menu getMenu(Connection conn, List<Rol> rols) {
-		Menu menu = new Menu();
+		Menu menu = null;
 
 		Submenu sub = null;
 		if (rols == null) {
-			List<Submenu> main = fillSubmenu2(conn, sub, null, menu);
+			List<Submenu> main = fillSubmenu(conn, sub, null, menu);
+			menu = new Menu();
 			addMainMenuToMenu(main, menu);
 		} else {
-			for (Rol rol : rols) {
-				List<Submenu> main = fillSubmenu2(conn, sub, rol, menu);
+			Rol rol = rols.get(0);
+
+			List<Submenu> main = fillSubmenu(conn, sub, rol, menu);
+			menu = new Menu();
+			addMainMenuToMenu(main, menu);
+			/** ------------- */
+			for (int i = 1; i < rols.size(); i++) {
+				rol = rols.get(i);
+
+				main = fillSubmenu(conn, sub, rol, menu);
 				addMainMenuToMenu(main, menu);
-			}
-
-		}
-
-		/**
-		 * <code>	
-		List<Submenu> mainMenu = null;
-		if (rols != null) {
-			for (Rol rol : rols) {
-				mainMenu = getMainMenu(conn, rol);
-				addMainMenuToMenu(mainMenu, menu);
-			}
-		} else {
-			mainMenu = getMainMenu(conn, null);
-			addMainMenuToMenu(mainMenu, menu);
-		}
-
-		for (Submenu submenu : mainMenu) {
-			if (rols != null) {
-				for (Rol rol : rols) {
-					fillSubmenu(conn, submenu, rol);
+				
+				for (Submenu sub1 : menu.list()) {
+					
+					complement(conn, sub1, rol, menu);
 				}
-			} else {
-				fillSubmenu(conn, submenu, null);
 			}
 		}
-</code>
-		 */
 
 		return menu;
 	}
 
-	private List<Submenu> fillSubmenu2(Connection conn, Submenu main, Rol rol,
+	private List<Submenu> fillSubmenu(Connection conn, Submenu main, Rol rol,
 			Menu menu) {
-		List<Submenu> subList = getSubmenu2(conn, main, rol);
+		List<Submenu> subList = getSubmenu(conn, main, rol);
 
 		for (Submenu sub : subList) {
-			List<Submenu> auxList = fillSubmenu2(conn, sub, rol, menu);
+			List<Submenu> auxList = fillSubmenu(conn, sub, rol, menu);
 			sub.addSubmenu(auxList, menu);
-//			if (main != null && auxList.size() > 0) {
-//				
-//			}
 		}
-/**<code>
-		if (main != null && subList.size() > 0) {
-			main.addSubmenu(subList, menu);
-		}
-</code>*/		
 		return subList;
 	}
 
-	private List<Submenu> getSubmenu2(Connection conn, Submenu sub, Rol rol) {
+	private void complement(Connection conn, Submenu main, Rol rol, Menu menu) {
+		List<Submenu> subList = getSubmenu(conn, main, rol);
+
+		main.addSubmenu(subList, menu);
+
+		for (Submenu sub : main.list()) {
+			complement(conn, sub, rol, menu);
+		}
+	}
+
+	private List<Submenu> getSubmenu(Connection conn, Submenu sub, Rol rol) {
 		String sql = null;
-		List<Object> prms = null; // = new ArrayList<Object>();
+		List<Object> prms = null;
 		Option parent = sub != null ? sub.getOption() : null;
 
 		if (parent == null && rol == null) {
@@ -107,54 +97,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 			prms = array2List(parent.getId(), rol.getId());
 		}
 
-		/**
-		 * <code>			
-			sql = "SELECT cOption ";
-			sql += "FROM tR_RolOption r ";
-			sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
-			sql += "WHERE o.cParent=? AND r.cRol=?";
-			prms = array2List(opt.getId(), rol.getId());
-		} else {
-			sql = "SELECT cId AS cOption ";
-			sql += "FROM tOption ";
-			// sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
-			sql += "WHERE cParent = ?";
-			prms = array2List(opt.getId());
-		}
-</code>
-		 */
 		return getSubmenuFromDB(conn, sql, prms);
-
-	}
-
-	private List<Submenu> getSubmenu(Connection conn, Option opt, Rol rol) {
-		String sql;
-		List<Object> prms;
-
-		if (rol != null) {
-			sql = "SELECT cOption ";
-			sql += "FROM tR_RolOption r ";
-			sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
-			sql += "WHERE o.cParent=? AND r.cRol=?";
-			prms = array2List(opt.getId(), rol.getId());
-		} else {
-			sql = "SELECT cId AS cOption ";
-			sql += "FROM tOption ";
-			// sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
-			sql += "WHERE cParent = ?";
-			prms = array2List(opt.getId());
-		}
-
-		return getSubmenuFromDB(conn, sql, prms);
-	}
-
-	private void fillSubmenu(Connection conn, Submenu menu, Rol rol) {
-		List<Submenu> submenuList = getSubmenu(conn, menu.getOption(), rol);
-		menu.addSubmenu(submenuList, null);
-
-		for (Submenu submenu : submenuList) {
-			fillSubmenu(conn, submenu, rol);
-		}
 
 	}
 
@@ -164,39 +107,6 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 				menu.addSubmenu(submenu);
 			}
 		}
-	}
-
-	private List<Submenu> getMainMenu(Connection conn, Rol rol) {
-		List<Submenu> out = new ArrayList<Submenu>();
-		if (rol != null) {
-			String sql = "SELECT cOption ";
-			sql += "FROM tR_RolOption r ";
-			sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
-			sql += "WHERE o.cParent IS NULL AND r.cRol = ?";
-
-			List<Object> prms = new ArrayList<Object>();
-			prms.add(rol.getId());
-			out = getSubmenuFromDB(conn, sql, prms);
-
-			/**
-			 * <code>
-			 List<Submenu> aux = getSubmenuList(conn, sql, prms);
-			for (Rol rol : rols) {
-				prms.add(rol.getId());
-				List<Submenu> aux = getSubmenuList(conn, sql, prms);
-				prms.clear();
-				out.addAll(aux);
-			}
-</code>
-			 */
-		} else {
-			String sql = "SELECT cId AS cOption ";
-			sql += "FROM tOption ";
-			sql += "WHERE cParent IS NULL";
-
-			out = getSubmenuFromDB(conn, sql, null);
-		}
-		return out;
 	}
 
 	private List<Submenu> getSubmenuFromDB(Connection conn, String sql,
