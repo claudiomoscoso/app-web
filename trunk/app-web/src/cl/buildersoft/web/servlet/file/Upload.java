@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import cl.buildersoft.framework.beans.DatabaseFile;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSSystemException;
 
 @WebServlet("/servlet/file/Upload")
 public class Upload extends HttpServlet {
@@ -40,7 +41,7 @@ public class Upload extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-//		String desc = request.getParameter("desc");
+		// String desc = request.getParameter("desc");
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -48,7 +49,7 @@ public class Upload extends HttpServlet {
 		try {
 			items = upload.parseRequest(request);
 		} catch (FileUploadException e) {
-			throw new RuntimeException(e);
+			throw new BSSystemException("0201", e.getMessage());
 		}
 		PrintWriter w = response.getWriter();
 		DatabaseFile file = new DatabaseFile();
@@ -57,7 +58,7 @@ public class Upload extends HttpServlet {
 				String name = item.getFieldName();
 				String value = item.getString();
 				w.println(name + "=" + value);
-				
+
 				file.setDesc(value);
 			} else {
 				w.println("size:" + (item.getSize() / 1024) + "kb");
@@ -67,24 +68,21 @@ public class Upload extends HttpServlet {
 
 				file.setContent(Base64.encode(item.get()));
 				file.setFileName(item.getName());
-				
+
 				file.setSize(item.getSize());
 
 				w.print("\n\n");
 
 			}
 
-		}		
+		}
 		w.flush();
-		
+
 		BSmySQL mysql = new BSmySQL();
 		Connection conn;
-		try {
-			conn = mysql.getConnection(getServletContext(),
-					"bsframework");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+
+		conn = mysql.getConnection(getServletContext(), "bsframework");
+
 		BSBeanUtils bu = new BSBeanUtils();
 		bu.insert(conn, file);
 

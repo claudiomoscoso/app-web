@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,31 +32,22 @@ public class SaveRoleDef extends HttpServlet {
 		BSmySQL mysql = new BSmySQL();
 		Connection conn = mysql.getConnection(request.getServletContext(),
 				"bsframework");
-
 		try {
-			conn.setAutoCommit(false);
+			mysql.setAutoCommit(conn, false);
 
 			deleteRolDef(conn, mysql, rol);
 			saveNewDef(conn, mysql, options, rol);
 
 			conn.commit();
 		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (Exception e1) {
-				throw new RuntimeException(e1);
-			}
-			throw new RuntimeException(e);
+			mysql.rollback(conn);
+			throw new ServletException(e);
 		} finally {
-			try {
-				conn.close();
-			} catch (Exception e1) {
-				throw new RuntimeException(e1);
-			}
+			mysql.closeSQL();
 		}
 
-		request.getRequestDispatcher("/servlet/admin/RoleDef")
-				.forward(request, response);
+		request.getRequestDispatcher("/servlet/admin/RoleDef").forward(request,
+				response);
 
 	}
 

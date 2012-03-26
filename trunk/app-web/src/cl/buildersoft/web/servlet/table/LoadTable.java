@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.type.BSFieldType;
 
 /**
@@ -51,15 +53,15 @@ public class LoadTable extends AbstractServletUtil {
 				session.setAttribute("BSTable", table);
 			}
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 		request.getRequestDispatcher("/WEB-INF/jsp/table/main.jsp").forward(
 				request, response);
 	}
 
 	private void configFields(ResultSet rs, BSTableConfig table)
-			throws Exception {
+			throws SQLException {
 		BSField[] fields = table.getFields();
 		ResultSetMetaData metaData = rs.getMetaData();
 		String name = null;
@@ -90,7 +92,7 @@ public class LoadTable extends AbstractServletUtil {
 	}
 
 	private void configField(ResultSetMetaData metaData, String name,
-			Integer i, BSField field) throws Exception {
+			Integer i, BSField field) throws SQLException {
 
 		if (field.getType() == null) {
 			setRealType(metaData, i, field);
@@ -104,7 +106,7 @@ public class LoadTable extends AbstractServletUtil {
 	}
 
 	private void setRealType(ResultSetMetaData metaData, Integer i,
-			BSField field) throws Exception {
+			BSField field) throws SQLException {
 		/**
 		 * <code>
 		System.out.println( name + " "+ metaData.getColumnTypeName(i));

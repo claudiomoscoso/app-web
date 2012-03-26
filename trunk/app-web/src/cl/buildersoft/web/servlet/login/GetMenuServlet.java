@@ -34,24 +34,21 @@ public class GetMenuServlet extends HttpServlet {
 
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		try {
-			HttpSession session = request.getSession(false);
-			Connection conn = new BSDataUtils().getConnection(
-					getServletContext(), "bsframework");
 
-			List<Rol> rols = null;
-			synchronized (session) {
-				rols = (List<Rol>) session.getAttribute("Rol");
-			}
+		HttpSession session = request.getSession(false);
+		Connection conn = new BSDataUtils().getConnection(getServletContext(),
+				"bsframework");
 
-			BSMenuService menuService = new BSMenuServiceImpl();
-			
-			Menu menu = menuService.getMenu(conn, rols);
-			synchronized (session) {
-				session.setAttribute("Menu", menu);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		List<Rol> rols = null;
+		synchronized (session) {
+			rols = (List<Rol>) session.getAttribute("Rol");
+		}
+
+		BSMenuService menuService = new BSMenuServiceImpl();
+
+		Menu menu = menuService.getMenu(conn, rols);
+		synchronized (session) {
+			session.setAttribute("Menu", menu);
 		}
 
 		String page = "/WEB-INF/jsp/home/index.jsp";

@@ -1,3 +1,4 @@
+<%@page import="cl.buildersoft.framework.database.BSmySQL"%>
 <%@page import="cl.buildersoft.framework.beans.BSField"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.sql.ResultSetMetaData"%>
@@ -17,10 +18,11 @@
 			.getAttribute("BSTable");
 	BSField[] fields = table.getFields();
 
-	List<String[]> listArray = resultSet2Matrix(list);
+	BSmySQL mysql = new BSmySQL();
+	List<String[]> listArray = mysql.resultSet2Matrix(list);
 	list.close();
 
-	List<String[]> relationArray = resultSet2Matrix(relation);
+	List<String[]> relationArray = mysql.resultSet2Matrix(relation);
 	relation.close();
 %>
 <script type="text/javascript"
@@ -92,10 +94,11 @@
 </form>
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
 
-<%!private List<String[]> resultSet2Matrix(ResultSet rs) {
+<%!
+/**<code>
+private List<String[]> resultSet2Matrix(ResultSet rs) {
 		List<String[]> out = new ArrayList<String[]>();
-
-		try {
+		 
 			Integer i = 0;
 			ResultSetMetaData metaData = rs.getMetaData();
 			Integer colCount = metaData.getColumnCount();
@@ -114,12 +117,10 @@
 				}
 				out.add(innerArray);
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
+	 
 		return out;
 	}
+</code>*/
 
 	private Boolean exists(String[] element, List<String[]> list) {
 		Boolean out = Boolean.FALSE;

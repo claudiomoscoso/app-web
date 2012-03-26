@@ -3,22 +3,23 @@ package cl.buildersoft.framework.util;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSWeb {
-	public static Object value2Object(HttpServletRequest request, BSField field)
-			throws Exception {
+	public static Object value2Object(HttpServletRequest request, BSField field) {
 		Object out = null;
 		String name = field.getName();
 		String value = request.getParameter(name);
 		BSFieldType type = field.getType();
-		
+
 		if (type.equals(BSFieldType.String)) {
 			out = value;
 		} else if (type.equals(BSFieldType.Boolean)) {
@@ -26,18 +27,31 @@ public class BSWeb {
 		} else if (type.equals(BSFieldType.Date)) {
 			String formatDate = getFormatDate(request);
 			DateFormat formatter = new SimpleDateFormat(formatDate);
-			out = (Date) formatter.parse(value);
+
+			try {
+				out = (Date) formatter.parse(value);
+			} catch (ParseException e) {
+				throw new BSProgrammerException("0110",
+						"No se pudo parsear el valor " + value + " como fecha");
+			}
+
 		} else if (type.equals(BSFieldType.Datetime)) {
 			String formatDate = getFormatDatetime(request);
 			SimpleDateFormat dateFormat = new SimpleDateFormat(formatDate);
-			java.util.Date parsedDate = dateFormat.parse(value);
+			java.util.Date parsedDate;
+			try {
+				parsedDate = dateFormat.parse(value);
+			} catch (ParseException e) {
+				throw new BSProgrammerException("0110",
+						"No se pudo parsear el valor " + value
+								+ " como fecha/hora");
+			}
 			out = new java.sql.Timestamp(parsedDate.getTime());
 		} else if (type.equals(BSFieldType.Text)) {
-			throw new RuntimeException(
-					"No se ha implementado la carga de archivos aun..");
+			throw new BSProgrammerException("0100");
 		} else {
 			value = value.replaceAll("[.]", "");
-//			value = value.replaceAll(",", "");
+			// value = value.replaceAll(",", "");
 			if (type.equals(BSFieldType.Double)) {
 				out = Double.parseDouble(value);
 			} else if (type.equals(BSFieldType.Integer)) {
@@ -45,7 +59,6 @@ public class BSWeb {
 			} else if (type.equals(BSFieldType.Long)) {
 				out = Long.parseLong(value);
 			}
-
 		}
 		return out;
 	}

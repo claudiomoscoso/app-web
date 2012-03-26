@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import cl.buildersoft.framework.beans.User;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSUserException;
 import cl.buildersoft.framework.util.BSSecurity;
 
 /**
@@ -41,7 +42,7 @@ public class ChangePassword extends HttpServlet {
 //		String currentPassword = null;
 
 		if (!newPassword.equals(commitPassword)) {
-			throw new RuntimeException("Las claves no coinciden");
+			throw new BSUserException("0002","Las claves no coinciden");
 		}
 
 		Long id = Long.parseLong(request.getParameter("cId"));
@@ -63,7 +64,7 @@ public class ChangePassword extends HttpServlet {
 			String oldPasswordMD5 = md5(oldPassword);
 
 			if (!currentPasswordMD5.equals(oldPasswordMD5)) {
-				throw new RuntimeException("La clave actual no conicide");
+				throw new BSUserException("0003","La clave actual no conicide");
 			}
 		}
 

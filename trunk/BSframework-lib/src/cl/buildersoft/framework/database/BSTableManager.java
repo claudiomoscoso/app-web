@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSDataUtils;
 
 public abstract class BSTableManager extends BSDataUtils {
@@ -67,13 +69,10 @@ public abstract class BSTableManager extends BSDataUtils {
 	}
 
 	public void save() {
-		try {
-			if (update() == 0) {
-				insert();
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		if (update() == 0) {
+			insert();
 		}
+
 	}
 
 	public void delete() {
@@ -117,7 +116,7 @@ public abstract class BSTableManager extends BSDataUtils {
 				out = Boolean.TRUE;
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return out;
@@ -149,7 +148,7 @@ public abstract class BSTableManager extends BSDataUtils {
 			method = c.getMethod("set" + fieldName, paramTypes);
 			method.invoke(this, value);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 	}
@@ -160,10 +159,8 @@ public abstract class BSTableManager extends BSDataUtils {
 		Method m;
 		try {
 			m = c.getMethod("get" + methodName, null);
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 		Type type = m.getGenericReturnType();
 
@@ -184,7 +181,8 @@ public abstract class BSTableManager extends BSDataUtils {
 		} else if (type.toString().equals("java.util.Date")) {
 			out = Date.class;
 		} else {
-			throw new RuntimeException("Type mismatch");
+			throw new BSProgrammerException("0110", "El tipo de dato "
+					+ type.toString() + " no está soportado");
 		}
 
 		return out;
@@ -259,7 +257,7 @@ public abstract class BSTableManager extends BSDataUtils {
 				method = c.getMethod(name, null);
 				out[i++] = method.invoke(this, null);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new BSProgrammerException("0110", e.getMessage());
 			}
 
 		}
@@ -298,7 +296,7 @@ public abstract class BSTableManager extends BSDataUtils {
 			method = c.getMethod(methodName, null);
 			value = method.invoke(this, null);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 		return value;
@@ -381,7 +379,7 @@ public abstract class BSTableManager extends BSDataUtils {
 				privateStringField.setAccessible(true);
 				out = (String) privateStringField.get(this);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new BSProgrammerException("0110", e.getMessage());
 			}
 
 			this.tableName = out;

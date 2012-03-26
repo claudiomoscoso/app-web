@@ -3,6 +3,9 @@ package cl.buildersoft.framework.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.framework.exception.BSSystemException;
+
 public class BSSecurity {
 
 	/**
@@ -11,11 +14,11 @@ public class BSSecurity {
 	 * String out = x.compute(); x = null; return out; }
 	 */
 	public String encript3des(String key, String s) {
-		return null;
+		throw new BSProgrammerException("0101", "No se ha implementado el método encript3des()");
 	}
 
 	public String decript3des(String key, String s) {
-		return null;
+		throw new BSProgrammerException("0102", "No se ha implementado el método decript3des()");
 	}
 
 	public String md5(String str) {
@@ -24,7 +27,7 @@ public class BSSecurity {
 		try {
 			md5 = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
+			throw new BSSystemException("0200", e.getMessage());
 		}
 
 		// convert input String to a char[]

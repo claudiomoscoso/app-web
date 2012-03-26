@@ -19,47 +19,39 @@ public class GetMenuTest {
 	@Test
 	public void testGetRol1() {
 		Menu menu = null;
-		try {
-			User user = new User();
-			user.setId(1L);
 
-			Connection conn = new BSDataUtils().getConnection(
-					"org.gjt.mm.mysql.Driver", "localhost", "bsframework",
-					"12870668", "root");
+		User user = new User();
+		user.setId(1L);
 
-			BSMenuService menuService = new BSMenuServiceImpl();
-			BSUserService userService = new BSUserServiceImpl();
-			
-			List<Rol> rols = userService.getRols(conn, user);
-			menu = menuService.getMenu(conn, rols);
+		Connection conn = new BSDataUtils().getConnection(
+				"org.gjt.mm.mysql.Driver", "localhost", "bsframework",
+				"12870668", "root");
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		BSMenuService menuService = new BSMenuServiceImpl();
+		BSUserService userService = new BSUserServiceImpl();
+
+		List<Rol> rols = userService.getRols(conn, user);
+		menu = menuService.getMenu(conn, rols);
 
 		assertTrue(menu != null && menu.list().size() > 0);
 	}
-	
+
 	@Test
 	public void testGetMenu1() {
 		Menu menu = null;
-		try {
-			User user = new User();
-			user.setId(1L);
 
-			Connection conn = new BSDataUtils().getConnection(
-					"org.gjt.mm.mysql.Driver", "localhost", "bsframework",
-					"12870668", "root");
+		User user = new User();
+		user.setId(1L);
 
-			BSUserService userService = new BSUserServiceImpl();			
-			List<Rol> rols = userService.getRols(conn, user);
-			
-			BSMenuService menuService = new BSMenuServiceImpl();
-			menu = menuService.getMenu(conn, rols);
+		Connection conn = new BSDataUtils().getConnection(
+				"org.gjt.mm.mysql.Driver", "localhost", "bsframework",
+				"12870668", "root");
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		BSUserService userService = new BSUserServiceImpl();
+		List<Rol> rols = userService.getRols(conn, user);
+
+		BSMenuService menuService = new BSMenuServiceImpl();
+		menu = menuService.getMenu(conn, rols);
 
 		assertTrue(menu != null && menu.list().size() > 0);
 	}
