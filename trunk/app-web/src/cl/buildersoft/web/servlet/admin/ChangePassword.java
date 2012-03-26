@@ -26,23 +26,18 @@ public class ChangePassword extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
-				.forward(request, response);
-
-	}
-
-	protected void doPost(HttpServletRequest request,
+	@Override
+	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String newPassword = request.getParameter("NewPassword");
 		String commitPassword = request.getParameter("CommitPassword");
+		String goHome = request.getParameter("GoHome");
 		String oldPassword = null;
-//		String currentPassword = null;
+		// String currentPassword = null;
 
 		if (!newPassword.equals(commitPassword)) {
-			throw new BSUserException("0002","Las claves no coinciden");
+			throw new BSUserException("0002", "Las claves no coinciden");
 		}
 
 		Long id = Long.parseLong(request.getParameter("cId"));
@@ -55,16 +50,15 @@ public class ChangePassword extends HttpServlet {
 		User user = new User();
 		user.setId(id);
 		bu.search(conn, user);
-		String	currentPasswordMD5 = user.getPassword();
+		String currentPasswordMD5 = user.getPassword();
 
 		if (currentPasswordMD5 != null) {
 			oldPassword = request.getParameter("OldPassword");
 
-//			String currentPasswordMD5 = md5(currentPassword);
 			String oldPasswordMD5 = md5(oldPassword);
 
 			if (!currentPasswordMD5.equals(oldPasswordMD5)) {
-				throw new BSUserException("0003","La clave actual no conicide");
+				throw new BSUserException("0003", "La clave actual no conicide");
 			}
 		}
 
@@ -72,8 +66,11 @@ public class ChangePassword extends HttpServlet {
 		user.setPassword(newPassword);
 		bu.update(conn, user);
 
-		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
-				request, response);
+		String next = "/servlet/table/LoadTable";
+		if (goHome != null) {
+			next = "/servlet/Home";
+		}
+		request.getRequestDispatcher(next).forward(request, response);
 
 	}
 

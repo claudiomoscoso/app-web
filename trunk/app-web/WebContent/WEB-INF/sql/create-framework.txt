@@ -80,9 +80,10 @@ CREATE TABLE IF NOT EXISTS tOption (
 ) ENGINE=innoDB;
 
 CREATE TABLE IF NOT EXISTS tR_RolOption (
-	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+/*	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,*/
 	cRol		BIGINT NOT NULL,
-	cOption		BIGINT NOT NULL
+	cOption		BIGINT NOT NULL,
+	PRIMARY KEY(cRol, cOption)
 ) ENGINE=innoDB;
 
 INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
@@ -105,30 +106,30 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servle
 SET @menuId3 = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuId1);
 SET @menuId4 = LAST_INSERT_ID();
-/*INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/ChangePassword', @menuId1);*/
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/jsp/TestPage.jsp', @menuId1);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuId1);
+/*INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/jsp/TestPage.jsp', @menuId1);*/
 SET @menuId5 = LAST_INSERT_ID();
 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId1);
-SET @menuId6 = LAST_INSERT_ID();
 
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId3);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId4);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId5);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId6);
 
 /** Creación del menu Remuneraciones */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId1);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
 SET @menuId1 = LAST_INSERT_ID();
 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId1);
 SET @menuId2 = LAST_INSERT_ID();
 
+/*
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
-
+*/
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId2);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId2);
+
 /*SET @menuId2 = LAST_INSERT_ID();*/

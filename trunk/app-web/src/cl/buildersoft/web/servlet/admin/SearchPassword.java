@@ -21,11 +21,19 @@ public class SearchPassword extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request,
+	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Long id = Long.parseLong(request.getParameter("cId"));
+		Long id;
 
+		String idString = request.getParameter("cId");
+		if (idString == null) {
+			User user = (User) request.getSession().getAttribute("User");
+			id = user.getId();
+			request.setAttribute("cId", id);
+		} else {
+			id = Long.parseLong(idString);
+		}
 		BSmySQL mysql = new BSmySQL();
 		Connection conn = mysql.getConnection(getServletContext(),
 				"bsframework");
@@ -36,16 +44,15 @@ public class SearchPassword extends HttpServlet {
 		bu.search(conn, user);
 
 		request.setAttribute("PASS_IS_NULL", user.getPassword() == null);
-		
-		request.getRequestDispatcher(
-				"/WEB-INF/jsp/admin/change-password.jsp").forward(
-				request, response);
-	}
 
+		request.getRequestDispatcher("/WEB-INF/jsp/admin/change-password.jsp")
+				.forward(request, response);
+	}
+/*
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
 				.forward(request, response);
 
-	}
+	}*/
 }
