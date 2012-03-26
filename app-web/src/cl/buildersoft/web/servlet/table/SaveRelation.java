@@ -2,6 +2,7 @@ package cl.buildersoft.web.servlet.table;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.beans.BSAction;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 
 /**
  * Servlet implementation class SaveRelation
@@ -54,30 +56,21 @@ public class SaveRelation extends HttpServlet {
 		BSAction action = table.getAction("ROL_RELATION");
 
 		try {
-			conn.setAutoCommit(false);
+			mysql.setAutoCommit(conn, false);
+
 			removeRelation(conn, mysql, id, table, action);
 
 			setRelation(conn, mysql, id, relations);
 
-			conn.commit();
-			conn.close();
+			mysql.commit(conn);
+
 		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (Exception e2) {
-				throw new RuntimeException(e2);
-			}
-			throw new RuntimeException(e);
+			mysql.rollback(conn);
+			throw new BSDataBaseException("0300", e.getMessage());
 		} finally {
-			try {
-				conn.close();
-			} catch (Exception e2) {
-				throw new RuntimeException(e2);
-			}
+			mysql.closeSQL();
 		}
 		String uri = table.getUri();
-//		System.out.println("->" + uri);
-		//"/servlet/admin/UserManager"
 		request.getRequestDispatcher(uri).forward(request, response);
 
 	}

@@ -14,8 +14,6 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.DataBaseException;
-import cl.buildersoft.framework.exception.NestedException;
 import cl.buildersoft.framework.util.BSWeb;
 
 @WebServlet("/servlet/table/InsertRecord")
@@ -49,14 +47,12 @@ public class InsertRecord extends AbstractServletUtil {
 
 		BSmySQL mySQL = new BSmySQL();
 		Connection conn = null;
-		try {
-			conn = mySQL.getConnection(getServletContext(), "bsframework");
-			mySQL.insert(conn, sql, params);
-		} catch (Exception e) {
-			throw NestedException.wrap(new DataBaseException(e));
-		}
-		request.getRequestDispatcher("/servlet/table/LoadTable").forward(request,
-				response);
+
+		conn = mySQL.getConnection(getServletContext(), "bsframework");
+		mySQL.insert(conn, sql, params);
+
+		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
+				request, response);
 	}
 
 	private String getSQL(String tableName, BSField[] fields,
@@ -76,12 +72,8 @@ public class InsertRecord extends AbstractServletUtil {
 		Object value = null;
 
 		for (BSField field : fields) {
-			try {
-				value = BSWeb.value2Object(request, field);
-				out.add(value);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			value = BSWeb.value2Object(request, field);
+			out.add(value);
 
 		}
 		return out;

@@ -45,34 +45,28 @@ public class UpdateRecord extends AbstractServletUtil {
 		String sql = getSQL(table, fieldsWidthoutId, idField);
 
 		List<Object> params;
-		try {
-			params = getParams(request, fieldsWidthoutId, idField);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+
+		params = getParams(request, fieldsWidthoutId, idField);
 
 		Connection conn = null;
 		BSmySQL mySQL = new BSmySQL();
-		try {
-			conn = mySQL.getConnection(getServletContext(), "bsframework");
-			mySQL.update(conn, sql, params);
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		request.getRequestDispatcher("/servlet/table/LoadTable").forward(request,
-				response);
+		conn = mySQL.getConnection(getServletContext(), "bsframework");
+		mySQL.update(conn, sql, params);
+	
+		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
+				request, response);
 	}
 
 	private List<Object> getParams(HttpServletRequest request,
-			BSField[] fieldsWidthoutId, BSField idField) throws Exception {
+			BSField[] fieldsWidthoutId, BSField idField) {
 		List<Object> out = new ArrayList<Object>();
 
 		for (BSField field : fieldsWidthoutId) {
 			out.add(BSWeb.value2Object(request, field));
 		}
 		out.add(BSWeb.value2Object(request, idField));
-		 
+
 		return out;
 	}
 

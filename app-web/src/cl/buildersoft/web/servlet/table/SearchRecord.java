@@ -3,6 +3,7 @@ package cl.buildersoft.web.servlet.table;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 
 /**
  * Servlet implementation class EditRecord
@@ -40,27 +42,28 @@ public class SearchRecord extends AbstractServletUtil {
 
 		Connection conn = null;
 		BSmySQL mySQL = new BSmySQL();
-		try {
-			conn = mySQL.getConnection(getServletContext(), "bsframework");
-			ResultSet rs = mySQL.queryResultSet(conn, sql, array2List(id));
-			resultset2Table(rs, table);
 
-			request.setAttribute("Data", rs);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		conn = mySQL.getConnection(getServletContext(), "bsframework");
+		ResultSet rs = mySQL.queryResultSet(conn, sql, array2List(id));
+		resultset2Table(rs, table);
+
+		request.setAttribute("Data", rs);
+
 		request.setAttribute("Action", "Update");
 		request.getRequestDispatcher("/WEB-INF/jsp/table/data-form.jsp")
 				.forward(request, response);
 	}
 
-	private void resultset2Table(ResultSet rs, BSTableConfig table)
-			throws Exception {
+	private void resultset2Table(ResultSet rs, BSTableConfig table) {
 		BSField[] fields = table.getFields();
-		if (rs.next()) {
-			for (BSField f : fields) {
-				f.setValue(rs.getObject(f.getName()));
+		try {
+			if (rs.next()) {
+				for (BSField f : fields) {
+					f.setValue(rs.getObject(f.getName()));
+				}
 			}
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 	}
 

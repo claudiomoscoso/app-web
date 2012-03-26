@@ -10,6 +10,8 @@ import cl.buildersoft.framework.beans.Option;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.beans.Submenu;
 import cl.buildersoft.framework.database.BSBeanUtils;
+import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.util.BSDataUtils;
 
@@ -128,7 +130,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 				out.add(submenu);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300",e.getMessage());
 		}
 		closeSQL(rs);
 

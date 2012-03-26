@@ -17,6 +17,7 @@ import cl.buildersoft.framework.beans.Menu;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 
@@ -39,7 +40,7 @@ public class RoleDef extends HttpServlet {
 
 		String sql = "SELECT cId, cName FROM tRol";
 		ResultSet rolsResultSet = mysql.queryResultSet(conn, sql, null);
-		List<String[]> rolsArray = resultSet2Matrix(rolsResultSet);
+		List<String[]> rolsArray = mysql.resultSet2Matrix(rolsResultSet);
 
 		Long idRolLong = getRolId(request, rolsArray);
 		List<Rol> rols = getRol(conn, idRolLong);
@@ -109,7 +110,7 @@ public class RoleDef extends HttpServlet {
 			}
 			rs.close();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return out;

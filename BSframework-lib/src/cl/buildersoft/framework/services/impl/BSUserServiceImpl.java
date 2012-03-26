@@ -8,6 +8,7 @@ import java.util.List;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.beans.User;
 import cl.buildersoft.framework.database.BSBeanUtils;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.services.BSUserService;
 import cl.buildersoft.framework.util.BSDataUtils;
 
@@ -23,17 +24,14 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 		String sql = "SELECT cId FROM tUser WHERE cMail=? AND cPassword=MD5(?)";
 
 		String idString;
-		try {
-			idString = super.queryField(conn, sql, array2List(mail, password));
 
-			if (idString != null) {
-				user.setId(Long.parseLong(idString));
-				beanUtil.search(conn, user);
-			} else {
-				user = null;
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		idString = super.queryField(conn, sql, array2List(mail, password));
+
+		if (idString != null) {
+			user.setId(Long.parseLong(idString));
+			beanUtil.search(conn, user);
+		} else {
+			user = null;
 		}
 
 		return user;
@@ -55,7 +53,7 @@ public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 				out.add(rol);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300",e.getMessage());
 		}
 		return out;
 	}

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.beans.User;
+import cl.buildersoft.framework.exception.BSUserException;
 import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
 import cl.buildersoft.framework.util.BSDataUtils;
 
@@ -47,19 +48,14 @@ public class ValidateLoginServlet extends HttpServlet {
 		List<Rol> rols = null;
 		Connection conn = null;
 
-		try {
-			conn = dau.getConnection(getServletContext(), "bsframework");
-			user = userService.login(conn, mail, password);
-			if (user != null) {
-				try {
-					rols = userService.getRols(conn, user);
-				} catch (Exception e) {
-					throw new RuntimeException("Usuario no tiene rol asignado");
-				}
+		conn = dau.getConnection(getServletContext(), "bsframework");
+		user = userService.login(conn, mail, password);
+		if (user != null) {
+			rols = userService.getRols(conn, user);
+			if (rols.size() == 0) {
+				throw new BSUserException("0001",
+						"Usuario no tiene roles configurados");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
 		}
 
 		String page = null;

@@ -33,15 +33,10 @@ public class ValidateLoginTest {
 		User user = null;
 		BSDataUtils dau = new BSDataUtils();
 		Connection conn = null;
-		try {
-			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"bsframework", "12870668", "root");
+		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
+				"bsframework", "12870668", "root");
 
-			user = userService.login(conn, mail, password);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		user = userService.login(conn, mail, password);
 
 		assertNotNull(user);
 
@@ -57,15 +52,10 @@ public class ValidateLoginTest {
 		User user = null;
 		BSDataUtils dau = new BSDataUtils();
 		Connection conn = null;
-		try {
-			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"bsframework", "12870668", "root");
+		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
+				"bsframework", "12870668", "root");
 
-			user = userService.login(conn, mail, password);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		user = userService.login(conn, mail, password);
 
 		assertNull(user);
 
@@ -81,15 +71,10 @@ public class ValidateLoginTest {
 		User user = null;
 		BSDataUtils dau = new BSDataUtils();
 		Connection conn = null;
-		try {
-			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"bsframework", "12870668", "root");
+		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
+				"bsframework", "12870668", "root");
 
-			user = userService.login(conn, mail, password);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		user = userService.login(conn, mail, password);
 
 		assertNull(user);
 

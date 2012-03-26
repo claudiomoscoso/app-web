@@ -1,6 +1,7 @@
 package cl.buildersoft.framework.database;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.sql.Connection;
@@ -12,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.framework.exception.BSSystemException;
 import cl.buildersoft.framework.util.BSDataUtils;
 
 public class BSBeanUtils extends BSDataUtils {
@@ -54,12 +58,8 @@ public class BSBeanUtils extends BSDataUtils {
 	}
 
 	public void save(Connection conn, BSBean bean) {
-		try {
-			if (update(conn, bean) == 0) {
-				insert(conn, bean);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		if (update(conn, bean) == 0) {
+			insert(conn, bean);
 		}
 	}
 
@@ -92,14 +92,14 @@ public class BSBeanUtils extends BSDataUtils {
 		String sql = buildSelectSQLString(tableName, tableFields,
 				tableFieldsWithOutId);
 
-		try {
-			Long idValue = getIdValue(theClass, "get"
-					+ getIdField(objectFields), bean);
-			ResultSet rs;
-			rs = queryResultSet(conn, sql, idValue);
-			Object value = null;
-			if (rs.next()) {
+		Long idValue = getIdValue(theClass, "get" + getIdField(objectFields),
+				bean);
+		ResultSet rs;
+		rs = queryResultSet(conn, sql, idValue);
+		Object value = null;
 
+		try {
+			if (rs.next()) {
 				for (String f : tableFieldsWithOutId) {
 					value = rs.getObject(f);
 					fillField(theClass, f.substring(1, f.length()), value, bean);
@@ -107,9 +107,8 @@ public class BSBeanUtils extends BSDataUtils {
 				out = Boolean.TRUE;
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
-
 		return out;
 	}
 
@@ -131,7 +130,8 @@ public class BSBeanUtils extends BSDataUtils {
 	private void fillField(Class<? extends BSBean> c, String fieldName,
 			Object value, BSBean bean) {
 		/**
-		 * http://www.roseindia.net/jdbc/jdbc-mysql/mapping-mysql-data-types-in-java.shtml
+		 * http://www.roseindia.net/jdbc/jdbc-mysql/mapping-mysql-data-types-in-
+		 * java.shtml
 		 * */
 		Class<?> type = getTypeMethod(c, fieldName);
 		Class[] paramTypes = new Class[] { type };
@@ -140,7 +140,7 @@ public class BSBeanUtils extends BSDataUtils {
 			method = c.getMethod("set" + fieldName, paramTypes);
 			method.invoke(bean, value);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 	}
@@ -150,9 +150,9 @@ public class BSBeanUtils extends BSDataUtils {
 		try {
 			m = c.getMethod("get" + methodName, null);
 		} catch (SecurityException e) {
-			throw new RuntimeException(e);
+			throw new BSSystemException("0210", e.getMessage());
 		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 		Type type = m.getGenericReturnType();
 
@@ -173,7 +173,9 @@ public class BSBeanUtils extends BSDataUtils {
 		} else if (type.toString().equals("java.util.Date")) {
 			out = Date.class;
 		} else {
-			throw new RuntimeException("Type mismatch");
+			throw new BSProgrammerException("0110",
+					"No se encuentra el tipo de datos que retorna el método '"
+							+ methodName + "()'");
 		}
 
 		return out;
@@ -243,11 +245,14 @@ public class BSBeanUtils extends BSDataUtils {
 		int i = 0;
 		for (String name : tableFields) {
 			name = "get" + name;
+
 			try {
 				method = c.getMethod(name, null);
 				out[i++] = method.invoke(bean, null);
+			} catch (SecurityException e) {
+				throw new BSSystemException("0210", e.getMessage());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new BSProgrammerException("0110", e.getMessage());
 			}
 
 		}
@@ -286,7 +291,7 @@ public class BSBeanUtils extends BSDataUtils {
 			method = c.getMethod(methodName, null);
 			value = method.invoke(bean, null);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 		return value;
@@ -406,12 +411,12 @@ public class BSBeanUtils extends BSDataUtils {
 		try {
 			m = clazz.getDeclaredMethod(name);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 		if (m == null) {
 			if (clazz.equals(Object.class)) {
-				throw new RuntimeException(
+				throw new BSProgrammerException("0110",
 						"Method not found in any super class.");
 			}
 			return getMethod(clazz.getSuperclass(), name);
@@ -427,7 +432,7 @@ public class BSBeanUtils extends BSDataUtils {
 			privateStringField.setAccessible(true);
 			out = (String) privateStringField.get(instance);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSProgrammerException("0110", e.getMessage());
 		}
 
 		return out;

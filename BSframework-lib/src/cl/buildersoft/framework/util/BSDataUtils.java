@@ -4,60 +4,63 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import cl.buildersoft.framework.exception.BSConfigurationException;
+import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.exception.BSProgrammerException;
+
 public class BSDataUtils extends BSUtils {
 	PreparedStatement preparedStatement = null;
 
-	protected void closeSQL(ResultSet rs) throws RuntimeException {
+	public void closeSQL(ResultSet rs) {
 		if (rs != null) {
 			try {
 				rs.close();
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new BSDataBaseException("0300", e.getMessage());
 			}
 
 		}
 		closeSQL();
 	}
 
-	protected void closeSQL() throws RuntimeException {
+	public void closeSQL() {
 		try {
 			this.preparedStatement.close();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 	}
 
-	protected Integer update(Connection conn, String sql, Object parameter)
-			throws RuntimeException {
+	public Integer update(Connection conn, String sql, Object parameter) {
 		List<Object> prms = new ArrayList<Object>();
 		prms.add(parameter);
 
 		return update(conn, sql, prms);
 	}
 
-	protected Integer update(Connection conn, String sql, List<Object> parameter)
-			throws RuntimeException {
+	public Integer update(Connection conn, String sql, List<Object> parameter) {
 		int rowsAffected = 0;
 		try {
 			preparedStatement = conn.prepareStatement(sql);
 			parametersToStatement(parameter, preparedStatement);
 			rowsAffected = preparedStatement.executeUpdate();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return rowsAffected;
 	}
 
-	protected Long insert(Connection conn, String sql, List<Object> parameter)
-			throws RuntimeException {
+	public Long insert(Connection conn, String sql, List<Object> parameter) {
 		Long newKey = 0L;
 
 		try {
@@ -70,24 +73,24 @@ public class BSDataUtils extends BSUtils {
 			if (rs.next()) {
 				newKey = rs.getLong(1);
 			}
-			rs.close();
+
+			closeSQL(rs);
+			// rs.close();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return newKey;
 	}
 
-	protected String queryField(Connection conn, String sql, Object parameter)
-			throws RuntimeException {
+	public String queryField(Connection conn, String sql, Object parameter) {
 		List<Object> prms = new ArrayList<Object>();
 		prms.add(parameter);
 
 		return queryField(conn, sql, prms);
 	}
 
-	protected String queryField(Connection conn, String sql,
-			List<Object> parameter) throws RuntimeException {
+	public String queryField(Connection conn, String sql, List<Object> parameter) {
 		String out = null;
 		ResultSet rs = queryResultSet(conn, sql, parameter);
 		try {
@@ -96,21 +99,21 @@ public class BSDataUtils extends BSUtils {
 			}
 			rs.close();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 		return out;
 	}
 
-	protected ResultSet queryResultSet(Connection conn, String sql,
-			Object parameter) throws RuntimeException {
+	public ResultSet queryResultSet(Connection conn, String sql,
+			Object parameter) {
 		List<Object> prms = new ArrayList<Object>();
 		prms.add(parameter);
 
 		return queryResultSet(conn, sql, prms);
 	}
 
-	protected ResultSet queryResultSet(Connection conn, String sql,
-			List<Object> parameters) throws RuntimeException {
+	public ResultSet queryResultSet(Connection conn, String sql,
+			List<Object> parameters) {
 		ResultSet out = null;
 
 		try {
@@ -118,14 +121,14 @@ public class BSDataUtils extends BSUtils {
 			parametersToStatement(parameters, preparedStatement);
 			out = preparedStatement.executeQuery();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return out;
 	}
 
 	private void parametersToStatement(List<Object> parameters,
-			PreparedStatement preparedStatement) throws RuntimeException {
+			PreparedStatement preparedStatement) {
 		// this.callableStatement = conn.prepareCall(sqlStatement);
 		try {
 			if (parameters != null) {
@@ -165,25 +168,22 @@ public class BSDataUtils extends BSUtils {
 						String message = "Object type not cataloged, please insert code in \"AbstractProcess\" for class \""
 								+ param.getClass().getName() + "\"";
 
-						throw new RuntimeException(message);
+						throw new BSProgrammerException("0103", message);
 					}
 
 					i++;
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 	}
 
-	public Connection getConnection(ServletContext context)
-			throws RuntimeException {
+	public Connection getConnection(ServletContext context) {
 		return getConnection(context, "cosoav");
 	}
 
-	public Connection getConnection(ServletContext context, String prefix)
-			throws RuntimeException {
-
+	public Connection getConnection(ServletContext context, String prefix) {
 		String driverName = context.getInitParameter(prefix
 				+ ".database.driver");
 		String serverName = context.getInitParameter(prefix
@@ -200,19 +200,76 @@ public class BSDataUtils extends BSUtils {
 	}
 
 	public Connection getConnection(String driverName, String serverName,
-			String database, String password, String username)
-			throws RuntimeException {
+			String database, String password, String username) {
 
 		Connection connection = null;
 		try {
 			Class.forName(driverName);
-			String url = "jdbc:mysql://" + serverName + "/" + database;
+		} catch (ClassNotFoundException e) {
+			throw new BSConfigurationException("0400", e.getMessage());
+		}
+		String url = "jdbc:mysql://" + serverName + "/" + database;
 
+		try {
 			connection = DriverManager.getConnection(url, username, password);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 
 		return connection;
+	}
+
+	public List<String[]> resultSet2Matrix(ResultSet rs) {
+		List<String[]> out = new ArrayList<String[]>();
+
+		try {
+			Integer i = 0;
+			ResultSetMetaData metaData = rs.getMetaData();
+			Integer colCount = metaData.getColumnCount();
+			String[] colNames = new String[colCount];
+			for (i = 1; i <= colCount; i++) {
+				colNames[i - 1] = metaData.getColumnName(i);
+			}
+
+			String[] innerArray = null;
+			while (rs.next()) {
+				i = 0;
+				innerArray = new String[colCount];
+				for (String colName : colNames) {
+					innerArray[i] = rs.getString(colName);
+					i++;
+				}
+				out.add(innerArray);
+			}
+			rs.close();
+		} catch (Exception e) {
+			throw new BSDataBaseException("0300", e.getMessage());
+		}
+
+		return out;
+	}
+
+	public void setAutoCommit(Connection conn, Boolean status) {
+		try {
+			conn.setAutoCommit(status);
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
+		}
+	}
+
+	public void commit(Connection conn) {
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
+		}
+	}
+
+	public void rollback(Connection conn) {
+		try {
+			conn.rollback();
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
+		}
 	}
 }
