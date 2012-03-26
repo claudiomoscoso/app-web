@@ -36,15 +36,12 @@
     <param-name>bsframework.database.password</param-name>
     <param-value>12870668</param-value>
   </context-param>
-   
   <error-page>
     <exception-type>java.lang.BSException</exception-type>
     <location>/jsp/error/error.jsp</location>
   </error-page>
-  
   <error-page>
     <exception-type>java.lang.RuntimeException</exception-type>
     <location>/jsp/error/error.jsp</location>
   </error-page>
-  
 </web-app>

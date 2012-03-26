@@ -51,7 +51,7 @@ public class GetMenuServlet extends HttpServlet {
 			session.setAttribute("Menu", menu);
 		}
 
-		String page = "/WEB-INF/jsp/home/index.jsp";
+		String page = "/servlet/Home";
 		request.getRequestDispatcher(page).forward(request, response);
 	}
 
