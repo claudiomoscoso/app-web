@@ -17,6 +17,7 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.type.BSFieldType;
+import cl.buildersoft.framework.util.BSPaging;
 
 /**
  * Servlet implementation class LoadTable
@@ -37,15 +38,29 @@ public class LoadTable extends AbstractServletUtil {
 		synchronized (session) {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
+		/**
+		 * request.getRequestDispatcher("/WEB-INF/jsp/common/pagination.jsp")
+		 * .include(request, response);
+		 */
+
 		String sql = getSQL4SelectAll(table);
 
 		Connection conn = null;
 		BSmySQL mySQL = new BSmySQL();
 		try {
 			conn = mySQL.getConnection(getServletContext(), "bsframework");
-			ResultSet rs = mySQL.queryResultSet(conn, sql, null);
+			BSPaging paging = new BSPaging(conn, mySQL, table, request);
+
+			ResultSet rs;
+			if (paging.getRequiresPaging()) {
+				rs = mySQL.queryResultSet(conn, sql, null,
+						paging.getFirstRecord(), paging.getRecordPerPage());
+			} else {
+				rs = mySQL.queryResultSet(conn, sql, null);
+			}
 
 			request.setAttribute("Data", rs);
+			request.setAttribute("Paging", paging);
 
 			configFields(rs, table);
 
@@ -56,6 +71,7 @@ public class LoadTable extends AbstractServletUtil {
 		} catch (SQLException e) {
 			throw new BSDataBaseException("0300", e.getMessage());
 		}
+
 		request.getRequestDispatcher("/WEB-INF/jsp/table/main.jsp").forward(
 				request, response);
 	}

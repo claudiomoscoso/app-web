@@ -25,22 +25,55 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 		field = new BSField("cId", "Código");
 		table.addField(field);
-
-		field = new BSField("cName", "Nombre");
+		
+		field = new BSField("cNro", "Nro");
 		table.addField(field);
 
-		field = new BSField("cBorn", "Fecha Nacimiento");
+		field = new BSField("cRUT", "Rut");
 		table.addField(field);
 
-		field = new BSField("cLastLogin", "Último Acceso");
+		field = new BSField("cMasculino", "Varon");
 		table.addField(field);
 
-		field = new BSField("cSalary", "Sueldo");
+		field = new BSField("cFechaRegistro", "Fecha Ingreso");
 		table.addField(field);
 
-		field = new BSField("cActive", "Activo");
+		field = new BSField("cNombre", "Nombre");
+		table.addField(field);
+
+		field = new BSField("cApellidoPaterno", "A. Paterno");
+		table.addField(field);
+
+		field = new BSField("cApellidoMaterno", "A. Materno");
+		table.addField(field);
+
+		field = new BSField("cDireccion", "Dirección");
+		table.addField(field);
+
+		field = new BSField("cNumero", "Número");
+		table.addField(field);
+
+		field = new BSField("cVilla", "Villa");
+		table.addField(field);
+
+		field = new BSField("cBlock", "Block");
+		table.addField(field);
+
+		field = new BSField("cDepartamento", "Departamento");
 		table.addField(field);
 		
+		field = new BSField("cComuna", "Comuna");
+		table.addField(field);
+		
+		field = new BSField("cTelefono", "Teléfono");
+		table.addField(field);
+
+		field = new BSField("cCelular", "Celular");
+		table.addField(field);
+
+		field = new BSField("cMail", "Mail");
+		table.addField(field);
+
 		return table;
 	}
 

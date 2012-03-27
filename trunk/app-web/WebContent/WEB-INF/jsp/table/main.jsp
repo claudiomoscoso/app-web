@@ -13,8 +13,6 @@
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
 
-	
-
 	BSAction[] tableActions = table.getActions(BSActionType.Table);
 	BSAction[] recordActions = table.getActions(BSActionType.Record);
 	BSAction[] multirecordActions = table
@@ -84,6 +82,8 @@
 			rs.close();
 		%>
 	</table>
+	<%@ include file="/WEB-INF/jsp/common/pagination.jsp"%>
+	
 	<%
 		out.print("<br>");
 
