@@ -24,6 +24,29 @@ public class BSField {
 		this.label = label;
 	}
 
+	public Boolean showField() {
+		Boolean out = !isPk() && isVisible();
+		return out;
+	}
+
+	public Boolean isFK() {
+		Boolean out = Boolean.FALSE;
+		List<Object[]> data = getFkData();
+		out = data != null;
+		return out;
+	}
+
+	public Boolean isNumber() {
+		return getType().equals(BSFieldType.Double)
+				|| getType().equals(BSFieldType.Integer)
+				|| getType().equals(BSFieldType.Long);
+	}
+
+	public Boolean isTime() {
+		return getType().equals(BSFieldType.Date)
+				|| getType().equals(BSFieldType.Datetime);
+	}
+
 	public String getName() {
 		return name;
 	}
