@@ -107,7 +107,6 @@ SET @menuId3 = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuId1);
 SET @menuId4 = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuId1);
-/*INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/jsp/TestPage.jsp', @menuId1);*/
 SET @menuId5 = LAST_INSERT_ID();
 
 
@@ -124,6 +123,9 @@ SET @menuId1 = LAST_INSERT_ID();
 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId1);
 SET @menuId2 = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuId1);
+
 
 /*
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);

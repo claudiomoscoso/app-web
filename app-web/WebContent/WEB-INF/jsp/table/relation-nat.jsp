@@ -19,10 +19,10 @@
 	BSField[] fields = table.getFields();
 
 	BSmySQL mysql = new BSmySQL();
-	List<String[]> listArray = mysql.resultSet2Matrix(list);
+	List<Object[]> listArray = mysql.resultSet2Matrix(list);
 	list.close();
 
-	List<String[]> relationArray = mysql.resultSet2Matrix(relation);
+	List<Object[]> relationArray = mysql.resultSet2Matrix(relation);
 	relation.close();
 %>
 <script type="text/javascript"
@@ -32,16 +32,12 @@
 
 <!-- 
 <table>
-	<%
-		for (BSField field : fields) {
-	%>
+	<%for (BSField field : fields) {%>
 	<tr>
 		<td class="cLabel" valign='top'><%=field.getLabel()%>:</td>
 		<td class="cData"><%=field.getValue()%></td>
 	</tr>
-	<%
-		}
-	%>
+	<%}%>
 </table>
  -->
 <!--
@@ -57,7 +53,7 @@
 			<td style="width: 30%" align="center"><span class="cLabel">Disponibles</span><br>
 				<select SIZE="10" id="left" style="width: 100%">
 					<%
-						for (String[] row : listArray) {
+						for (Object[] row : listArray) {
 							if (!exists(row, relationArray)) {
 					%>
 					<option value="<%=row[0]%>"><%=row[1]%></option>
@@ -76,7 +72,7 @@
 				align="center">Seleccionados</span><br> <select name="Relation"
 				SIZE="10" id="right" style="width: 100%">
 					<%
-						for (String[] row : relationArray) {
+						for (Object[] row : relationArray) {
 					%>
 					<option value="<%=row[0]%>"><%=row[1]%></option>
 					<%
@@ -94,37 +90,36 @@
 </form>
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
 
-<%!
-/**<code>
-private List<String[]> resultSet2Matrix(ResultSet rs) {
-		List<String[]> out = new ArrayList<String[]>();
-		 
-			Integer i = 0;
-			ResultSetMetaData metaData = rs.getMetaData();
-			Integer colCount = metaData.getColumnCount();
-			String[] colNames = new String[colCount];
-			for (i = 1; i <= colCount; i++) {
-				colNames[i - 1] = metaData.getColumnName(i);
-			}
+<%!/**<code>
+	 private List<String[]> resultSet2Matrix(ResultSet rs) {
+	 List<String[]> out = new ArrayList<String[]>();
+	
+	 Integer i = 0;
+	 ResultSetMetaData metaData = rs.getMetaData();
+	 Integer colCount = metaData.getColumnCount();
+	 String[] colNames = new String[colCount];
+	 for (i = 1; i <= colCount; i++) {
+	 colNames[i - 1] = metaData.getColumnName(i);
+	 }
 
-			String[] innerArray = null;
-			while (rs.next()) {
-				i = 0;
-				innerArray = new String[colCount];
-				for (String colName : colNames) {
-					innerArray[i] = rs.getString(colName);
-					i++;
-				}
-				out.add(innerArray);
-			}
-	 
-		return out;
-	}
-</code>*/
+	 String[] innerArray = null;
+	 while (rs.next()) {
+	 i = 0;
+	 innerArray = new String[colCount];
+	 for (String colName : colNames) {
+	 innerArray[i] = rs.getString(colName);
+	 i++;
+	 }
+	 out.add(innerArray);
+	 }
+	
+	 return out;
+	 }
+	 </code>*/
 
-	private Boolean exists(String[] element, List<String[]> list) {
+	private Boolean exists(Object[] element, List<Object[]> list) {
 		Boolean out = Boolean.FALSE;
-		for (String[] e : list) {
+		for (Object[] e : list) {
 			//showCompares(element, e);
 
 			if (Arrays.equals(element, e)) {
@@ -140,15 +135,15 @@ private List<String[]> resultSet2Matrix(ResultSet rs) {
 		return out;
 	}
 
-	private void showCompares(String[] a, String[] b) {
+	private void showCompares(Object[] a, Object[] b) {
 		System.out.println(Arrays.toString(a) + " == " + Arrays.toString(b)
 				+ "->" + Arrays.equals(a, b));
 	}
 
-	private String showList(List<String[]> l) {
+	private String showList(List<Object[]> l) {
 		String out = "";
 
-		for (String[] e : l) {
+		for (Object[] e : l) {
 			out += Arrays.toString(e) + ", ";
 		}
 		return out;

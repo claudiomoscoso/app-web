@@ -1,5 +1,7 @@
 package cl.buildersoft.framework.beans;
 
+import java.util.List;
+
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSField {
@@ -12,6 +14,9 @@ public class BSField {
 	private BSFieldType type = null;
 	private Object value = null;
 	private String validationOnBlur = null;
+	private Boolean visible = Boolean.TRUE;
+	private String[] fk = null;
+	private List<Object[]> fkData = null;
 
 	public BSField(String name, String label) {
 		super();
@@ -82,12 +87,54 @@ public class BSField {
 	public void setUnique(Boolean unique) {
 		this.unique = unique;
 	}
-	
+
 	public String getValidationOnBlur() {
 		return validationOnBlur;
 	}
 
 	public void setValidationOnBlur(String validationOnBlur) {
 		this.validationOnBlur = validationOnBlur;
-	}	
+	}
+
+	public Boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+
+	/***/
+	public String getFKTable() {
+		return fk != null ? fk[0] : null;
+	}
+
+	public String getFKField() {
+		return fk != null ? fk[1] : null;
+	}
+
+	public void setFK(String fkTable, String fkField) {
+		this.fk = new String[2];
+		this.fk[0] = fkTable;
+		this.fk[1] = fkField;
+	}
+
+	public List<Object[]> getFkData() {
+		return fkData;
+	}
+
+	public void setFkData(List<Object[]> fkData) {
+		this.fkData = fkData;
+	}
+
+	/***/
+
+	@Override
+	public String toString() {
+		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk
+				+ ", unique=" + unique + ", readonly=" + readonly + ", length="
+				+ length + ", type=" + type + ", value=" + value
+				+ ", validationOnBlur=" + validationOnBlur + ", visible="
+				+ visible + "]";
+	}
 }

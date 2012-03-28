@@ -16,6 +16,7 @@ import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.framework.util.BSPaging;
 
@@ -63,6 +64,7 @@ public class LoadTable extends AbstractServletUtil {
 			request.setAttribute("Paging", paging);
 
 			configFields(rs, table);
+			configFKFields(conn, mySQL, table);
 
 			synchronized (session) {
 				session.setAttribute("BSTable", table);
@@ -76,6 +78,26 @@ public class LoadTable extends AbstractServletUtil {
 				request, response);
 	}
 
+	private void configFKFields(Connection conn, BSmySQL mySQL,
+			BSTableConfig table) {
+		BSField[] fields = table.getFields();
+
+		String tableFK = null;
+		String fieldFK = null;
+
+		for (BSField field : fields) {
+			tableFK = field.getFKTable();
+			fieldFK = field.getFKField();
+			if (tableFK != null && fieldFK != null) {
+				String sql = "SELECT cId," + fieldFK;
+				sql += " FROM " + tableFK + " ORDER BY " + fieldFK;
+
+				field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(
+						conn, sql, null)));
+			}
+		}
+	}
+
 	private void configFields(ResultSet rs, BSTableConfig table)
 			throws SQLException {
 		BSField[] fields = table.getFields();
@@ -86,13 +108,20 @@ public class LoadTable extends AbstractServletUtil {
 			Integer n = metaData.getColumnCount();
 
 			BSField field = null;
+			Boolean hasPK = Boolean.FALSE;
 
 			for (Integer i = 1; i < n; i++) {
 				name = metaData.getColumnName(i);
 				field = new BSField(name, name);
 				configField(metaData, name, i, field);
-
+				if (field.isPk() && !hasPK) {
+					hasPK = Boolean.TRUE;
+				}
 				table.addField(field);
+			}
+			
+			if(!hasPK){
+				throw new BSProgrammerException("0104");
 			}
 		} else {
 			Integer i = 1;
@@ -133,18 +162,25 @@ public class LoadTable extends AbstractServletUtil {
 		cSalary DOUBLE
 		</code>
 		 */
-		if (metaData.getColumnTypeName(i).equals("BIGINT")) {
+		String typeName = metaData.getColumnTypeName(i);
+
+		if (typeName.equals("BIGINT")) {
 			field.setType(BSFieldType.Long);
-		} else if (metaData.getColumnTypeName(i).equals("VARCHAR")) {
+		} else if (typeName.equals("VARCHAR")) {
 			field.setType(BSFieldType.String);
-		} else if (metaData.getColumnTypeName(i).equals("DATE")) {
+		} else if (typeName.equals("DATE")) {
 			field.setType(BSFieldType.Date);
-		} else if (metaData.getColumnTypeName(i).equals("TIMESTAMP")) {
+		} else if (typeName.equals("TIMESTAMP")) {
 			field.setType(BSFieldType.Datetime);
-		} else if (metaData.getColumnTypeName(i).equals("DOUBLE")) {
+		} else if (typeName.equals("DOUBLE")) {
 			field.setType(BSFieldType.Double);
-		} else if (metaData.getColumnTypeName(i).equals("BIT")) {
+		} else if (typeName.equals("BIT")) {
 			field.setType(BSFieldType.Boolean);
+		} else if (typeName.equals("INT")) {
+			field.setType(BSFieldType.Integer);
+		} else {
+			throw new BSProgrammerException("0110",
+					"No está catalogado el tipo " + typeName);
 		}
 	}
 
@@ -152,6 +188,7 @@ public class LoadTable extends AbstractServletUtil {
 		BSField[] fields = table.getFields();
 		String sql = "SELECT " + getFieldsNames(fields);
 		sql += " FROM " + table.getTableName();
+		
 		return sql;
 	}
 
