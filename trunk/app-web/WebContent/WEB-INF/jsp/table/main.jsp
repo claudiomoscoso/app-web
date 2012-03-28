@@ -57,7 +57,7 @@
 			}
 
 			for (BSField field : fields) {
-				if (showColumn(field)) {
+				if (field.showField()) {
 					out.print("<td class='cHeadTD'");
 
 					out.print(getAlign(field));
@@ -146,9 +146,7 @@
 			out += "name='cId' ";
 			out += "value='" + values[0] + "' ";
 			if (selectorType == 1) {
-				//				out += "onclick='javascript:document.getElementById(\"RecordActions\").style.visibility=\"visible\";' ";
 				out += "onclick=\"javascript:$('#RecordActions').show(speed);\" ";
-				//				out += "onclick=\"javascript:alert(1);\" ";
 			} else {
 				out += "onclick='javascript:swapCheck(this);' ";
 			}
@@ -162,12 +160,12 @@
 			type = field.getType();
 
 			value = field.isPk() ? values[0] : values[i++];
-			if (showColumn(field)) {
+			if (field.showField()) {
 				out += "<td class='" + color + "'";
 				out += getAlign(field);
 				out += ">";
 
-				if (isFK(field)) {
+				if (field.isFK()) {
 					out += getFKValue(field, value);
 				} else {
 					if (type.equals(BSFieldType.Boolean)) {
@@ -208,7 +206,6 @@
 
 		return out;
 	}
-
 
 	private String getFKValue(BSField field, Object code) {
 		String out = "-not found-";
