@@ -36,7 +36,7 @@ public class SearchRecord extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
-		String idField = getIdField(table.getFields()).getName();
+		String idField = table.getIdField().getName();
 		String sql = getSQL4Search(table, idField);
 		Long id = Long.parseLong(request.getParameter(idField));
 
@@ -69,7 +69,7 @@ public class SearchRecord extends AbstractServletUtil {
 
 	private String getSQL4Search(BSTableConfig table, String idField) {
 		BSField[] fields = table.getFields();
-		String sql = "SELECT " + getFieldsNames(fields);
+		String sql = "SELECT " + getFieldsNamesWithCommas(fields);
 		sql += " FROM " + table.getTableName();
 		sql += " WHERE " + idField + "=?";
 		return sql;

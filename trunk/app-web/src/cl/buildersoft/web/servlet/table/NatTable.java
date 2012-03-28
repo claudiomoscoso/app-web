@@ -89,7 +89,7 @@ LEFT JOIN tRol AS c ON b.cRol = c.cId;
 		sql += "LEFT JOIN " + tables[1] + " AS c ON b."
 				+ table2Field(tables[1]) + " = c.cId ";
 		sql += "WHERE a.cId=? AND c.cId IS NOT NULL";
-//		System.out.println(sql);
+		// System.out.println(sql);
 		return sql;
 	}
 

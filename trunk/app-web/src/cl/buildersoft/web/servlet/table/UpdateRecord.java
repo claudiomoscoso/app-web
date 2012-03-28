@@ -38,9 +38,9 @@ public class UpdateRecord extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
-		BSField[] fields = table.getFields();
-		BSField idField = getIdField(fields);
-		BSField[] fieldsWidthoutId = deleteId(fields);
+//		BSField[] fields = table.getFields();
+		BSField idField = table.getIdField();
+		BSField[] fieldsWidthoutId = table.deleteId();
 
 		String sql = getSQL(table, fieldsWidthoutId, idField);
 

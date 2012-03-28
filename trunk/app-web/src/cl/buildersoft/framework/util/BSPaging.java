@@ -31,7 +31,6 @@ public class BSPaging {
 
 		this.firstRecord = this.currentPage == 1 ? 0
 				: ((this.currentPage - 1) * recordPerPage);
-		// this.lastRecord = firstRecord + recordPerPage;
 	}
 
 	private Integer calculatePageCount(Integer recordCount,
@@ -87,9 +86,6 @@ public class BSPaging {
 	}
 
 	/**********************/
-	private Boolean isId(String s) {
-		return "id".equalsIgnoreCase(s) || "cid".equalsIgnoreCase(s);
-	}
 
 	private BSField getIdField(BSField[] tableFields) {
 		BSField out = null;
@@ -97,7 +93,7 @@ public class BSPaging {
 
 		}
 		for (BSField s : tableFields) {
-			if (isId(s.getName())) {
+			if (s.isId()) {
 				out = s;
 				break;
 			}
