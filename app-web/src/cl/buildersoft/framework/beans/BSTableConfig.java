@@ -16,6 +16,7 @@ public class BSTableConfig {
 	private String title = null;
 	private String uri = null;
 	private BSAction[] actions = null;
+	private String sortField = null;
 
 	public BSTableConfig(String tableName) {
 		this.fields = new BSField[0];
@@ -27,6 +28,18 @@ public class BSTableConfig {
 		createEdit();
 		createDelete();
 
+	}
+
+	public String getSortField(String sortField) {
+		return sortField;
+	}
+
+	public void sortField(String sortField) {
+		this.sortField = sortField;
+	}
+
+	public void sortField(BSField field) {
+		sortField(field.getName());
 	}
 
 	private void createInsert() {
@@ -56,7 +69,7 @@ public class BSTableConfig {
 		BSField[] fields = getFields();
 		String sql = "SELECT " + getFieldsNames(fields);
 		sql += " FROM " + getTableName();
-
+		sql += this.sortField != null ? " ORDER BY " + this.sortField : "";
 		return sql;
 	}
 
