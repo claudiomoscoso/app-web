@@ -1,7 +1,10 @@
 package cl.buildersoft.framework.beans;
 
+import java.io.Serializable;
 
-public class User extends BSBean {
+public class User extends BSBean implements Serializable {
+	  
+	private static final long serialVersionUID = 68866001748593379L;
 	private String mail = null;
 	private String name = null;
 	private String password = null;

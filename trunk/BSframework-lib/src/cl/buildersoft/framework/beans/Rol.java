@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.beans;
 
-public class Rol extends BSBean {
+import java.io.Serializable;
+
+public class Rol extends BSBean implements Serializable{
 	private String TABLE = "tRol";
 
 	private String name = null;

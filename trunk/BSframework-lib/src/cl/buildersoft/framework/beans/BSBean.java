@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.beans;
 
-public class BSBean {
+import java.io.Serializable;
+
+public class BSBean implements Serializable {
 	private Long id = null;
 
 	public Long getId() {

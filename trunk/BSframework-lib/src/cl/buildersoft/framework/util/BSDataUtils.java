@@ -26,18 +26,17 @@ public class BSDataUtils extends BSUtils {
 			} catch (Exception e) {
 				throw new BSDataBaseException("0300", e.getMessage());
 			}
-
 		}
-		closeSQL();
 	}
 
 	public void closeSQL() {
-		try {
-			this.preparedStatement.close();
-		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+		if (this.preparedStatement != null) {
+			try {
+				this.preparedStatement.close();
+			} catch (Exception e) {
+				throw new BSDataBaseException("0300", e.getMessage());
+			}
 		}
-
 	}
 
 	public Integer update(Connection conn, String sql, Object parameter) {
@@ -219,32 +218,42 @@ public class BSDataUtils extends BSUtils {
 		return connection;
 	}
 
-	public List<String[]> resultSet2Matrix(ResultSet rs) {
-		List<String[]> out = new ArrayList<String[]>();
+	public List<Object[]> resultSet2Matrix(ResultSet rs) {
+		List<Object[]> out = new ArrayList<Object[]>();
 
+		Integer i = 0;
+		Integer colCount = 0;
+		String[] colNames = null;
 		try {
-			Integer i = 0;
 			ResultSetMetaData metaData = rs.getMetaData();
-			Integer colCount = metaData.getColumnCount();
-			String[] colNames = new String[colCount];
+			colCount = metaData.getColumnCount();
+			colNames = new String[colCount];
 			for (i = 1; i <= colCount; i++) {
 				colNames[i - 1] = metaData.getColumnName(i);
 			}
+		} catch (Exception e) {
+			throw new BSDataBaseException("0300",
+					"Error al trabajar con la definicion de una tabla "
+							+ e.getMessage());
+		}
 
-			String[] innerArray = null;
+		Object[] innerArray = null;
+		try {
 			while (rs.next()) {
 				i = 0;
-				innerArray = new String[colCount];
+				innerArray = new Object[colCount];
 				for (String colName : colNames) {
-					innerArray[i] = rs.getString(colName);
+					innerArray[i] = rs.getObject(colName);
 					i++;
 				}
 				out.add(innerArray);
 			}
-			rs.close();
-		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300",
+					"Error al recorrer un ResultSet " + e.getMessage() + " "
+							+ e.getLocalizedMessage());
 		}
+		this.closeSQL(rs);
 
 		return out;
 	}
