@@ -25,9 +25,6 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 		field = new BSField("cId", "Código");
 		table.addField(field);
-		
-		field = new BSField("cNro", "Nro");
-		table.addField(field);
 
 		field = new BSField("cRUT", "Rut");
 		table.addField(field);
@@ -48,23 +45,28 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		table.addField(field);
 
 		field = new BSField("cDireccion", "Dirección");
+		field.setVisible(false);
 		table.addField(field);
 
 		field = new BSField("cNumero", "Número");
+		field.setVisible(false);
 		table.addField(field);
 
 		field = new BSField("cVilla", "Villa");
+		field.setVisible(false);
 		table.addField(field);
 
 		field = new BSField("cBlock", "Block");
 		table.addField(field);
 
 		field = new BSField("cDepartamento", "Departamento");
+		field.setVisible(false);
 		table.addField(field);
-		
+
 		field = new BSField("cComuna", "Comuna");
+		field.setFK("tComuna", "cNombre");
 		table.addField(field);
-		
+
 		field = new BSField("cTelefono", "Teléfono");
 		table.addField(field);
 
@@ -72,6 +74,7 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		table.addField(field);
 
 		field = new BSField("cMail", "Mail");
+		field.setVisible(false);
 		table.addField(field);
 
 		return table;

@@ -80,59 +80,63 @@
 		String validationOnBlur = field.getValidationOnBlur() != null ? field
 				.getValidationOnBlur() : "";
 
-		if (type.equals(BSFieldType.Boolean)) {
-			out += "<SELECT name='" + name + "' ";
-			out += isReadOnly ? " DISABLED " : "";
-			out += ">";
-
-			out += writeOptionHTML("true", "Si", value);
-			out += writeOptionHTML("false", "No", value);
-
-			out += "</SELECT>";
+		if (isFK(field)) {
+			out += getFKSelect(field);
 		} else {
-			if (type.equals(BSFieldType.String)) {
-				value = value == null ? "" : value;
-				maxlength = field.getLength();
-				size = maxlength;
-				if (size > 75) {
-					size = 75;
-				}
-			} else if (type.equals(BSFieldType.Date)) {
-				maxlength = 10;
-				format = BSWeb.getFormatDate(request);
-				value = BSWeb.date2String(value, format);
-				size = maxlength;
-				afterInput = "(formato: " + format + ")";
-			} else if (type.equals(BSFieldType.Datetime)) {
-				maxlength = 16;
-				format = BSWeb.getFormatDatetime(request);
-				value = BSWeb.date2String(value, format);
-				size = maxlength;
-				afterInput = "(formato: " + format + ")";
-			} else if (type.equals(BSFieldType.Double)) {
-				maxlength = 15;
-				format = BSWeb.getFormatNumber(request);
-				value = BSWeb.number2String(value, format);
-				size = maxlength;
-			} else if (type.equals(BSFieldType.Integer)) {
-				maxlength = 8;
-				format = BSWeb.getFormatNumber(request);
-				value = BSWeb.number2String(value, format);
-				size = maxlength;
-			} else if (type.equals(BSFieldType.Long)) {
-				maxlength = 10;
-				format = BSWeb.getFormatNumber(request);
-				if (isPk && value == null) {
-					value = "[Nuevo]";
-				} else {
-					value = value == null ? "" : BSWeb.number2String(value,
-							format);
-				}
-				size = maxlength;
-			}
+			if (type.equals(BSFieldType.Boolean)) {
+				out += "<SELECT name='" + name + "' ";
+				out += isReadOnly ? " DISABLED " : "";
+				out += ">";
 
-			out += drawInputText("text", name, maxlength, isReadOnly, value,
-					size, afterInput, validationOnBlur);
+				out += writeOptionHTML("true", "Si", value);
+				out += writeOptionHTML("false", "No", value);
+
+				out += "</SELECT>";
+			} else {
+				if (type.equals(BSFieldType.String)) {
+					value = value == null ? "" : value;
+					maxlength = field.getLength();
+					size = maxlength;
+					if (size > 75) {
+						size = 75;
+					}
+				} else if (type.equals(BSFieldType.Date)) {
+					maxlength = 10;
+					format = BSWeb.getFormatDate(request);
+					value = BSWeb.date2String(value, format);
+					size = maxlength;
+					afterInput = "(formato: " + format + ")";
+				} else if (type.equals(BSFieldType.Datetime)) {
+					maxlength = 16;
+					format = BSWeb.getFormatDatetime(request);
+					value = BSWeb.date2String(value, format);
+					size = maxlength;
+					afterInput = "(formato: " + format + ")";
+				} else if (type.equals(BSFieldType.Double)) {
+					maxlength = 15;
+					format = BSWeb.getFormatNumber(request);
+					value = BSWeb.number2String(value, format);
+					size = maxlength;
+				} else if (type.equals(BSFieldType.Integer)) {
+					maxlength = 8;
+					format = BSWeb.getFormatNumber(request);
+					value = BSWeb.number2String(value, format);
+					size = maxlength;
+				} else if (type.equals(BSFieldType.Long)) {
+					maxlength = 10;
+					format = BSWeb.getFormatNumber(request);
+					if (isPk && value == null) {
+						value = "[Nuevo]";
+					} else {
+						value = value == null ? "" : BSWeb.number2String(value,
+								format);
+					}
+					size = maxlength;
+				}
+
+				out += drawInputText("text", name, maxlength, isReadOnly,
+						value, size, afterInput, validationOnBlur);
+			}
 		}
 		return out;
 	}
@@ -145,20 +149,13 @@
 		return out;
 	}
 
-	/**<code>
-	private String passwordField(BSField field) {
-		String out = "<table>";
-		out += "<tr><td>";
-		out += drawInputText("password", field.getName() + "1", 15, false, "",
-				15, "");
-		out += "</td></tr><tr><td>";
-		out += drawInputText("password", field.getName() + "2", 15, false, "",
-				15, "(confirme clave)");
-		out += "</td></tr></table>";
-
+	private Boolean isFK(BSField field) {
+		Boolean out = Boolean.FALSE;
+		List<Object[]> data = field.getFkData();
+		out = data != null;
 		return out;
 	}
-	</code>*/
+
 	private String drawInputText(String type, String name, Integer maxlength,
 			Boolean isReadonly, Object value, Integer size, String afterInput,
 			String validationOnBlur) {
@@ -171,5 +168,23 @@
 		out += "size='" + size + "px' ";
 		out += "onBlur='javascript:" + validationOnBlur + "(this)'";
 		out += ">&nbsp;" + afterInput;
+		return out;
+	}
+
+	private String getFKSelect(BSField field) {
+		String name = field.getName();
+		Object value = field.getValue();
+
+		String out = "<select name='";
+		out += name + "'>";
+		List<Object[]> data = field.getFkData();
+		for (Object[] row : data) {
+			out += "<option value='" + row[0] + "' ";
+			if (value != null) {
+				out += value.equals(row[0]) ? " selected " : "";
+			}
+			out += ">" + row[1] + "</option>";
+		}
+		out += "</select>";
 		return out;
 	}%>

@@ -55,9 +55,14 @@ public class BSPaging {
 	private Integer recordCount(Connection conn, BSmySQL mysql,
 			BSTableConfig table) {
 		BSField[] fields = table.getFields();
-		BSField idField = getIdField(fields);
 
-		String sql = "SELECT COUNT(" + idField.getName() + ") AS cCount ";
+		String fieldName = "1";
+		if (fields.length > 0) {
+			BSField idField = getIdField(fields);
+			fieldName = idField.getName();
+		}
+
+		String sql = "SELECT COUNT(" + fieldName + ") AS cCount ";
 		sql += "FROM " + table.getTableName();
 
 		Integer out = Integer.parseInt(mysql.queryField(conn, sql, null));
@@ -88,6 +93,9 @@ public class BSPaging {
 
 	private BSField getIdField(BSField[] tableFields) {
 		BSField out = null;
+		if (tableFields.length == 0) {
+
+		}
 		for (BSField s : tableFields) {
 			if (isId(s.getName())) {
 				out = s;

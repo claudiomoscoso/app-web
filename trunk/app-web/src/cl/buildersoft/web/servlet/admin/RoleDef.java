@@ -40,7 +40,7 @@ public class RoleDef extends HttpServlet {
 
 		String sql = "SELECT cId, cName FROM tRol";
 		ResultSet rolsResultSet = mysql.queryResultSet(conn, sql, null);
-		List<String[]> rolsArray = mysql.resultSet2Matrix(rolsResultSet);
+		List<Object[]> rolsArray = mysql.resultSet2Matrix(rolsResultSet);
 
 		Long idRolLong = getRolId(request, rolsArray);
 		List<Rol> rols = getRol(conn, idRolLong);
@@ -62,12 +62,12 @@ public class RoleDef extends HttpServlet {
 
 	}
 
-	private Long getRolId(HttpServletRequest request, List<String[]> rolsArray) {
+	private Long getRolId(HttpServletRequest request, List<Object[]> rolsArray) {
 		Long idRolLong;
 		String idRolString = request.getParameter("cId");
 		if (idRolString == null) {
-			String[] row1 = (String[]) rolsArray.get(0);
-			idRolLong = Long.parseLong(row1[0]);
+			Object[] row1 = (Object[]) rolsArray.get(0);
+			idRolLong = (Long)row1[0];
 		} else {
 			idRolLong = Long.parseLong(idRolString);
 		}
@@ -85,7 +85,7 @@ public class RoleDef extends HttpServlet {
 
 		return out;
 	}
-
+/**<code>
 	private List<String[]> resultSet2Matrix(ResultSet rs) {
 		List<String[]> out = new ArrayList<String[]>();
 
@@ -114,6 +114,6 @@ public class RoleDef extends HttpServlet {
 		}
 
 		return out;
-	}
+	}</code>*/
 
 }

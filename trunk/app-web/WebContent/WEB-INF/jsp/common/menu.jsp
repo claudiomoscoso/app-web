@@ -4,6 +4,14 @@
 <%@ page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%
+	Menu menuUser = (Menu) session.getAttribute("Menu");
+	if (menuUser == null) {
+		String url = request.getContextPath();
+		response.sendRedirect(url);
+	}
+%>
+
 
 <%!private String writeSubMenu(Submenu menu, String contextPath) {
 		Option opt = null;
@@ -49,7 +57,8 @@
 		return out;
 	}
 
-	private String writeMenuForUser(HttpSession session, HttpServletRequest request) {
+	private String writeMenuForUser(HttpSession session,
+			HttpServletRequest request) {
 		Menu menuUser = (Menu) session.getAttribute("Menu");
 		String out = "";
 		String ctxPath = request.getContextPath();

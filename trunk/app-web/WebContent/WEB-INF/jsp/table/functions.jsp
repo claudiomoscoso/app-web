@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="cl.buildersoft.framework.beans.BSCss"%>
 <%@page import="cl.buildersoft.framework.beans.BSScript"%>
@@ -19,23 +20,30 @@
 	}
 
 	private Boolean showColumn(BSField field) {
-		return !field.isPk();
+		Boolean out = !field.isPk() && field.isVisible();
+		return out;
 	}
 
 	private String getAlign(BSField field) {
 		String out = " align='left' ";
-		if (isTime(field) || field.getType().equals(BSFieldType.Boolean)) {
+		if (isTime(field) || field.getType().equals(BSFieldType.Boolean) || isFK(field)) {
 			out = " align='center' ";
 		} else if (isNumber(field)) {
 			out = " align='right' ";
 		}
 		return out;
 	}
+	private Boolean isFK(BSField field) {
+		Boolean out = Boolean.FALSE;
+		List<Object[]> data = field.getFkData();
+		out = data != null;
+		return out;
+	}
 
 	private String capitalize(String s) {
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
-	
+
 	/**<code>
 	private void configHead(HttpSession session, HttpServletRequest request, JspWriter out ){
 		BSHeadConfig head = (BSHeadConfig) session.getAttribute("BSHead");
@@ -52,5 +60,4 @@
 					+ ".css'/>");
 		}
 
-	}</code>*/
-	%>
+	}</code>*/%>

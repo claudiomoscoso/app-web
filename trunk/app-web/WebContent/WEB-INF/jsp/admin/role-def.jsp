@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <%
-	List<String[]> rols = (List<String[]>) request.getAttribute("Rols");
+	List<Object[]> rols = (List<Object[]>) request.getAttribute("Rols");
 	//Long id = Long.parseLong(request.getParameter("cId"));
 
 	Menu menuAux = (Menu) request.getAttribute("FullMenu");
@@ -28,7 +28,7 @@
 			<td class="cLabel">Roles:</td>
 			<td><select name="Rol" onchange="javascript:changeSelect(this);">
 					<%
-						for (String[] row : rols) {
+						for (Object[] row : rols) {
 					%>
 					<option value="<%=row[0]%>" <%=getSelected(row, request)%>><%=row[1]%></option>
 					<%
@@ -50,9 +50,9 @@
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
 
-<%!private String getSelected(String[] row, HttpServletRequest request) {
+<%!private String getSelected(Object[] row, HttpServletRequest request) {
 		Long id = (Long) request.getAttribute("cId");
-		return row[0].equals(id.toString()) ? "selected" : "";
+		return ((Long)row[0]).equals(id) ? "selected" : "";
 	}
 
 	private String write(List<Submenu> fullMenu, List<Submenu> rolMenu) {

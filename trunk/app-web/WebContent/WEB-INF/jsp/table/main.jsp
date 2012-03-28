@@ -36,7 +36,6 @@
 	action="${pageContext.request.contextPath}/servlet/table/DeleteRecords"
 	id='frm'>
 
-
 	<table class="cList" cellpadding="0" cellspacing="0">
 		<%
 			BSField[] fields = table.getFields();
@@ -82,8 +81,9 @@
 			rs.close();
 		%>
 	</table>
-	<%@ include file="/WEB-INF/jsp/common/pagination.jsp"%>
 	
+	<%@ include file="/WEB-INF/jsp/common/pagination.jsp"%>
+
 	<%
 		out.print("<br>");
 
@@ -100,7 +100,6 @@
 		}
 		out.print("</div>");
 
-
 		out.print("<div id='MultirecordActions' style='float:left;display:none;'>");
 		for (BSAction action : multirecordActions) {
 			String id = capitalize(action.getCode());
@@ -111,7 +110,7 @@
 			out.print(">");
 		}
 		out.print("</div>");
-		
+
 		out.print("<div id='RecordActions' style='float:left;display:none;'>");
 		for (BSAction action : recordActions) {
 			String id = capitalize(action.getCode());
@@ -121,12 +120,10 @@
 			out.print("onclick='javascript:doAction(\"" + ctxPath
 					+ action.getUrl() + "\", \"" + action.getCode()
 					+ "\");'");
-			//out.print("onclick='javascript:f" + id + "();'");
 
 			out.print(">");
 		}
 		out.print("</div>");
-
 	%>
 </form>
 
@@ -164,43 +161,39 @@
 		for (BSField field : fields) {
 			type = field.getType();
 
+			value = field.isPk() ? values[0] : values[i++];
 			if (showColumn(field)) {
-				value = field.isPk() ? values[0] : values[i++];
-
 				out += "<td class='" + color + "'";
 				out += getAlign(field);
 				out += ">";
 
-				/**
-				if (selectorType > 0) {
-					out += "<a href='" + ctxPath
-							+ "/servlet/table/SearchRecord?cId=" + values[0]
-							+ "'>";
-				}
-				 */
-				if (type.equals(BSFieldType.Boolean)) {
-					Boolean b = (Boolean) value;
-					if (b.booleanValue() == Boolean.TRUE) {
-						out += "Si";
-					} else {
-						out += "No";
-					}
-				} else if (type.equals(BSFieldType.Date)) {
-					String format = BSWeb.getFormatDate(request);
-					Format formatter = new SimpleDateFormat(format);
-					out += formatter.format(value);
-				} else if (type.equals(BSFieldType.Datetime)) {
-					String format = BSWeb.getFormatDatetime(request);
-					Format formatter = new SimpleDateFormat(format);
-					out += formatter.format(value);
-
-				} else if (type.equals(BSFieldType.Double)) {
-					String format = BSWeb.getFormatNumber(request);
-					Format formatter = new DecimalFormat(format);
-					out += formatter.format(value);
-
+				if (isFK(field)) {
+					out += getFKValue(field, value);
 				} else {
-					out += value;
+					if (type.equals(BSFieldType.Boolean)) {
+						Boolean b = (Boolean) value;
+						if (b.booleanValue() == Boolean.TRUE) {
+							out += "Si";
+						} else {
+							out += "No";
+						}
+					} else if (type.equals(BSFieldType.Date)) {
+						String format = BSWeb.getFormatDate(request);
+						Format formatter = new SimpleDateFormat(format);
+						out += formatter.format(value);
+					} else if (type.equals(BSFieldType.Datetime)) {
+						String format = BSWeb.getFormatDatetime(request);
+						Format formatter = new SimpleDateFormat(format);
+						out += formatter.format(value);
+
+					} else if (type.equals(BSFieldType.Double)) {
+						String format = BSWeb.getFormatNumber(request);
+						Format formatter = new DecimalFormat(format);
+						out += formatter.format(value);
+
+					} else {
+						out += value;
+					}
 				}
 				/**
 				if (selectorType > 0) {
@@ -212,6 +205,26 @@
 		}
 
 		out += "</tr>";
+
+		return out;
+	}
+
+
+	private String getFKValue(BSField field, Object code) {
+		String out = "-not found-";
+		Long codeLong = (Long) code;
+
+		List<Object[]> data = field.getFkData();
+		Long id = null;
+		for (Object[] row : data) {
+			id = (Long) row[0];
+
+			if (codeLong.equals(id)) {
+				out = (String) row[1];
+				break;
+			}
+
+		}
 
 		return out;
 	}

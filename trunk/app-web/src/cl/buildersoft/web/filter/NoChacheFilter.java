@@ -13,9 +13,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = { "/servlet/*", "/jsp/*" })
-public class NoChache implements Filter {
+public class NoChacheFilter implements Filter {
 
-	public NoChache() {
+	public NoChacheFilter() {
 	}
 
 	public void destroy() {

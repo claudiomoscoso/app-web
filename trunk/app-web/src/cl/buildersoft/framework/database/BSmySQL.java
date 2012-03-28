@@ -22,7 +22,6 @@ public class BSmySQL extends BSDataUtils {
 		ResultSet rs = super.queryResultSet(conn, sql, parameters);
 
 		return rs;
-
 	}
 
 }
