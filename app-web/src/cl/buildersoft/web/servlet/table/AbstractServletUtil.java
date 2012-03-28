@@ -10,7 +10,7 @@ import cl.buildersoft.framework.beans.BSField;
 public class AbstractServletUtil extends HttpServlet {
 	private static final long serialVersionUID = -34792656017725168L;
 
-	protected String getFieldsNames(BSField[] fields) {
+	protected String getFieldsNamesWithCommas(BSField[] fields) {
 		String out = "";
 		if (fields.length == 0) {
 			out = "*";
@@ -22,11 +22,11 @@ public class AbstractServletUtil extends HttpServlet {
 		}
 		return out;
 	}
-
+/**<code>
 	protected Boolean isId(String s) {
 		return "id".equalsIgnoreCase(s) || "cid".equalsIgnoreCase(s);
 	}
-
+</code>*/
 	protected String getCommas(BSField[] fields) {
 		String out = "";
 		for (int i = 0; i < fields.length; i++) {
@@ -42,31 +42,6 @@ public class AbstractServletUtil extends HttpServlet {
 			out += f.getName() + s;
 		}
 		out = out.substring(0, out.length() - 1);
-		return out;
-	}
-
-	
-
-	
-	protected BSField[] deleteId(BSField[] fields) {
-		BSField[] out = new BSField[fields.length - 1];
-		int i = 0;
-		for (BSField s : fields) {
-			if (!isId(s.getName())) {
-				out[i++] = s;
-			}
-		}
-		return out;
-	}
-
-	protected BSField getIdField(BSField[] tableFields) {
-		BSField out = null;
-		for (BSField s : tableFields) {
-			if (isId(s.getName())) {
-				out = s;
-				break;
-			}
-		}
 		return out;
 	}
 

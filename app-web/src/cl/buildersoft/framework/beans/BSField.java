@@ -24,6 +24,11 @@ public class BSField {
 		this.label = label;
 	}
 
+	public Boolean isId() {
+		return "id".equalsIgnoreCase(this.name)
+				|| "cid".equalsIgnoreCase(this.name);
+	}
+
 	public Boolean showField() {
 		Boolean out = !isPk() && isVisible();
 		return out;

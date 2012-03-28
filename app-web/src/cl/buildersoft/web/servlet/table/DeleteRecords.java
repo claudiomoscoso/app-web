@@ -36,7 +36,7 @@ public class DeleteRecords extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
-		String idField = getIdField(table.getFields()).getName();
+		String idField = table.getIdField().getName();
 		String sql = getSQL4Search(table, idField);
 
 		String[] values = request.getParameterValues(idField);

@@ -267,4 +267,36 @@ public class BSTableConfig {
 		this.uri = uri;
 	}
 
+	public BSField getIdField() {
+		BSField[] fields = getFields();
+		BSField out = null;
+
+		if (fields.length == 0) {
+			throw new BSProgrammerException("",
+					"No se ha definido BSFields[] para la tabla "
+							+ getTableName());
+		} else {
+
+			for (BSField s : fields) {
+				if (s.isId()) {
+					out = s;
+					break;
+				}
+			}
+
+		}
+		return out;
+	}
+
+	public BSField[] deleteId() {
+		BSField[] out = new BSField[this.fields.length - 1];
+		int i = 0;
+		for (BSField s : fields) {
+			if (!s.isId()) {
+				out[i++] = s;
+			}
+		}
+		return out;
+	}
+
 }

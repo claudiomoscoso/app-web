@@ -40,7 +40,7 @@ public class InsertRecord extends AbstractServletUtil {
 		}
 
 		String tableName = table.getTableName();
-		BSField[] fields = deleteId(table.getFields());
+		BSField[] fields = table.deleteId();
 		String sql = getSQL(tableName, fields, request);
 
 		List<Object> params = getValues4Insert(request, fields);
