@@ -20,7 +20,9 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 	protected BSTableConfig getBSTableConfig() {
 		BSTableConfig table = new BSTableConfig("tPerson");
 		BSField field;
-
+		
+		table.setSortField("cNombre");
+		
 		table.setTitle("Mantenedor de Personas");
 
 		field = new BSField("cId", "Código");

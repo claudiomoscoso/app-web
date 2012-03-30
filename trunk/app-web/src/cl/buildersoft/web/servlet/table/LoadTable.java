@@ -3,7 +3,6 @@ package cl.buildersoft.web.servlet.table;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.util.BSPaging;
 
 /**
@@ -35,39 +33,23 @@ public class LoadTable extends AbstractServletUtil {
 		synchronized (session) {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
-		/**
-		 * request.getRequestDispatcher("/WEB-INF/jsp/common/pagination.jsp")
-		 * .include(request, response);
-		 */
-
-		String sql = table.getSQL4SelectAll();
 
 		Connection conn = null;
 		BSmySQL mySQL = new BSmySQL();
-		try {
-			conn = mySQL.getConnection(getServletContext(), "bsframework");
-			BSPaging paging = new BSPaging(conn, mySQL, table, request);
 
-			ResultSet rs;
-			if (paging.getRequiresPaging()) {
-				rs = mySQL.queryResultSet(conn, sql, null,
-						paging.getFirstRecord(), paging.getRecordPerPage());
-			} else {
-				rs = mySQL.queryResultSet(conn, sql, null);
-			}
+		conn = mySQL.getConnection(getServletContext(), "bsframework");
 
-			request.setAttribute("Data", rs);
-			request.setAttribute("Paging", paging);
+		table.configFields(conn, mySQL);
 
-			table.configFields(rs);
-			table.configFKFields(conn, mySQL);
+		BSPaging paging = new BSPaging(conn, mySQL, table, request);
+		ResultSet rs = mySQL.queryResultSet(conn, table, paging);
 
-			synchronized (session) {
-				session.setAttribute("BSTable", table);
-			}
+		request.setAttribute("Data", rs);
+		request.setAttribute("Paging", paging);
+		request.setAttribute("Search", paging.getSearchValue(request));
 
-		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+		synchronized (session) {
+			session.setAttribute("BSTable", table);
 		}
 
 		request.getRequestDispatcher("/WEB-INF/jsp/table/main.jsp").forward(

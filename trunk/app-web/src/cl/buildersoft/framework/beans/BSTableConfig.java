@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.framework.type.BSFieldType;
@@ -30,16 +33,30 @@ public class BSTableConfig {
 
 	}
 
-	public String getSortField(String sortField) {
+	public BSField[] getFKFields() {
+		List<BSField> fkFields = new ArrayList<BSField>();
+
+		// int i = 0;
+		for (BSField s : fields) {
+			if (s.isFK()) {
+				fkFields.add(s);
+			}
+		}
+
+		BSField[] out = (BSField[]) fkFields.toArray();
+		return out;
+	}
+
+	public String getSortField() {
 		return sortField;
 	}
 
-	public void sortField(String sortField) {
+	public void setSortField(String sortField) {
 		this.sortField = sortField;
 	}
 
-	public void sortField(BSField field) {
-		sortField(field.getName());
+	public void setSortField(BSField field) {
+		setSortField(field.getName());
 	}
 
 	private void createInsert() {
@@ -65,14 +82,6 @@ public class BSTableConfig {
 		this.addAction(delete);
 	}
 
-	public String getSQL4SelectAll() {
-		BSField[] fields = getFields();
-		String sql = "SELECT " + getFieldsNames(fields);
-		sql += " FROM " + getTableName();
-		sql += this.sortField != null ? " ORDER BY " + this.sortField : "";
-		return sql;
-	}
-
 	public String getFieldsNames(BSField[] fields) {
 		String out = "";
 		if (fields.length == 0) {
@@ -86,19 +95,44 @@ public class BSTableConfig {
 		return out;
 	}
 
-	public void configFields(ResultSet resultSet) throws SQLException {
+	public void configFields(Connection conn, BSmySQL mysql) {
+		configBasic(conn, mysql);
+		configFKFields(conn, mysql);
+	}
+
+	private void configBasic(Connection conn, BSmySQL mysql) {
+		String sql = getSQL();
+
+		ResultSet resultSet = mysql.queryResultSet(conn, sql, null);
+
 		BSField[] fields = getFields();
-		ResultSetMetaData metaData = resultSet.getMetaData();
+
+		ResultSetMetaData metaData;
+		try {
+			metaData = resultSet.getMetaData();
+		} catch (SQLException e) {
+			throw new BSDataBaseException("300");
+		}
+
 		String name = null;
 
 		if (fields.length == 0) {
-			Integer n = metaData.getColumnCount();
+			Integer n;
+			try {
+				n = metaData.getColumnCount();
+			} catch (SQLException e) {
+				throw new BSDataBaseException("300");
+			}
 
 			BSField field = null;
 			Boolean hasPK = Boolean.FALSE;
 
 			for (Integer i = 1; i < n; i++) {
-				name = metaData.getColumnName(i);
+				try {
+					name = metaData.getColumnName(i);
+				} catch (SQLException e) {
+					throw new BSDataBaseException("300");
+				}
 				field = new BSField(name, name);
 				configField(metaData, name, i, field);
 				if (field.isPk() && !hasPK) {
@@ -119,11 +153,26 @@ public class BSTableConfig {
 
 				i++;
 			}
-
 		}
 	}
 
-	public void configFKFields(Connection conn, BSmySQL mySQL) {
+	private String getSQL() {
+		String out = "SELECT " + unSplitFieldNames(",");
+		out += " FROM " + getTableName();
+		out += " LIMIT 0,1";
+		return out;
+	}
+
+	private String unSplitFieldNames(String s) {
+		String out = "";
+		for (BSField f : getFields()) {
+			out += f.getName() + s;
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
+	}
+
+	private void configFKFields(Connection conn, BSmySQL mySQL) {
 		BSField[] fields = getFields();
 
 		String tableFK = null;
@@ -143,21 +192,25 @@ public class BSTableConfig {
 	}
 
 	private void configField(ResultSetMetaData metaData, String name,
-			Integer i, BSField field) throws SQLException {
+			Integer i, BSField field) {
 
-		if (field.getType() == null) {
-			setRealType(metaData, i, field);
-		}
-		if (field.isPk() == null) {
-			field.setPk(metaData.isAutoIncrement(i));
-		}
-		if (field.getLength() == null) {
-			field.setLength(metaData.getColumnDisplaySize(i));
+		try {
+			if (field.getType() == null) {
+				setRealType(metaData, i, field);
+			}
+			if (field.isPk() == null) {
+				field.setPk(metaData.isAutoIncrement(i));
+			}
+			if (field.getLength() == null) {
+				field.setLength(metaData.getColumnDisplaySize(i));
+			}
+		} catch (SQLException e) {
+			throw new BSDataBaseException("300");
 		}
 	}
 
 	private void setRealType(ResultSetMetaData metaData, Integer i,
-			BSField field) throws SQLException {
+			BSField field) {
 		/**
 		 * <code>
 		System.out.println( name + " "+ metaData.getColumnTypeName(i));
@@ -168,7 +221,12 @@ public class BSTableConfig {
 		cSalary DOUBLE
 		</code>
 		 */
-		String typeName = metaData.getColumnTypeName(i);
+		String typeName;
+		try {
+			typeName = metaData.getColumnTypeName(i);
+		} catch (SQLException e) {
+			throw new BSDataBaseException("300");
+		}
 
 		if (typeName.equals("BIGINT")) {
 			field.setType(BSFieldType.Long);
