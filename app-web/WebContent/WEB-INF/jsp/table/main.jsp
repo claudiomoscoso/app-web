@@ -36,6 +36,7 @@
 	action="${pageContext.request.contextPath}/servlet/table/DeleteRecords"
 	id='frm'>
 
+<%@ include file="/WEB-INF/jsp/table/search.jsp"%>
 	<table class="cList" cellpadding="0" cellspacing="0">
 		<%
 			BSField[] fields = table.getFields();

@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.util;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSPaging {
 	private Boolean requiresPaging = null;
@@ -16,21 +19,37 @@ public class BSPaging {
 	private Integer currentPage = null;
 	private Integer pageCount = null;
 	private Integer firstRecord = null;
+	private String search = null;
 
 	// private Integer lastRecord = null;
 
 	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig table,
 			HttpServletRequest request) {
 		ServletContext context = request.getServletContext();
+		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);
 		this.recordCount = recordCount(conn, mysql, table);
 		this.recordPerPage = getRecordsPerPage(context);
 		this.requiresPaging = requiresPaging();
 		this.pageCount = calculatePageCount(this.recordCount,
 				this.recordPerPage);
-
 		this.firstRecord = this.currentPage == 1 ? 0
 				: ((this.currentPage - 1) * recordPerPage);
+	}
+
+	public String getSearchValue(HttpServletRequest request) {
+		String out = null;
+		if (this.search != null) {
+			out = this.search;
+		} else {
+			out = request.getParameter("Search");
+			if (out == null) {
+				out = "";
+			} else {
+				out = out.trim();
+			}
+		}
+		return out;
 	}
 
 	private Integer calculatePageCount(Integer recordCount,
@@ -53,19 +72,69 @@ public class BSPaging {
 
 	private Integer recordCount(Connection conn, BSmySQL mysql,
 			BSTableConfig table) {
+		String sql = getSQLCount(table);
+		Integer out = Integer
+				.parseInt(mysql.queryField(conn, sql, getParams()));
+		mysql.closeSQL();
+		return out;
+	}
+
+	private String getSQLCount(BSTableConfig table) {
 		BSField[] fields = table.getFields();
 
 		String fieldName = "1";
 		if (fields.length > 0) {
-			BSField idField = getIdField(fields);
+			BSField idField = table.getIdField();
 			fieldName = idField.getName();
 		}
 
-		String sql = "SELECT COUNT(" + fieldName + ") AS cCount ";
-		sql += "FROM " + table.getTableName();
+		String out = "SELECT COUNT(" + fieldName + ") AS cCount ";
+		out += "FROM " + table.getTableName();
+		out += getWhere(table);
 
-		Integer out = Integer.parseInt(mysql.queryField(conn, sql, null));
-		mysql.closeSQL();
+		return out;
+	}
+
+	public String getSQL(BSTableConfig table) {
+		// BSField[] fields = table.getFields();
+
+		String sql = "SELECT " + unSplit(table, ",", false);
+		sql += " FROM " + table.getTableName();
+		sql += getWhere(table);
+		sql += getOrder(table);
+
+		return sql;
+	}
+
+	private String getOrder(BSTableConfig table) {
+		return table.getSortField() != null ? " ORDER BY "
+				+ table.getSortField() : "";
+	}
+
+	private String getWhere(BSTableConfig table) {
+		String out = "";
+		if (!this.search.equals("")) {
+			BSField[] fields = table.getFields();
+			if (fields.length > 0) {
+				out = " WHERE CONCAT(" + unSplit(table, ",", true) + ") LIKE ?";
+			}
+		}
+		return out;
+	}
+
+	protected String unSplit(BSTableConfig table, String s,
+			Boolean excludeBoolean) {
+		String out = "";
+		for (BSField f : table.getFields()) {
+			if (excludeBoolean) {
+				if (!f.getType().equals(BSFieldType.Boolean)) {
+					out += f.getName() + s;
+				}
+			} else {
+				out += f.getName() + s;
+			}
+		}
+		out = out.substring(0, out.length() - 1);
 		return out;
 	}
 
@@ -86,21 +155,13 @@ public class BSPaging {
 	}
 
 	/**********************/
-
-	private BSField getIdField(BSField[] tableFields) {
-		BSField out = null;
-		if (tableFields.length == 0) {
-
-		}
-		for (BSField s : tableFields) {
-			if (s.isId()) {
-				out = s;
-				break;
-			}
-		}
-		return out;
-	}
-
+	/**
+	 * private BSField getIdField(BSField[] tableFields) { BSField out = null;
+	 * if (tableFields.length == 0) {
+	 * 
+	 * } for (BSField s : tableFields) { if (s.isId()) { out = s; break; } }
+	 * return out; }
+	 */
 	public Boolean getRequiresPaging() {
 		return requiresPaging;
 	}
@@ -147,5 +208,14 @@ public class BSPaging {
 
 	public void setFirstRecord(Integer firstRecord) {
 		this.firstRecord = firstRecord;
+	}
+
+	public List<Object> getParams() {
+		List<Object> out = null;
+		if (!this.search.equals("")) {
+			out = new ArrayList<Object>();
+			out.add("%" + this.search + "%");
+		}
+		return out;
 	}
 }
