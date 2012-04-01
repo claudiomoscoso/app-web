@@ -32,7 +32,7 @@
 	}
 %>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
-<h1 class="cTitle">Creacion de información</h1>
+<h1 class="cTitle">Detalle de información</h1>
 <%
 	String nextServlet = (String) request.getAttribute("Action");
 	if ("insert".equalsIgnoreCase(nextServlet)) {

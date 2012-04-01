@@ -38,7 +38,7 @@ public class UpdateRecord extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
-//		BSField[] fields = table.getFields();
+		// BSField[] fields = table.getFields();
 		BSField idField = table.getIdField();
 		BSField[] fieldsWidthoutId = table.deleteId();
 
@@ -53,7 +53,7 @@ public class UpdateRecord extends AbstractServletUtil {
 
 		conn = mySQL.getConnection(getServletContext(), "bsframework");
 		mySQL.update(conn, sql, params);
-	
+
 		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
 				request, response);
 	}
@@ -72,7 +72,8 @@ public class UpdateRecord extends AbstractServletUtil {
 
 	private String getSQL(BSTableConfig table, BSField[] fieldsWidthoutId,
 			BSField idField) {
-		String sql = "UPDATE " + table.getTableName();
+		String sql = "UPDATE " + table.getDatabase() + "."
+				+ table.getTableName();
 		sql += " SET " + unSplit(fieldsWidthoutId, "=?,");
 		sql += " WHERE " + idField.getName() + "=?";
 

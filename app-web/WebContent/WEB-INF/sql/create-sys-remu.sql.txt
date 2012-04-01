@@ -1,5 +1,18 @@
 use bsframework;
 
+/** Creación del menu en base bsframework */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
+SET @menuId = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId);
+
+use remu;
+
 drop table if exists tPerson;
 
 CREATE TABLE `tPerson` (

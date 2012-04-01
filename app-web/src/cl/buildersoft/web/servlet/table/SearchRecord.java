@@ -70,7 +70,7 @@ public class SearchRecord extends AbstractServletUtil {
 	private String getSQL4Search(BSTableConfig table, String idField) {
 		BSField[] fields = table.getFields();
 		String sql = "SELECT " + getFieldsNamesWithCommas(fields);
-		sql += " FROM " + table.getTableName();
+		sql += " FROM " + table.getDatabase() + "." + table.getTableName();
 		sql += " WHERE " + idField + "=?";
 		return sql;
 	}

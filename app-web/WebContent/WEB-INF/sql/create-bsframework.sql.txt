@@ -1,11 +1,10 @@
-USE BSframework;
+USE bsframework;
 
 DROP TABLE IF EXISTS tUser;
 DROP TABLE IF EXISTS tRol;
 DROP TABLE IF EXISTS tR_UserRol;
 DROP TABLE IF EXISTS tOption;
 DROP TABLE IF EXISTS tR_RolOption;
-DROP TABLE IF EXISTS tPerson;
 DROP TABLE IF EXISTS tFile;
 DROP TABLE IF EXISTS tFileCategory;
 
@@ -41,16 +40,6 @@ CREATE TABLE IF NOT EXISTS tFileCategory (
     cContentType	VARCHAR(100) NOT NULL
 ) ENGINE=innoDB;
 
-CREATE TABLE IF NOT EXISTS tPerson (
-	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cName		VARCHAR(100) NULL,
-	cBorn		DATE,
-	cLastLogin	TIMESTAMP,
-	cSalary		DOUBLE,
-	cActive		BIT
-) ENGINE=innoDB;
-
-
 CREATE TABLE IF NOT EXISTS tUser (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cMail 		VARCHAR(50) NOT NULL UNIQUE,
@@ -65,7 +54,6 @@ CREATE TABLE IF NOT EXISTS tRol (
 ) ENGINE=innoDB;
 
 CREATE TABLE IF NOT EXISTS tR_UserRol (
-/*	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,*/
 	cUser 		BIGINT NOT NULL,
 	cRol		BIGINT NOT NULL,
 	PRIMARY KEY(cUser,cRol)
@@ -80,7 +68,6 @@ CREATE TABLE IF NOT EXISTS tOption (
 ) ENGINE=innoDB;
 
 CREATE TABLE IF NOT EXISTS tR_RolOption (
-/*	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,*/
 	cRol		BIGINT NOT NULL,
 	cOption		BIGINT NOT NULL,
 	PRIMARY KEY(cRol, cOption)
@@ -91,47 +78,42 @@ SET @userId = LAST_INSERT_ID();
 
 INSERT INTO tRol(cName) VALUES('Administrador');
 SET @rolId = LAST_INSERT_ID();
-INSERT INTO tRol(cName) VALUES('Contador');
-INSERT INTO tRol(cName) VALUES('Secretaria');
 
 INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
 
 /** Creación del menu básico */
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ADMIN', 'Administracion', NULL, NULL);
-SET @menuId1 = LAST_INSERT_ID();
+SET @menuIdAdmin = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdAdmin);
 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/servlet/admin/UserManager', @menuId1);
-SET @menuId2 = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuId1);
-SET @menuId3 = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuId1);
-SET @menuId4 = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuId1);
-SET @menuId5 = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/servlet/admin/UserManager', @menuIdAdmin);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuIdAdmin);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuIdAdmin);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuIdAdmin);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
 
 
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId3);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId4);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId5);
 
-/** Creación del menu Remuneraciones */
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId1);
+/** Creación del menu Remuneraciones
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
-SET @menuId1 = LAST_INSERT_ID();
+SET @menuId = LAST_INSERT_ID();
 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId1);
-SET @menuId2 = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuId);
 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuId1);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId);
+SET @menuId = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId);
 
-
-/*
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId1);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId2);
 */
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId2);
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId2);
-
-/*SET @menuId2 = LAST_INSERT_ID();*/

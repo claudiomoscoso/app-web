@@ -133,18 +133,23 @@ public class BSField {
 	}
 
 	/***/
-	public String getFKTable() {
+	public String getFKDatabase() {
 		return fk != null ? fk[0] : null;
 	}
-
-	public String getFKField() {
+	
+	public String getFKTable() {
 		return fk != null ? fk[1] : null;
 	}
 
-	public void setFK(String fkTable, String fkField) {
-		this.fk = new String[2];
-		this.fk[0] = fkTable;
-		this.fk[1] = fkField;
+	public String getFKField() {
+		return fk != null ? fk[2] : null;
+	}
+
+	public void setFK(String fkDatabase, String fkTable, String fkField) {
+		this.fk = new String[3];
+		this.fk[0] = fkDatabase;
+		this.fk[1] = fkTable;
+		this.fk[2] = fkField;
 	}
 
 	public List<Object[]> getFkData() {
