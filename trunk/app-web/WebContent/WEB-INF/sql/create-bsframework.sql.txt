@@ -64,7 +64,8 @@ CREATE TABLE IF NOT EXISTS tOption (
 	cKey		VARCHAR(20) NOT NULL UNIQUE,
 	cLabel 		VARCHAR(50) NOT NULL,
 	cUrl		VARCHAR(100) NULL,
-	cParent		BIGINT NULL
+	cParent		BIGINT NULL,
+	cType		BIGINT NOT NULL DEFAULT '1'
 ) ENGINE=innoDB;
 
 CREATE TABLE IF NOT EXISTS tR_RolOption (
@@ -101,19 +102,3 @@ INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuIdAdmin);
 SET @menuId = LAST_INSERT_ID();
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
-
-
-
-/** Creación del menu Remuneraciones
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
-SET @menuId = LAST_INSERT_ID();
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuId);
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuId);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuId);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId);
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId);
-
-*/

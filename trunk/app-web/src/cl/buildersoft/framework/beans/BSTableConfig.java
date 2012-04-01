@@ -179,6 +179,15 @@ public class BSTableConfig {
 		return out;
 	}
 
+	private String unSplitActionCodes(String s) {
+		String out = "";
+		for (BSAction f : getActions()) {
+			out += f.getCode() + s;
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
+	}
+
 	private void configFKFields(Connection conn, BSmySQL mySQL) {
 		BSField[] fields = getFields();
 
@@ -241,7 +250,7 @@ public class BSTableConfig {
 
 		if (typeName.equals("BIGINT")) {
 			field.setType(BSFieldType.Long);
-		} else if (typeName.equals("VARCHAR")) {
+		} else if (typeName.equals("VARCHAR") || typeName.equals("CHAR")) {
 			field.setType(BSFieldType.String);
 		} else if (typeName.equals("DATE")) {
 			field.setType(BSFieldType.Date);
@@ -255,7 +264,8 @@ public class BSTableConfig {
 			field.setType(BSFieldType.Integer);
 		} else {
 			throw new BSProgrammerException("0110",
-					"No está catalogado el tipo " + typeName);
+					"No está catalogado el tipo " + typeName
+							+ ", verifique método BSTableConfig.setRealType()");
 		}
 	}
 
@@ -271,6 +281,13 @@ public class BSTableConfig {
 		return this.actions;
 	}
 
+	/**
+	 * public String [] getActionCodes() { BSAction [] actions = getActions();
+	 * String [] names = new String [actions.length]; Integer i = 0;
+	 * for(BSAction action: actions){ names[i++]=action.getCode(); }
+	 * 
+	 * return names; }
+	 */
 	public BSAction[] getActions(BSActionType actionType) {
 		BSAction[] out = new BSAction[0];
 		for (BSAction action : this.actions) {
@@ -282,6 +299,15 @@ public class BSTableConfig {
 			}
 		}
 		return out;
+	}
+
+	public void renameAction(String source, String target) {
+		BSAction action = getAction(source);
+		if (action == null) {
+			throw new BSProgrammerException("0105", "Accion no encontrada, posibles: ["
+					+ unSplitActionCodes(",") + "]");
+		}
+		action.setCode(target);
 	}
 
 	public BSAction getAction(String code) {

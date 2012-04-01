@@ -31,7 +31,8 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		field = new BSField("cRUT", "Rut");
 		table.addField(field);
 
-		field = new BSField("cMasculino", "Varon");
+		field = new BSField("cSexo", "Sexo");
+		field.setFK("bscommon", "vSex", "cName");
 		table.addField(field);
 
 		field = new BSField("cFechaRegistro", "Fecha Ingreso");

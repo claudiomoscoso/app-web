@@ -1,16 +1,27 @@
 package cl.buildersoft.framework.util;
 
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.swing.MenuSelectionManager;
 
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.beans.Menu;
+import cl.buildersoft.framework.beans.Option;
+import cl.buildersoft.framework.beans.Rol;
+import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.framework.services.BSMenuService;
+import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSWeb {
@@ -107,4 +118,48 @@ public class BSWeb {
 		}
 		return out;
 	}
+
+	public static Boolean canUse(String optionKey, HttpServletRequest request) {
+		Boolean out = Boolean.TRUE;
+
+		BSmySQL mysql = new BSmySQL();
+		Connection conn = mysql.getConnection(request.getServletContext(),
+				"bsframework");
+
+		BSMenuService menuService = new BSMenuServiceImpl();
+		Option option = menuService.searchResourceByKey(conn, optionKey);
+		if (option != null) {
+			List<Rol> rols = null;
+
+			HttpSession session = request.getSession();
+			synchronized (session) {
+				rols = (List<Rol>) session.getAttribute("Rol");
+			}
+
+			for (Rol rol : rols) {
+				out = validResourceByRol(conn, mysql, option.getId(),
+						rol.getId());
+				if (out) {
+					break;
+				}
+			}
+		}
+		return out;
+	}
+
+	private static Boolean validResourceByRol(Connection conn, BSmySQL mysql,
+			Long option, Long rol) {
+		String sql = "SELECT COUNT(cOption) AS cnt FROM tR_RolOption WHERE cOption=? AND cRol=?";
+
+		List<Object> prm = new ArrayList<Object>();
+		prm.add(option);
+		prm.add(rol);
+
+		Integer cnt = Integer.parseInt(mysql.queryField(conn, sql, prm));
+
+		Boolean out = cnt > 0;
+
+		return out;
+	}
+
 }
