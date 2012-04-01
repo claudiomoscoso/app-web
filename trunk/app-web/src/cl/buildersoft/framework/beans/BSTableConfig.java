@@ -14,6 +14,7 @@ import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSTableConfig {
+	private String database = null;
 	private String tableName = null;
 	private BSField[] fields = null;
 	private String title = null;
@@ -21,7 +22,8 @@ public class BSTableConfig {
 	private BSAction[] actions = null;
 	private String sortField = null;
 
-	public BSTableConfig(String tableName) {
+	public BSTableConfig(String database, String tableName) {
+		this.database = database;
 		this.fields = new BSField[0];
 		this.actions = new BSAction[0];
 		this.tableName = tableName;
@@ -33,16 +35,17 @@ public class BSTableConfig {
 
 	}
 
+	public String getDatabase() {
+		return this.database;
+	}
+
 	public BSField[] getFKFields() {
 		List<BSField> fkFields = new ArrayList<BSField>();
-
-		// int i = 0;
 		for (BSField s : fields) {
 			if (s.isFK()) {
 				fkFields.add(s);
 			}
 		}
-
 		BSField[] out = (BSField[]) fkFields.toArray();
 		return out;
 	}
@@ -61,7 +64,7 @@ public class BSTableConfig {
 
 	private void createInsert() {
 		BSAction insert = new BSAction("INSERT", BSActionType.Table);
-		insert.setLabel("Agregar");
+		insert.setLabel("Nuevo");
 		insert.setUrl("/servlet/table/NewRecord");
 		this.addAction(insert);
 	}
@@ -69,9 +72,7 @@ public class BSTableConfig {
 	private void createEdit() {
 		BSAction edit = new BSAction("EDIT", BSActionType.Record);
 		edit.setLabel("Modificar");
-
 		edit.setUrl("/servlet/table/SearchRecord");
-		// edit.setUrl("/servlet/ShowParameters");
 		this.addAction(edit);
 	}
 
@@ -111,7 +112,7 @@ public class BSTableConfig {
 		try {
 			metaData = resultSet.getMetaData();
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300");
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 
 		String name = null;
@@ -121,7 +122,7 @@ public class BSTableConfig {
 			try {
 				n = metaData.getColumnCount();
 			} catch (SQLException e) {
-				throw new BSDataBaseException("300");
+				throw new BSDataBaseException("300", e.getMessage());
 			}
 
 			BSField field = null;
@@ -131,7 +132,7 @@ public class BSTableConfig {
 				try {
 					name = metaData.getColumnName(i);
 				} catch (SQLException e) {
-					throw new BSDataBaseException("300");
+					throw new BSDataBaseException("300", e.getMessage());
 				}
 				field = new BSField(name, name);
 				configField(metaData, name, i, field);
@@ -157,8 +158,14 @@ public class BSTableConfig {
 	}
 
 	private String getSQL() {
-		String out = "SELECT " + unSplitFieldNames(",");
-		out += " FROM " + getTableName();
+		String out = "SELECT ";
+		if (getFields().length == 0) {
+			out += "*";
+		} else {
+			out += unSplitFieldNames(",");
+		}
+
+		out += " FROM " + getDatabase() + "." + getTableName();
 		out += " LIMIT 0,1";
 		return out;
 	}
@@ -175,15 +182,19 @@ public class BSTableConfig {
 	private void configFKFields(Connection conn, BSmySQL mySQL) {
 		BSField[] fields = getFields();
 
+		String databaseFK = null;
 		String tableFK = null;
 		String fieldFK = null;
 
 		for (BSField field : fields) {
+			databaseFK = field.getFKDatabase();
 			tableFK = field.getFKTable();
 			fieldFK = field.getFKField();
+
 			if (tableFK != null && fieldFK != null) {
 				String sql = "SELECT cId," + fieldFK;
-				sql += " FROM " + tableFK + " ORDER BY " + fieldFK;
+				sql += " FROM " + databaseFK + "." + tableFK + " ORDER BY "
+						+ fieldFK;
 
 				field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(
 						conn, sql, null)));
@@ -205,7 +216,7 @@ public class BSTableConfig {
 				field.setLength(metaData.getColumnDisplaySize(i));
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300");
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 	}
 
@@ -225,7 +236,7 @@ public class BSTableConfig {
 		try {
 			typeName = metaData.getColumnTypeName(i);
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300");
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 
 		if (typeName.equals("BIGINT")) {
@@ -334,14 +345,12 @@ public class BSTableConfig {
 					"No se ha definido BSFields[] para la tabla "
 							+ getTableName());
 		} else {
-
 			for (BSField s : fields) {
 				if (s.isId()) {
 					out = s;
 					break;
 				}
 			}
-
 		}
 		return out;
 	}
@@ -356,5 +365,4 @@ public class BSTableConfig {
 		}
 		return out;
 	}
-
 }

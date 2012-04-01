@@ -37,7 +37,7 @@ public class LoadTable extends AbstractServletUtil {
 		Connection conn = null;
 		BSmySQL mySQL = new BSmySQL();
 
-		conn = mySQL.getConnection(getServletContext(), "bsframework");
+		conn = mySQL.getConnection(getServletContext(), table.getDatabase());
 
 		table.configFields(conn, mySQL);
 

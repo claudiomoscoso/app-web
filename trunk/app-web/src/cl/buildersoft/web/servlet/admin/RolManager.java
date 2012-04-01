@@ -17,19 +17,19 @@ public class RolManager extends BSHttpServlet {
 	public RolManager() {
 		super();
 
-	} 
+	}
 
 	@Override
 	protected BSTableConfig getBSTableConfig() {
-		BSTableConfig table = new BSTableConfig("tRol");
+		BSTableConfig table = new BSTableConfig("bsframework", "tRol");
 		table.setTitle("Mantenimeito de Roles");
-		
+
 		BSField field = new BSField("cId", "Id");
 		table.addField(field);
-		
+
 		field = new BSField("cName", "Nombre");
 		table.addField(field);
-		
+
 		return table;
 	}
 

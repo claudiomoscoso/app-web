@@ -58,7 +58,7 @@ public class DeleteRecords extends AbstractServletUtil {
 
 	private String getSQL4Search(BSTableConfig table, String idField) {
 		// BSField[] fields = table.getFields();
-		String sql = "DELETE FROM ";
+		String sql = "DELETE FROM " + table.getDatabase() + ".";
 		sql += table.getTableName();
 		sql += " WHERE " + idField + "=?";
 		return sql;

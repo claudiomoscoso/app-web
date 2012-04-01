@@ -28,7 +28,7 @@ public class UserManager extends BSHttpServlet {
 
 	@Override
 	protected BSTableConfig getBSTableConfig() {
-		BSTableConfig table = new BSTableConfig("tUser");
+		BSTableConfig table = new BSTableConfig("bsframework", "tUser");
 		table.setTitle("Mantenimiento de usuarios");
 
 		BSField field = null;
@@ -63,8 +63,8 @@ public class UserManager extends BSHttpServlet {
 
 		List<String> listScripts = new ArrayList<String>();
 		listScripts.add("UserScript");
-//		listScripts.add("relation");
-		
+		// listScripts.add("relation");
+
 		List<String> listCss = new ArrayList<String>();
 		listCss.add("UserCss");
 

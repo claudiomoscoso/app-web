@@ -18,11 +18,11 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 	@Override
 	protected BSTableConfig getBSTableConfig() {
-		BSTableConfig table = new BSTableConfig("tPerson");
+		BSTableConfig table = new BSTableConfig("remu", "tPerson");
 		BSField field;
-		
+
 		table.setSortField("cNombre");
-		
+
 		table.setTitle("Mantenedor de Personas");
 
 		field = new BSField("cId", "Código");
@@ -66,7 +66,7 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		table.addField(field);
 
 		field = new BSField("cComuna", "Comuna");
-		field.setFK("tComuna", "cNombre");
+		field.setFK("bscommon", "tComuna", "cName");
 		table.addField(field);
 
 		field = new BSField("cTelefono", "Teléfono");

@@ -39,9 +39,8 @@ public class InsertRecord extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
-		String tableName = table.getTableName();
 		BSField[] fields = table.deleteId();
-		String sql = getSQL(tableName, fields, request);
+		String sql = getSQL(table, fields, request);
 
 		List<Object> params = getValues4Insert(request, fields);
 
@@ -55,10 +54,11 @@ public class InsertRecord extends AbstractServletUtil {
 				request, response);
 	}
 
-	private String getSQL(String tableName, BSField[] fields,
+	private String getSQL(BSTableConfig table, BSField[] fields,
 			HttpServletRequest request) {
 		// fields = deleteId(fields);
-		String sql = "INSERT INTO " + tableName;
+		String sql = "INSERT INTO " + table.getDatabase() + "."
+				+ table.getTableName();
 		sql += "(" + unSplit(fields, ",") + ") ";
 		sql += " VALUES (" + getCommas(fields) + ")";
 

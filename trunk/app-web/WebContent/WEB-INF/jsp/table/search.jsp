@@ -3,9 +3,10 @@
 	BSPaging paging = (BSPaging) request.getAttribute("Paging");
 	String uri = table.getUri();
 %>
-<input name="Search" size='20' type='text'
+<div align="right" width="100%" class="cLabel">
+Busqueda:<input name="Search" size='20' type='text'
 	onkeypress='return keyPressSearch(this);' value='<%=request.getAttribute("Search")%>'>
-
+</div>
 <script type="text/javascript">
 	function keyPressSearch(o) {
 		var out = true;

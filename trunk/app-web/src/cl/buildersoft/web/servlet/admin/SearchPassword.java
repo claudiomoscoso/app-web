@@ -48,11 +48,4 @@ public class SearchPassword extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/admin/change-password.jsp")
 				.forward(request, response);
 	}
-/*
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
-				.forward(request, response);
-
-	}*/
 }

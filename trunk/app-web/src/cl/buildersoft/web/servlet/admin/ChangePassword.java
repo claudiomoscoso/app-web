@@ -15,9 +15,6 @@ import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSUserException;
 import cl.buildersoft.framework.util.BSSecurity;
 
-/**
- * Servlet implementation class ChangePassword
- */
 @WebServlet("/servlet/admin/ChangePassword")
 public class ChangePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
