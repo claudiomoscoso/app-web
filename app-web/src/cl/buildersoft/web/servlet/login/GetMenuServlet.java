@@ -46,7 +46,7 @@ public class GetMenuServlet extends HttpServlet {
 
 		BSMenuService menuService = new BSMenuServiceImpl();
 
-		Menu menu = menuService.getMenu(conn, rols);
+		Menu menu = menuService.getMenu(conn, rols, 1L);
 		synchronized (session) {
 			session.setAttribute("Menu", menu);
 		}

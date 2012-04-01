@@ -82,10 +82,9 @@ public class BSDataUtils extends BSUtils {
 		return newKey;
 	}
 
-	public String queryField(Connection conn, String sql, Object parameter) {
+	public String queryField(Connection conn, String sql, Object oneParam) {
 		List<Object> prms = new ArrayList<Object>();
-		prms.add(parameter);
-
+		prms.add(oneParam);
 		return queryField(conn, sql, prms);
 	}
 

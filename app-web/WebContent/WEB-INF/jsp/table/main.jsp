@@ -36,7 +36,7 @@
 	action="${pageContext.request.contextPath}/servlet/table/DeleteRecords"
 	id='frm'>
 
-<%@ include file="/WEB-INF/jsp/table/search.jsp"%>
+	<%@ include file="/WEB-INF/jsp/table/search.jsp"%>
 	<table class="cList" cellpadding="0" cellspacing="0">
 		<%
 			BSField[] fields = table.getFields();
@@ -82,7 +82,7 @@
 			rs.close();
 		%>
 	</table>
-	
+
 	<%@ include file="/WEB-INF/jsp/common/pagination.jsp"%>
 
 	<%
@@ -90,39 +90,46 @@
 
 		out.print("<div id='TableActions' style='float:left;'>");
 		for (BSAction action : tableActions) {
-			String id = capitalize(action.getCode());
-			out.print("<input type='button' ");
-			out.print("value='" + action.getLabel() + "' ");
-			out.print("id='o" + id + "' ");
+			if (BSWeb.canUse(action.getCode(), request)) {
+				String id = capitalize(action.getCode());
+				out.print("<input type='button' ");
+				out.print("value='" + action.getLabel() + "' ");
+				out.print("id='o" + id + "' ");
 
-			out.print("onclick='javascript:window.location.href=\""
-					+ ctxPath + action.getUrl() + "\"'");
-			out.print(">");
+				out.print("onclick='javascript:window.location.href=\""
+						+ ctxPath + action.getUrl() + "\"'");
+				out.print(">");
+			}
+
 		}
 		out.print("</div>");
 
 		out.print("<div id='MultirecordActions' style='float:left;display:none;'>");
 		for (BSAction action : multirecordActions) {
-			String id = capitalize(action.getCode());
-			out.print("<input type='button' ");
-			out.print("value='" + action.getLabel() + "' ");
-			out.print("id='o" + id + "' ");
-			out.print("onclick='javascript:f" + id + "();'");
-			out.print(">");
+			if (BSWeb.canUse(action.getCode(), request)) {
+				String id = capitalize(action.getCode());
+				out.print("<input type='button' ");
+				out.print("value='" + action.getLabel() + "' ");
+				out.print("id='o" + id + "' ");
+				out.print("onclick='javascript:f" + id + "();'");
+				out.print(">");
+			}
 		}
 		out.print("</div>");
 
 		out.print("<div id='RecordActions' style='float:left;display:none;'>");
 		for (BSAction action : recordActions) {
-			String id = capitalize(action.getCode());
-			out.print("<input type='button' ");
-			out.print("value='" + action.getLabel() + "' ");
-			out.print("id='o" + id + "' ");
-			out.print("onclick='javascript:doAction(\"" + ctxPath
-					+ action.getUrl() + "\", \"" + action.getCode()
-					+ "\");'");
+			if (BSWeb.canUse(action.getCode(), request)) {
+				String id = capitalize(action.getCode());
+				out.print("<input type='button' ");
+				out.print("value='" + action.getLabel() + "' ");
+				out.print("id='o" + id + "' ");
+				out.print("onclick='javascript:doAction(\"" + ctxPath
+						+ action.getUrl() + "\", \"" + action.getCode()
+						+ "\");'");
 
-			out.print(">");
+				out.print(">");
+			}
 		}
 		out.print("</div>");
 	%>

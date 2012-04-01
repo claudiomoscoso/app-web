@@ -11,7 +11,6 @@ import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.beans.Submenu;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.exception.BSDataBaseException;
-import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.util.BSDataUtils;
 
@@ -19,29 +18,33 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 
 	@Override
 	public Menu getMenu(Connection conn, List<Rol> rols) {
+		return getMenu(conn, rols, null);
+	}
+	@Override
+	public Menu getMenu(Connection conn, List<Rol> rols, Long type) {
 		Menu menu = null;
 
 		Submenu sub = null;
 		if (rols == null) {
-			List<Submenu> main = fillSubmenu(conn, sub, null, menu);
+			List<Submenu> main = fillSubmenu(conn, sub, null, menu, type);
 			menu = new Menu();
 			addMainMenuToMenu(main, menu);
 		} else {
 			Rol rol = rols.get(0);
 
-			List<Submenu> main = fillSubmenu(conn, sub, rol, menu);
+			List<Submenu> main = fillSubmenu(conn, sub, rol, menu, type);
 			menu = new Menu();
 			addMainMenuToMenu(main, menu);
 			/** ------------- */
 			for (int i = 1; i < rols.size(); i++) {
 				rol = rols.get(i);
 
-				main = fillSubmenu(conn, sub, rol, menu);
+				main = fillSubmenu(conn, sub, rol, menu, type);
 				addMainMenuToMenu(main, menu);
-				
+
 				for (Submenu sub1 : menu.list()) {
-					
-					complement(conn, sub1, rol, menu);
+
+					complement(conn, sub1, rol, menu, type);
 				}
 			}
 		}
@@ -50,27 +53,29 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 	}
 
 	private List<Submenu> fillSubmenu(Connection conn, Submenu main, Rol rol,
-			Menu menu) {
-		List<Submenu> subList = getSubmenu(conn, main, rol);
+			Menu menu, Long type) {
+		List<Submenu> subList = getSubmenu(conn, main, rol, type);
 
 		for (Submenu sub : subList) {
-			List<Submenu> auxList = fillSubmenu(conn, sub, rol, menu);
+			List<Submenu> auxList = fillSubmenu(conn, sub, rol, menu, type);
 			sub.addSubmenu(auxList, menu);
 		}
 		return subList;
 	}
 
-	private void complement(Connection conn, Submenu main, Rol rol, Menu menu) {
-		List<Submenu> subList = getSubmenu(conn, main, rol);
+	private void complement(Connection conn, Submenu main, Rol rol, Menu menu,
+			Long type) {
+		List<Submenu> subList = getSubmenu(conn, main, rol, type);
 
 		main.addSubmenu(subList, menu);
 
 		for (Submenu sub : main.list()) {
-			complement(conn, sub, rol, menu);
+			complement(conn, sub, rol, menu, type);
 		}
 	}
 
-	private List<Submenu> getSubmenu(Connection conn, Submenu sub, Rol rol) {
+	private List<Submenu> getSubmenu(Connection conn, Submenu sub, Rol rol,
+			Long type) {
 		String sql = null;
 		List<Object> prms = null;
 		Option parent = sub != null ? sub.getOption() : null;
@@ -97,6 +102,10 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 			sql += "LEFT JOIN tOption o ON r.cOption=o.cId ";
 			sql += "WHERE o.cParent=? AND r.cRol=?";
 			prms = array2List(parent.getId(), rol.getId());
+		}
+
+		if (type != null) {
+			sql += " AND o.cType=1";
 		}
 
 		return getSubmenuFromDB(conn, sql, prms);
@@ -130,7 +139,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 				out.add(submenu);
 			}
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300",e.getMessage());
+			throw new BSDataBaseException("0300", e.getMessage());
 		}
 		closeSQL(rs);
 
@@ -153,5 +162,22 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 			}
 		}
 		return exists;
+	}
+
+	@Override
+	public Option searchResourceByKey(Connection conn, String key) {
+		String sql = "SELECT cId FROM tOption WHERE cKey=? AND cType=2";
+		Option out = null;
+
+		String idString = super.queryField(conn, sql, key);
+		if (idString != null) {
+			Long id = Long.parseLong(idString);
+			out = new Option();
+			out.setId(id);
+
+			BSBeanUtils bu = new BSBeanUtils();
+			bu.search(conn, out);
+		}
+		return out;
 	}
 }

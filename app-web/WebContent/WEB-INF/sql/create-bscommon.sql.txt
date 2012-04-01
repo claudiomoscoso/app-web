@@ -2,20 +2,85 @@ use bsframework;
 
 /** Creación del menu en base bsframework */
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMMON', 'Tablas', NULL, NULL);
+SET @menuMain = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('BOARD', 'Tablon', '/servlet/admin/BoardManager', 1);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, LAST_INSERT_ID());
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PARAMS', 'Par&aacute;metros del Sistema', '/servlet/common/ParameterManager', 1);
 SET @menuId = LAST_INSERT_ID();
- 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuId);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, @menuId);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('ADD_PARAMS', 'Bot&oacute;n Nuevo', null, @menuId, 2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Bot&oacute;n Modificar', null, @menuId, 2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Bot&oacute;n Borrar', null, @menuId, 2);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuMain);
+
 
 use bscommon;
 
 drop table if exists tComuna;
+drop table if exists tParameter;
+drop table if exists tBoard;
 
-CREATE TABLE `tComuna` (
+CREATE TABLE `tParameter` (
+  `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  `cSystem` BIGINT NOT NULL,
+  `cCode` varchar(20) NOT NULL,
+  cLabel	varchar(100) NOT NULL,
+  `cValue` Varchar(100) NOT NULL,
+  `cType` BIGINT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE tComuna (
   `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
   `cName` varchar(50) NOT NULL,
   `cRegion` Integer NOT NULL,
   `cPrioridad` Integer NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB;
+
+CREATE TABLE `tBoard` (
+  `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  `cType` varchar(15) NOT NULL,
+  `cCode` BIGINT NOT NULL,
+  `cValue` Varchar(200) NOT NULL,
+  cEnable BIT NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
+DROP VIEW IF EXISTS vSex;
+CREATE VIEW vSex
+AS
+SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='SEX';
+
+DROP VIEW IF EXISTS vSystem;
+CREATE VIEW vSystem
+AS
+SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='SYSTEM';
+
+DROP VIEW IF EXISTS vType;
+CREATE VIEW vType
+AS
+SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='TYPE';
+
+DROP VIEW IF EXISTS vTypeOption;
+CREATE VIEW vTypeOption
+AS
+SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='TYPE_OPTION';
+
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('SEX', 0, 'Femenino');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('SEX', 1, 'Masculino');
+
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 1, 'Sistema');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 2, 'Remunaraciones');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 3, 'Contabilidad');
+
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 1, 'String');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 2, 'Double');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 3, 'Integer');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 4, 'Timestamp');
+
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 1, 'Menu');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 2, 'Button');
 
 
 INSERT INTO `tComuna` (`cID`,`cName`,`cRegion`,`cPrioridad`) VALUES (1,'Alto Hospicio',1,0);
