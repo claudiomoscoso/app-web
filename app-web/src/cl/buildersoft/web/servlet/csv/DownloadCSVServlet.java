@@ -39,14 +39,14 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 				table.getDatabase());
 
 		table.configFields(conn, mysql);
-		// BSField[] fields = table.getFields();
+		BSField[] fields = table.deleteId();
 
-		String sql = getSQL(table);
+		String sql = getSQL(table, fields);
 
 		ServletOutputStream output = setHeader(response, table.getTableName());
 		CsvWriter csv = new CsvWriter(output, ',', Charset.defaultCharset());
 
-		for (BSField field : table.deleteId()) {
+		for (BSField field : fields) {
 			csv.write(field.getName());
 		}
 		csv.endRecord();
@@ -55,7 +55,7 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 
 		try {
 			while (rs.next()) {
-				for (BSField field : table.deleteId()) {
+				for (BSField field : fields) {
 					csv.write(rs.getString(field.getName()));
 				}
 				csv.endRecord();
@@ -77,8 +77,7 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 		return output;
 	}
 
-	private String getSQL(BSTableConfig table) {
-		BSField[] fields = table.deleteId();
+	private String getSQL(BSTableConfig table, BSField[] fields) {
 		String out = "SELECT " + table.unSplitFieldNames(fields, ",");
 		out += " FROM " + table.getDatabase() + "." + table.getTableName();
 		return out;
