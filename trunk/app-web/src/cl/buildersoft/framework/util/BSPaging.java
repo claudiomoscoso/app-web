@@ -96,8 +96,6 @@ public class BSPaging {
 	}
 
 	public String getSQL(BSTableConfig table) {
-		// BSField[] fields = table.getFields();
-
 		String sql = "SELECT " + unSplit(table, ",", false);
 		sql += " FROM " + table.getTableName();
 		sql += getWhere(table);

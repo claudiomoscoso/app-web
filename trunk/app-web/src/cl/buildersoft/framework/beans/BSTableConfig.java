@@ -170,7 +170,7 @@ public class BSTableConfig {
 		return out;
 	}
 
-	private String unSplitFieldNames(String s) {
+	public String unSplitFieldNames(String s) {
 		String out = "";
 		for (BSField f : getFields()) {
 			out += f.getName() + s;
