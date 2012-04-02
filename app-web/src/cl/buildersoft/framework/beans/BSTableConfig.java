@@ -171,8 +171,12 @@ public class BSTableConfig {
 	}
 
 	public String unSplitFieldNames(String s) {
+		return unSplitFieldNames(getFields(), s);
+	}
+
+	public String unSplitFieldNames(BSField[] fields, String s) {
 		String out = "";
-		for (BSField f : getFields()) {
+		for (BSField f : fields) {
 			out += f.getName() + s;
 		}
 		out = out.substring(0, out.length() - 1);
@@ -304,8 +308,9 @@ public class BSTableConfig {
 	public void renameAction(String source, String target) {
 		BSAction action = getAction(source);
 		if (action == null) {
-			throw new BSProgrammerException("0105", "Accion no encontrada, posibles: ["
-					+ unSplitActionCodes(",") + "]");
+			throw new BSProgrammerException("0105",
+					"Accion no encontrada, posibles: ["
+							+ unSplitActionCodes(",") + "]");
 		}
 		action.setCode(target);
 	}

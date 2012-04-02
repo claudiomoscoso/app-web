@@ -22,6 +22,7 @@ public class UploadFile extends HttpServlet {
 
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		BSmySQL mysql = new BSmySQL();
 		Connection conn = mysql.getConnection(request.getServletContext(),
 				"remu");
