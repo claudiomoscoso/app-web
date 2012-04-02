@@ -72,7 +72,7 @@ public class InsertRecord extends AbstractServletUtil {
 		Object value = null;
 
 		for (BSField field : fields) {
-			value = BSWeb.value2Object(request, field);
+			value = BSWeb.value2Object(request, field, true);
 			out.add(value);
 
 		}

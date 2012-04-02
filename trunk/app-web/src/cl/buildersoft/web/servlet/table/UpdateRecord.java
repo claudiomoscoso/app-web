@@ -63,9 +63,9 @@ public class UpdateRecord extends AbstractServletUtil {
 		List<Object> out = new ArrayList<Object>();
 
 		for (BSField field : fieldsWidthoutId) {
-			out.add(BSWeb.value2Object(request, field));
+			out.add(BSWeb.value2Object(request, field,true));
 		}
-		out.add(BSWeb.value2Object(request, idField));
+		out.add(BSWeb.value2Object(request, idField, true));
 
 		return out;
 	}
