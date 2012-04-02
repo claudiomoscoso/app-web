@@ -43,10 +43,10 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 
 		String sql = getSQL(table);
 
-		ServletOutputStream output = setHeader(response);
+		ServletOutputStream output = setHeader(response, table.getTableName());
 		CsvWriter csv = new CsvWriter(output, ',', Charset.defaultCharset());
 
-		for (BSField field : table.getFields()) {
+		for (BSField field : table.deleteId()) {
 			csv.write(field.getName());
 		}
 		csv.endRecord();
@@ -55,7 +55,7 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 
 		try {
 			while (rs.next()) {
-				for (BSField field : table.getFields()) {
+				for (BSField field : table.deleteId()) {
 					csv.write(rs.getString(field.getName()));
 				}
 				csv.endRecord();
@@ -68,17 +68,18 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 		csv.close();
 	}
 
-	private ServletOutputStream setHeader(HttpServletResponse response)
-			throws IOException {
+	private ServletOutputStream setHeader(HttpServletResponse response,
+			String tableName) throws IOException {
 		ServletOutputStream output = response.getOutputStream();
 		response.setContentType("text/csv");
-		String disposition = "attachment; fileName=data.csv";
+		String disposition = "attachment; fileName=" + tableName + ".csv";
 		response.setHeader("Content-Disposition", disposition);
 		return output;
 	}
 
 	private String getSQL(BSTableConfig table) {
-		String out = "SELECT " + table.unSplitFieldNames(",");
+		BSField[] fields = table.deleteId();
+		String out = "SELECT " + table.unSplitFieldNames(fields, ",");
 		out += " FROM " + table.getDatabase() + "." + table.getTableName();
 		return out;
 	}
