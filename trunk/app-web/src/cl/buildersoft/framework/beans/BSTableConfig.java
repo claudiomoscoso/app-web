@@ -127,7 +127,7 @@ public class BSTableConfig {
 
 			BSField field = null;
 			Boolean hasPK = Boolean.FALSE;
-
+			n++;
 			for (Integer i = 1; i < n; i++) {
 				try {
 					name = metaData.getColumnName(i);
