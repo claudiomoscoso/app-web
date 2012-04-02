@@ -25,18 +25,26 @@ import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSWeb {
-	public static Object value2Object(HttpServletRequest request, BSField field) {
+	public static Object value2Object(HttpServletRequest request, BSField field, boolean fromWebPage) {
 		Object out = null;
 		String name = field.getName();
-		String value = request.getParameter(name);
+		String value = fromWebPage ? request.getParameter(name) : (String)field.getValue();
 		BSFieldType type = field.getType();
+		
+		System.out.println("name : " + field.getName() + " Valor : " + field.getValue());
+		
+		out = evaluateType(request, out, value, type);
+		return out;
+	}
 
+	private static Object evaluateType(HttpServletRequest request, Object out,
+			String value, BSFieldType type) {
 		if (type.equals(BSFieldType.String)) {
 			out = value;
 		} else if (type.equals(BSFieldType.Boolean)) {
 			out = Boolean.parseBoolean(value);
 		} else if (type.equals(BSFieldType.Date)) {
-			String formatDate = getFormatDate(request);
+			String formatDate = "yyyy-MM-dd";
 			DateFormat formatter = new SimpleDateFormat(formatDate);
 
 			try {
