@@ -3,9 +3,11 @@ package cl.buildersoft.web.servlet.admin;
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
 
+import cl.buildersoft.framework.beans.BSAction;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
+import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
 @WebServlet("/servlet/admin/PersonManager")
@@ -26,6 +28,7 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		table.setTitle("Mantenedor de Personas");
 
 		field = new BSField("cId", "Código");
+		field.setType(type)
 		table.addField(field);
 
 		field = new BSField("cRUT", "Rut");
@@ -79,6 +82,11 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		field = new BSField("cMail", "Mail");
 		field.setVisible(false);
 		table.addField(field);
+		
+		BSAction uploadFile = new BSAction("UPLOAD_PERSON", BSActionType.Table);
+		uploadFile.setLabel("Carga por archivo");
+		uploadFile.setUrl("/servlet/csv/UploadFile");
+		table.addAction(uploadFile);
 
 		return table;
 	}
