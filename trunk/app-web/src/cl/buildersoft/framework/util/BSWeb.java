@@ -31,7 +31,7 @@ public class BSWeb {
 		String value = fromWebPage ? request.getParameter(name) : (String)field.getValue();
 		BSFieldType type = field.getType();
 		
-		System.out.println("name : " + field.getName() + " Valor : " + field.getValue());
+//		System.out.println("name : " + field.getName() + " Valor : " + field.getValue());
 		
 		out = evaluateType(request, out, value, type);
 		return out;

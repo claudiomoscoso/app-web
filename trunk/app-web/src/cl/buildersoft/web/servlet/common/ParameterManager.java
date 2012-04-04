@@ -28,7 +28,7 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 		field.setFK("bscommon", "vSystem", "cName");
 		table.addField(field);
 
-		field = new BSField("cCode", "Código");
+		field = new BSField("cKey", "Código");
 		table.addField(field);
 
 		field = new BSField("cLabel", "Nombre");

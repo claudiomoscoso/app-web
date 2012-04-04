@@ -18,10 +18,46 @@
 	BSAction[] multirecordActions = table
 			.getActions(BSActionType.MultiRecord);
 
-	Integer selectorType = 0;
-	selectorType += recordActions.length > 0 ? 1 : 0;
-	selectorType += multirecordActions.length > 0 ? 2 : 0;
+	Integer selectorType = getSelectorType(tableActions, recordActions,
+			multirecordActions, request);
 %>
+
+<%!private Integer getSelectorType(BSAction[] tableActions,
+			BSAction[] recordActions, BSAction[] multirecordActions,
+			HttpServletRequest request) {
+
+		Integer selectorType = 0;
+
+		Boolean haveTableActions = Boolean.FALSE;
+		Boolean haveRecordActions = Boolean.FALSE;
+		Boolean haveMultirecordActions = Boolean.FALSE;
+
+		for (BSAction action : tableActions) {
+			if (BSWeb.canUse(action.getCode(), request)) {
+				haveTableActions = Boolean.TRUE;
+				break;
+			}
+		}
+
+		for (BSAction action : multirecordActions) {
+			if (BSWeb.canUse(action.getCode(), request)) {
+				haveMultirecordActions = Boolean.TRUE;
+				break;
+			}
+		}
+
+		for (BSAction action : recordActions) {
+			if (BSWeb.canUse(action.getCode(), request)) {
+				haveRecordActions = Boolean.TRUE;
+				break;
+			}
+		}
+
+		selectorType += haveRecordActions ? 1 : 0;
+		selectorType += haveMultirecordActions ? 2 : 0;
+		
+		return selectorType;
+	}%>
 
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
