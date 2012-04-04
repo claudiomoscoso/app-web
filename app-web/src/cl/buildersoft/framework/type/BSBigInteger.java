@@ -1,11 +1,13 @@
 package cl.buildersoft.framework.type;
+import java.math.BigInteger;
 
-public class BSLong implements BSFieldDataType{
+public class BSBigInteger implements BSFieldDataType{
 
 	@Override
 	public Boolean validData(String data) {
+
 		try {
-			Long.parseLong(data);
+			BigInteger.valueOf(Long.parseLong(data));
 			return true;
 		} catch (Exception e) {
 			return false;
