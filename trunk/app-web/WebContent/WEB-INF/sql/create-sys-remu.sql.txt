@@ -35,6 +35,14 @@ CREATE TABLE `tPerson` (
   PRIMARY KEY (`cId`)
 ) ENGINE=InnoDB;
 
+ALTER TABLE `remu`.`tperson` 
+  ADD CONSTRAINT `tcomuna`
+  FOREIGN KEY (`cComuna` )
+  REFERENCES `bscommon`.`tcomuna` (`cId` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `tcomuna` (`cComuna` ASC) ;
+
 
 /*
 -- Query: SELECT * FROM scout.tperson
