@@ -16,7 +16,6 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Bo
 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuMain);
 
-
 use bscommon;
 
 drop table if exists tComuna;
@@ -26,10 +25,10 @@ drop table if exists tBoard;
 CREATE TABLE `tParameter` (
   `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
   `cSystem` BIGINT NOT NULL,
-  `cCode` varchar(20) NOT NULL,
+  `cKey` 	varchar(20) NOT NULL,
   cLabel	varchar(100) NOT NULL,
-  `cValue` Varchar(100) NOT NULL,
-  `cType` BIGINT NOT NULL
+  `cValue`	Varchar(100) NOT NULL,
+  `cType`	BIGINT NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE tComuna (
@@ -78,6 +77,8 @@ INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 1, 'String');
 INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 2, 'Double');
 INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 3, 'Integer');
 INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 4, 'Timestamp');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 5, 'Boolean');
+INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 6, 'Long');
 
 INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 1, 'Menu');
 INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 2, 'Button');
