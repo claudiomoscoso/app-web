@@ -1,11 +1,11 @@
 package cl.buildersoft.framework.type;
 
-public class BSLong implements BSFieldDataType{
+public class BSDouble implements BSFieldDataType{
 
 	@Override
 	public Boolean validData(String data) {
 		try {
-			Long.parseLong(data);
+			Double.parseDouble(data);
 			return true;
 		} catch (Exception e) {
 			return false;

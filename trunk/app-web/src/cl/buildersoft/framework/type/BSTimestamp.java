@@ -1,11 +1,16 @@
 package cl.buildersoft.framework.type;
+import java.text.SimpleDateFormat;
 
-public class BSLong implements BSFieldDataType{
+public class BSTimestamp implements BSFieldDataType{
 
 	@Override
 	public Boolean validData(String data) {
+		String formatDate = "dd/MM/yyyy HH:mm:ss";
+		SimpleDateFormat dateFormat = new SimpleDateFormat(formatDate);
+		java.util.Date parsedDate;
 		try {
-			Long.parseLong(data);
+			parsedDate = dateFormat.parse(data);
+			new java.sql.Timestamp(parsedDate.getTime());
 			return true;
 		} catch (Exception e) {
 			return false;

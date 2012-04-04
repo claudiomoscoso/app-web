@@ -6,10 +6,11 @@ public class BSBoolean implements BSFieldDataType {
 	public Boolean validData(String data) {
 		Boolean out = true;
 		try {
-			Boolean.parseBoolean(data);
+			out = Boolean.parseBoolean(data);
 		} catch (Exception e) {
-			out = false;
+			return false;
 		}
+		
 		return out;
 	}
 
