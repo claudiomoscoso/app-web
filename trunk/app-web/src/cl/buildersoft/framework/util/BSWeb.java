@@ -54,7 +54,7 @@ public class BSWeb {
 						"No se pudo parsear el valor " + value + " como fecha");
 			}
 
-		} else if (type.equals(BSFieldType.Datetime)) {
+		} else if (type.equals(BSFieldType.Timestamp)) {
 			String formatDate = getFormatDatetime(request);
 			SimpleDateFormat dateFormat = new SimpleDateFormat(formatDate);
 			java.util.Date parsedDate;

@@ -1,16 +1,12 @@
 package cl.buildersoft.web.servlet;
 
-import java.awt.dnd.DragSourceMotionListener;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,10 +20,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
-import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
-import cl.buildersoft.framework.util.BSWeb;
+import cl.buildersoft.framework.type.BSData;
+import cl.buildersoft.framework.type.BSTypeFactory;
 import cl.buildersoft.web.servlet.csv.CsvReader;
 import cl.buildersoft.web.servlet.table.AbstractServletUtil;
 
@@ -44,6 +40,10 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		super();
 	}
 
+	/**
+	 * Lee archivo csv pasado desde la pagina como un inputstream,
+	 * y realiza validaciones con cada fila del archivo
+	 */
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -75,43 +75,68 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 						Charset.forName("ISO-8859-1"));
 				products.readHeaders();
 				String[] headers = products.getHeaders();
-
+				List<List<BSData>> listaCampos = new ArrayList<List<BSData>>();
 				while (products.readRecord()) {
-					BSField[] fields = new BSField[headers.length];
+					List<BSData> fila = new ArrayList<BSData>();
+					//BSField[] fields = new BSField[headers.length];
 					for (int i = 0; i < headers.length; i++) {
 
 						System.out.println("campo = " + headers[i]
 								+ " valor = " + products.get(headers[i]));
 						BSField field = new BSField(headers[i], "");
 						field.setValue(products.get(headers[i]));
-						fields[i] = field;
-
+						//fields[i] = field;
+						fila.add(new BSData(products.get(headers[i])));
 					}
-
-					copyTypeTableToField(table.deleteId(), fields);
-
-					String sql = getSQL(table, fields);
-					List<Object> params = getValues4Insert(fields);
-
-					conn = mySQL.getConnection(getServletContext(),
-							"bsframework");
-					mySQL.insert(conn, sql, params);
+					//Se agrega un campo vacio para guardar el estado de la comparacion
+					listaCampos.add(fila);					
+					//copyTypeTableToField(table.deleteId(), fields);
+					
+					//insertData(mySQL, table, fields);
 
 					// perform program logic here
 				}
-
 				products.close();
-
+				compareDataType(table.deleteId(), listaCampos);
+				HttpSession session = request.getSession();
+				session.setAttribute("respCSV", listaCampos);
+				request.getRequestDispatcher("/WEB-INF/jsp/table/csvResponse.jsp").forward(request, response);
 			}
 
 		}
 
+	}
 
-		String uri = request.getRequestURI().substring(
-				request.getContextPath().length());
+	private void compareDataType(BSField[] fields,List<List<BSData>> listaCampos) {
+		
+		BSTypeFactory bsTypeFactory = new BSTypeFactory();
+		for (List<BSData> fila : listaCampos) {
+			int longRow = fila.size();
+			for (int i = 0; i < longRow; i++) {
+				BSData celda = fila.get(i);
+				try{
+					Boolean resp = bsTypeFactory.evaluate(celda.getValue(), fields[i]);
+					if(resp)
+						celda.setState(true);
+					else
+						celda.setState(false);
+				}catch(Exception e)
+				{
+					
+				}
+			}
+		}
+		
+		// TODO Auto-generated method stub		
+	}
 
-		table.setUri(uri);
+	private void insertData(BSmySQL mySQL, BSTableConfig table, BSField[] fields) {
+		Connection conn;
+		String sql = getSQL(table, fields);
+		List<Object> params = getValues4Insert(fields);
 
+		conn = mySQL.getConnection(getServletContext(),"bsframework");
+		mySQL.insert(conn, sql, params);
 	}
 
 	private void copyTypeTableToField(BSField[] tableField, BSField[] fields) {
