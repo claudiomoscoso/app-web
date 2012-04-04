@@ -223,7 +223,7 @@
 						String format = BSWeb.getFormatDate(request);
 						Format formatter = new SimpleDateFormat(format);
 						out += formatter.format(value);
-					} else if (type.equals(BSFieldType.Datetime)) {
+					} else if (type.equals(BSFieldType.Timestamp)) {
 						String format = BSWeb.getFormatDatetime(request);
 						Format formatter = new SimpleDateFormat(format);
 						out += formatter.format(value);

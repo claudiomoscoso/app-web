@@ -49,7 +49,7 @@ public class BSField {
 
 	public Boolean isTime() {
 		return getType().equals(BSFieldType.Date)
-				|| getType().equals(BSFieldType.Datetime);
+				|| getType().equals(BSFieldType.Timestamp);
 	}
 
 	public String getName() {

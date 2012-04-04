@@ -97,15 +97,18 @@ public class BSTableConfig {
 	}
 
 	public void configFields(Connection conn, BSmySQL mysql) {
-		configBasic(conn, mysql);
+		try {
+			configBasic(conn, mysql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		configFKFields(conn, mysql);
 	}
 
-	private void configBasic(Connection conn, BSmySQL mysql) {
+	private void configBasic(Connection conn, BSmySQL mysql) throws SQLException {
 		String sql = getSQL();
-
 		ResultSet resultSet = mysql.queryResultSet(conn, sql, null);
-
 		BSField[] fields = getFields();
 
 		ResultSetMetaData metaData;
@@ -198,8 +201,8 @@ public class BSTableConfig {
 		String databaseFK = null;
 		String tableFK = null;
 		String fieldFK = null;
-
-		for (BSField field : fields) {
+	
+		for (BSField field : fields) {			
 			databaseFK = field.getFKDatabase();
 			tableFK = field.getFKTable();
 			fieldFK = field.getFKField();
@@ -259,7 +262,7 @@ public class BSTableConfig {
 		} else if (typeName.equals("DATE")) {
 			field.setType(BSFieldType.Date);
 		} else if (typeName.equals("TIMESTAMP")) {
-			field.setType(BSFieldType.Datetime);
+			field.setType(BSFieldType.Timestamp);
 		} else if (typeName.equals("DOUBLE")) {
 			field.setType(BSFieldType.Double);
 		} else if (typeName.equals("BIT")) {
