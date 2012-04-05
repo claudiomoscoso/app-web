@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class BSData implements Serializable{
 
 	private String value;
-	private boolean state = false;
+	private boolean state = true;
 	
 	public BSData(String value)
 	{

@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -75,9 +79,9 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 						Charset.forName("ISO-8859-1"));
 				products.readHeaders();
 				String[] headers = products.getHeaders();
-				List<List<BSData>> listaCampos = new ArrayList<List<BSData>>();
+				List<Map<String,BSData>> listaCampos = new ArrayList<Map<String,BSData>>();
 				while (products.readRecord()) {
-					List<BSData> fila = new ArrayList<BSData>();
+					Map<String,BSData> fila = new LinkedHashMap<String,BSData>();
 					//BSField[] fields = new BSField[headers.length];
 					for (int i = 0; i < headers.length; i++) {
 
@@ -86,18 +90,15 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 						BSField field = new BSField(headers[i], "");
 						field.setValue(products.get(headers[i]));
 						//fields[i] = field;
-						fila.add(new BSData(products.get(headers[i])));
+						//fila.add(new BSData(products.get(headers[i])));
+						fila.put(headers[i], new BSData(products.get(headers[i])));
 					}
-					//Se agrega un campo vacio para guardar el estado de la comparacion
+					fila.put("result", new BSData(""));
 					listaCampos.add(fila);					
-					//copyTypeTableToField(table.deleteId(), fields);
-					
-					//insertData(mySQL, table, fields);
 
-					// perform program logic here
 				}
 				products.close();
-				compareDataType(table.deleteId(), listaCampos);
+				compareDataType(table.deleteIdMap(), listaCampos);
 				HttpSession session = request.getSession();
 				session.setAttribute("respCSV", listaCampos);
 				request.getRequestDispatcher("/WEB-INF/jsp/table/csvResponse.jsp").forward(request, response);
@@ -107,23 +108,24 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 	}
 
-	private void compareDataType(BSField[] fields,List<List<BSData>> listaCampos) {
+	private void compareDataType(Map<String,BSField> fields,List<Map<String,BSData>> listaCampos) {
 		
 		BSTypeFactory bsTypeFactory = new BSTypeFactory();
-		for (List<BSData> fila : listaCampos) {
-			int longRow = fila.size();
-			for (int i = 0; i < longRow; i++) {
-				BSData celda = fila.get(i);
-				try{
-					Boolean resp = bsTypeFactory.evaluate(celda.getValue(), fields[i]);
-					if(resp)
-						celda.setState(true);
-					else
-						celda.setState(false);
-				}catch(Exception e)
+		for (Map<String, BSData> map : listaCampos) {
+			Iterator it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>)it.next();
+				
+				if(!e.getKey().toString().equalsIgnoreCase("result"))
 				{
-					
+					Boolean resp = bsTypeFactory.evaluate(e.getValue().getValue(), fields.get(e.getKey()));
+					if(!resp)
+					{
+						map.get("result").setState(false);
+					    e.getValue().setState(false);
+					}
 				}
+
 			}
 		}
 		

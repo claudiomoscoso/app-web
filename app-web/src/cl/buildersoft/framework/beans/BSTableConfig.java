@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
@@ -97,16 +99,11 @@ public class BSTableConfig {
 	}
 
 	public void configFields(Connection conn, BSmySQL mysql) {
-		try {
 			configBasic(conn, mysql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		configFKFields(conn, mysql);
+			configFKFields(conn, mysql);
 	}
 
-	private void configBasic(Connection conn, BSmySQL mysql) throws SQLException {
+	private void configBasic(Connection conn, BSmySQL mysql) {
 		String sql = getSQL();
 		ResultSet resultSet = mysql.queryResultSet(conn, sql, null);
 		BSField[] fields = getFields();
@@ -388,7 +385,8 @@ public class BSTableConfig {
 		}
 		return out;
 	}
-
+	
+	@Deprecated
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;
@@ -398,5 +396,14 @@ public class BSTableConfig {
 			}
 		}
 		return out;
+	}
+	
+	public Map<String,BSField> deleteIdMap(){
+		BSField[] out = this.deleteId();
+		Map<String,BSField> mapField = new HashMap<String, BSField>();
+		for (BSField s : out) {
+			mapField.put(s.getName(), s);
+		}
+		return mapField;		
 	}
 }
