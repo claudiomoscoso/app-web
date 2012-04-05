@@ -12,10 +12,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*" })
-public class NoChacheFilter implements Filter {
+@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*","/Test*" })
+public class NoCacheFilter implements Filter {
 
-	public NoChacheFilter() {
+	public NoCacheFilter() {
 	}
 
 	public void destroy() {

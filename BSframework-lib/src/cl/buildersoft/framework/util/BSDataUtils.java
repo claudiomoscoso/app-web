@@ -125,7 +125,7 @@ public class BSDataUtils extends BSUtils {
 		return out;
 	}
 
-	private void parametersToStatement(List<Object> parameters,
+	protected void parametersToStatement(List<Object> parameters,
 			PreparedStatement preparedStatement) {
 		// this.callableStatement = conn.prepareCall(sqlStatement);
 		try {

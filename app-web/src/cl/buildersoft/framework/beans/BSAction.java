@@ -4,6 +4,7 @@ import cl.buildersoft.framework.type.BSActionType;
 
 public class BSAction {
 	private String code = null;
+	private String defaultCode = null;
 	private String label = null;
 	private BSActionType actionType = null;
 	private String url = null;
@@ -12,12 +13,17 @@ public class BSAction {
 	public BSAction(String code, BSActionType actionType) {
 		super();
 		this.code = code;
+		this.defaultCode = code;
 		this.label = code;
 		this.actionType = actionType;
 	}
 
 	public String getCode() {
 		return code;
+	}
+
+	public String getDefaultCode() {
+		return defaultCode;
 	}
 
 	public void setCode(String code) {

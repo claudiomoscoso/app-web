@@ -106,7 +106,7 @@
 					value = BSWeb.date2String(value, format);
 					size = maxlength;
 					afterInput = "(formato: " + format + ")";
-				} else if (type.equals(BSFieldType.Datetime)) {
+				} else if (type.equals(BSFieldType.Timestamp)) {
 					maxlength = 16;
 					format = BSWeb.getFormatDatetime(request);
 					value = BSWeb.date2String(value, format);
