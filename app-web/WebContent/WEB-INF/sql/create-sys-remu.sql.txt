@@ -34,7 +34,7 @@ CREATE TABLE `tPerson` (
   `cMail` varchar(50) NOT NULL,
   PRIMARY KEY (`cId`)
 ) ENGINE=InnoDB;
-
+/*
 ALTER TABLE `remu`.`tperson` 
   ADD CONSTRAINT `tcomuna`
   FOREIGN KEY (`cComuna` )
@@ -42,7 +42,7 @@ ALTER TABLE `remu`.`tperson`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION
 , ADD INDEX `tcomuna` (`cComuna` ASC) ;
-
+*/
 
 /*
 -- Query: SELECT * FROM scout.tperson
