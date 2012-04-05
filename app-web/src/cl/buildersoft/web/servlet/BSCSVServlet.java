@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,8 +44,8 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 	}
 
 	/**
-	 * Lee archivo csv pasado desde la pagina como un inputstream,
-	 * y realiza validaciones con cada fila del archivo
+	 * Lee archivo csv pasado desde la pagina como un inputstream, y realiza
+	 * validaciones con cada fila del archivo
 	 */
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -75,61 +74,68 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 			} else {
 
-				CsvReader products = new CsvReader(item.getInputStream(),';',
-						Charset.forName("ISO-8859-1"));
-				products.readHeaders();
-				String[] headers = products.getHeaders();
-				List<Map<String,BSData>> listaCampos = new ArrayList<Map<String,BSData>>();
-				while (products.readRecord()) {
-					Map<String,BSData> fila = new LinkedHashMap<String,BSData>();
-					//BSField[] fields = new BSField[headers.length];
+				CsvReader fileContent = new CsvReader(item.getInputStream(),
+						',', Charset.forName("ISO-8859-1"));
+				fileContent.readHeaders();
+				String[] headers = fileContent.getHeaders();
+				List<Map<String, BSData>> listaCampos = new ArrayList<Map<String, BSData>>();
+				while (fileContent.readRecord()) {
+					Map<String, BSData> fila = new LinkedHashMap<String, BSData>();
+					// BSField[] fields = new BSField[headers.length];
 					for (int i = 0; i < headers.length; i++) {
 
 						System.out.println("campo = " + headers[i]
-								+ " valor = " + products.get(headers[i]));
+								+ " valor = " + fileContent.get(headers[i]));
 						BSField field = new BSField(headers[i], "");
-						field.setValue(products.get(headers[i]));
-						//fields[i] = field;
-						//fila.add(new BSData(products.get(headers[i])));
-						fila.put(headers[i], new BSData(products.get(headers[i])));
+						field.setValue(fileContent.get(headers[i]));
+						// fields[i] = field;
+						// fila.add(new BSData(products.get(headers[i])));
+						fila.put(headers[i],
+								new BSData(fileContent.get(headers[i])));
 					}
 					fila.put("result", new BSData(""));
-					listaCampos.add(fila);					
+					listaCampos.add(fila);
 
 				}
-				products.close();
+				fileContent.close();
 				compareDataType(table.deleteIdMap(), listaCampos);
 				HttpSession session = request.getSession();
-				session.setAttribute("respCSV", listaCampos);
-				request.getRequestDispatcher("/WEB-INF/jsp/table/csvResponse.jsp").forward(request, response);
+				request.setAttribute("Headers", headers);
+				synchronized (session) {
+					session.setAttribute("respCSV", listaCampos);
+				}
+				request.getRequestDispatcher(
+						"/WEB-INF/jsp/table/csvResponse.jsp").forward(request,
+						response);
 			}
 
 		}
 
 	}
 
-	private void compareDataType(Map<String,BSField> fields,List<Map<String,BSData>> listaCampos) {
-		
+	private void compareDataType(Map<String, BSField> fields,
+			List<Map<String, BSData>> listaCampos) {
+
 		BSTypeFactory bsTypeFactory = new BSTypeFactory();
 		for (Map<String, BSData> map : listaCampos) {
 			Iterator it = map.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>)it.next();
-				
-				if(!e.getKey().toString().equalsIgnoreCase("result"))
-				{
-					Boolean resp = bsTypeFactory.evaluate(e.getValue().getValue(), fields.get(e.getKey()));
-					if(!resp)
-					{
+				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>) it
+						.next();
+
+				if (!e.getKey().toString().equalsIgnoreCase("result")) {
+					Boolean resp = bsTypeFactory.evaluate(e.getValue()
+							.getValue(), fields.get(e.getKey()));
+					if (!resp) {
 						map.get("result").setState(false);
-					    e.getValue().setState(false);
+						e.getValue().setState(false);
 					}
 				}
 
 			}
 		}
-		
-		// TODO Auto-generated method stub		
+
+		// TODO Auto-generated method stub
 	}
 
 	private void insertData(BSmySQL mySQL, BSTableConfig table, BSField[] fields) {
@@ -137,7 +143,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		String sql = getSQL(table, fields);
 		List<Object> params = getValues4Insert(fields);
 
-		conn = mySQL.getConnection(getServletContext(),"bsframework");
+		conn = mySQL.getConnection(getServletContext(), "bsframework");
 		mySQL.insert(conn, sql, params);
 	}
 

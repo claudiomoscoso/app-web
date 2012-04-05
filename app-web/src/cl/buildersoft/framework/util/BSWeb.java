@@ -12,10 +12,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.MenuSelectionManager;
 
 import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.Menu;
 import cl.buildersoft.framework.beans.Option;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.database.BSmySQL;
@@ -25,20 +23,24 @@ import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSWeb {
-	public static Object value2Object(HttpServletRequest request, BSField field, boolean fromWebPage) {
+	public static Object value2Object(Connection conn,
+			HttpServletRequest request, BSField field, boolean fromWebPage) {
 		Object out = null;
 		String name = field.getName();
-		String value = fromWebPage ? request.getParameter(name) : (String)field.getValue();
+		String value = fromWebPage ? request.getParameter(name)
+				: (String) field.getValue();
 		BSFieldType type = field.getType();
-		
-//		System.out.println("name : " + field.getName() + " Valor : " + field.getValue());
-		
-		out = evaluateType(request, out, value, type);
+
+		// System.out.println("name : " + field.getName() + " Valor : " +
+		// field.getValue());
+
+		out = evaluateType(conn, request, out, value, type);
 		return out;
 	}
 
-	private static Object evaluateType(HttpServletRequest request, Object out,
-			String value, BSFieldType type) {
+	private static Object evaluateType(Connection conn,
+			HttpServletRequest request, Object out, String value,
+			BSFieldType type) {
 		if (type.equals(BSFieldType.String)) {
 			out = value;
 		} else if (type.equals(BSFieldType.Boolean)) {
@@ -46,7 +48,7 @@ public class BSWeb {
 		} else if (type.equals(BSFieldType.Date)) {
 			String formatDate = getFormatDate(request);
 
-//			String formatDate = "yyyy-MM-dd";
+			// String formatDate = "yyyy-MM-dd";
 			DateFormat formatter = new SimpleDateFormat(formatDate);
 
 			try {
@@ -57,7 +59,7 @@ public class BSWeb {
 			}
 
 		} else if (type.equals(BSFieldType.Timestamp)) {
-			String formatDate = getFormatDatetime(request);
+			String formatDate = getFormatDatetime(conn);
 			SimpleDateFormat dateFormat = new SimpleDateFormat(formatDate);
 			java.util.Date parsedDate;
 			try {
@@ -84,6 +86,12 @@ public class BSWeb {
 		return out;
 	}
 
+	public static String getFormatDatetime(Connection conn) {
+		BSConfig config = new BSConfig();
+		return config.getString(conn, "FORMAT_DATETIME");
+	}
+
+	@Deprecated
 	public static String getFormatDatetime(HttpServletRequest request) {
 		String out = request.getServletContext().getInitParameter(
 				"bsframework.datetimeFormat");
@@ -93,6 +101,12 @@ public class BSWeb {
 		return out;
 	}
 
+	public static String getFormatDate(Connection conn) {
+		BSConfig config = new BSConfig();
+		return config.getString(conn, "FORMAT_DATE");
+	}
+
+	@Deprecated
 	public static String getFormatDate(HttpServletRequest request) {
 		String out = request.getServletContext().getInitParameter(
 				"bsframework.dateFormat");
@@ -102,6 +116,12 @@ public class BSWeb {
 		return out;
 	}
 
+	public static String getFormatNumber(Connection conn) {
+		BSConfig config = new BSConfig();
+		return config.getString(conn, "FORMAT_NUMBER");
+	}
+
+	@Deprecated
 	public static String getFormatNumber(HttpServletRequest request) {
 		String out = request.getServletContext().getInitParameter(
 				"bsframework.numberFormat");

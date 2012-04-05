@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <LINK rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/default.css" />
+	href="${pageContext.request.contextPath}/css/default.css?<%=Math.random() %>>" />
 <title>Buildersoft &radic;</title>
 <script>
 	var contextPath = "${pageContext.request.contextPath}";
@@ -27,7 +27,7 @@
 		<tr>
 			<td style="width: 18%">&nbsp;</td>
 			<td>&nbsp;</td>
-			<td style="width: 10%"><a
+			<td style="width: 10%" align="right"><a
 				href="${pageContext.request.contextPath}/jsp/login/logout.jsp">
 					<img src="${pageContext.request.contextPath}/img/common/logout.gif">
 			</a></td>

@@ -252,7 +252,7 @@
 	}
 
 	private String getFKValue(BSField field, Object code) {
-		String out = "-not found-";
+		String out = "-";
 		Long codeLong = (Long) code;
 
 		List<Object[]> data = field.getFkData();

@@ -18,7 +18,7 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 
 	@Override
 	protected BSTableConfig getBSTableConfig() {
-		BSTableConfig table = new BSTableConfig("bscommon", "tParameter");
+		BSTableConfig table = new BSTableConfig("bsframework", "tParameter");
 		BSField field;
 
 		field = new BSField("cId", "Id");
