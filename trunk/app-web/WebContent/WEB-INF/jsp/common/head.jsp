@@ -25,7 +25,7 @@
 
 	<table border="0" style="width: 100%">
 		<tr>
-			<td style="width: 15%">&nbsp;</td>
+			<td style="width: 18%">&nbsp;</td>
 			<td>&nbsp;</td>
 			<td style="width: 10%"><a
 				href="${pageContext.request.contextPath}/jsp/login/logout.jsp">
