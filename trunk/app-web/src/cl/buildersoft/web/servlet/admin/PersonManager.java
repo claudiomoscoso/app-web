@@ -92,6 +92,12 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		download.setUrl("/servlet/admin/PersonCSV");
 		table.addAction(download);
 
+		BSAction viewFKdetails = new BSAction("FK_DETAIL", BSActionType.Table);
+		viewFKdetails.setLabel("Ver detalle de tablas secundarias");
+		viewFKdetails.setUrl("/servlet/admin/PersonFK");
+		table.addAction(viewFKdetails);
+
+		
 		return table;
 	}
 

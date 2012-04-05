@@ -143,7 +143,7 @@
 		out.print("<div id='MultirecordActions' style='float:left;display:none;'>");
 		for (BSAction action : multirecordActions) {
 			if (BSWeb.canUse(action.getCode(), request)) {
-				String id = capitalize(action.getCode());
+				String id = capitalize(action.getDefaultCode());
 				out.print("<input type='button' ");
 				out.print("value='" + action.getLabel() + "' ");
 				out.print("id='o" + id + "' ");

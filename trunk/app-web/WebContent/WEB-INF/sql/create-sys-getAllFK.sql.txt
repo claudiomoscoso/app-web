@@ -1,0 +1,15 @@
+use remu;
+
+DROP PROCEDURE getAllFK;
+DELIMITER $$
+
+CREATE PROCEDURE getAllFK(IN tables VARCHAR(255))
+BEGIN
+	SELECT * FROM bscommon.vSystem;
+	/*
+	SELECT * FROM bscommon.vType;
+	SELECT * FROM remu.tPerson;
+	*/
+END$$
+
+DELIMITER ;
