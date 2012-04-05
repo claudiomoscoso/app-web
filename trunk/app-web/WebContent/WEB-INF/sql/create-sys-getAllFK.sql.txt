@@ -1,6 +1,6 @@
 use remu;
 
-DROP PROCEDURE getAllFK;
+DROP PROCEDURE if exists getAllFK;
 DELIMITER $$
 
 CREATE PROCEDURE getAllFK(IN tables VARCHAR(255))
