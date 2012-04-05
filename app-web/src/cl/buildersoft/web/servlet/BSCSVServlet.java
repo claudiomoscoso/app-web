@@ -75,7 +75,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 			} else {
 
-				CsvReader products = new CsvReader(item.getInputStream(),
+				CsvReader products = new CsvReader(item.getInputStream(),';',
 						Charset.forName("ISO-8859-1"));
 				products.readHeaders();
 				String[] headers = products.getHeaders();
