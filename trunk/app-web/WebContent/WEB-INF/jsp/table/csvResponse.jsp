@@ -11,78 +11,80 @@
 
 <h1 class="cTitle">Respuesta del CSV</h1>
 <div style="overflow: scroll; width: 1080px; height: 450px">
-<%
+	<%
+		List<Map<String, BSData>> respCSV = (List<Map<String, BSData>>) session
+				.getAttribute("respCSV");
+		out.println("<table class='cList' cellpadding='0' cellspacing='0'>");
+		out.println("<tr>");
 
-	List<Map<String,BSData>> respCSV = (List<Map<String,BSData>>)session.getAttribute("respCSV");
-	out.println("<table class='cList' cellpadding='0' cellspacing='0'>");
-	out.println("<tr>");	
-	for(int i=0;i<15;i++)
-	{
-		out.println("<td class='cHeadTD'>encabezado</td>");		
-	}
-	out.println("</tr>");
-	Integer rowCount = 0;
+		String[] headers = (String[]) request.getAttribute("Headers");
 
-for (Map<String, BSData> map : respCSV) {
-	String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
-	out.println("<tr>");
-	Iterator it = map.entrySet().iterator();
-	while (it.hasNext()) {
-		Map.Entry<String, BSData> e = (Map.Entry<String, BSData>)it.next();
-		if(!e.getKey().toString().equalsIgnoreCase("result"))
-		{
-			out.println("<td  class='"+(!e.getValue().isState() ? "cDataErrorTD" : color)+"' align='left'>");
-			out.print(e.getValue().getValue());
-			out.println("</td>");
-		}
-	}
-	if(!map.get("result").isState())
-	{
-		out.println("<td  class='cDataErrorTD' align='left'>");
-		out.print("NOK");
-		out.println("</td>");			
-	}
-	else
-	{
-		out.println("<td  class='cDataTD' align='left'>");
-		out.print("OK");
-		out.println("</td>");
-	}	
-	out.println("</tr>");
-}
-out.println("</table>");
-
-
-/*
-List<List<BSData>> respCSV = (List<List<BSData>>)session.getAttribute("respCSV");
-	
-	out.println("<table class='cList' cellpadding='0' cellspacing='0'>");
-	out.println("<tr>");	
-	for(int i=0;i<15;i++)
-	{
-		out.println("<td class='cHeadTD'>encabezado</td>");		
-	}
-	out.println("</tr>");
-	Integer rowCount = 0;
-	for (List<BSData> fila : respCSV) {
-		String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
-		out.println("<tr>");	
-		int longRow = fila.size();
-		for (int i = 0; i < longRow; i++) {
-			BSData celda = fila.get(i);
-			
-			out.println("<td  class='"+(!celda.isState() ? "cDataErrorTD" : color)+"' align='left'>");
-			out.print(celda.getValue());
-			out.println("</td>");
+		for (String hearder : headers) {
+			out.println("<td class='cHeadTD'>" + hearder.substring(1)
+					+ "</td>");
 		}
 		out.println("</tr>");
-	}
-	out.println("</table>");
+		Integer rowCount = 0;
 
-*/
-%>
+		for (Map<String, BSData> map : respCSV) {
+			String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
+			out.println("<tr>");
+			Iterator it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>) it
+						.next();
+				if (!e.getKey().toString().equalsIgnoreCase("result")) {
+					out.println("<td  class='"
+							+ (!e.getValue().isState() ? "cErrorTD" : color)
+							+ "' align='left'>");
+					out.print(e.getValue().getValue());
+					out.println("</td>");
+				}
+			}
+			/**<code>
+			 if (!map.get("result").isState()) {
+			 out.println("<td  class='cErrorTD' align='left'>");
+			 out.print("NOK");
+			 out.println("</td>");
+			 } else {
+			 out.println("<td  class='cDataTD' align='left'>");
+			 out.print("OK");
+			 out.println("</td>");
+			 }
+			 </code>*/
+			out.println("</tr>");
+		}
+		out.println("</table>");
+
+		/**<code>
+		 List<List<BSData>> respCSV = (List<List<BSData>>)session.getAttribute("respCSV");
+		
+		 out.println("<table class='cList' cellpadding='0' cellspacing='0'>");
+		 out.println("<tr>");	
+		 for(int i=0;i<15;i++)
+		 {
+		 out.println("<td class='cHeadTD'>encabezado</td>");		
+		 }
+		 out.println("</tr>");
+		 Integer rowCount = 0;
+		 for (List<BSData> fila : respCSV) {
+		 String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
+		 out.println("<tr>");	
+		 int longRow = fila.size();
+		 for (int i = 0; i < longRow; i++) {
+		 BSData celda = fila.get(i);
+		
+		 out.println("<td  class='"+(!celda.isState() ? "cDataErrorTD" : color)+"' align='left'>");
+		 out.print(celda.getValue());
+		 out.println("</td>");
+		 }
+		 out.println("</tr>");
+		 }
+		 out.println("</table>");
+		</code>
+		 */
+	%>
 </div>
-
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
 

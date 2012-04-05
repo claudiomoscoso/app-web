@@ -41,13 +41,14 @@ public class InsertRecord extends AbstractServletUtil {
 
 		BSField[] fields = table.deleteId();
 		String sql = getSQL(table, fields, request);
-
-		List<Object> params = getValues4Insert(request, fields);
-
+		
 		BSmySQL mySQL = new BSmySQL();
 		Connection conn = null;
 
 		conn = mySQL.getConnection(getServletContext(), "bsframework");
+
+		List<Object> params = getValues4Insert(conn , request, fields);
+
 		mySQL.insert(conn, sql, params);
 
 		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
@@ -65,14 +66,14 @@ public class InsertRecord extends AbstractServletUtil {
 		return sql;
 	}
 
-	private List<Object> getValues4Insert(HttpServletRequest request,
+	private List<Object> getValues4Insert(Connection conn, HttpServletRequest request,
 			BSField[] fields) {
 
 		List<Object> out = new ArrayList<Object>();
 		Object value = null;
 
 		for (BSField field : fields) {
-			value = BSWeb.value2Object(request, field, true);
+			value = BSWeb.value2Object(conn, request, field, true);
 			out.add(value);
 
 		}

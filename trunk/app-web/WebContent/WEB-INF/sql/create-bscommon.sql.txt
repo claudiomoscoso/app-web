@@ -19,17 +19,7 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/s
 use bscommon;
 
 drop table if exists tComuna;
-drop table if exists tParameter;
 drop table if exists tBoard;
-
-CREATE TABLE `tParameter` (
-  `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-  `cSystem` BIGINT NOT NULL,
-  `cKey` 	varchar(20) NOT NULL,
-  cLabel	varchar(100) NOT NULL,
-  `cValue`	Varchar(100) NOT NULL,
-  `cType`	BIGINT NOT NULL
-) ENGINE=InnoDB;
 
 CREATE TABLE tComuna (
   `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
@@ -41,7 +31,7 @@ CREATE TABLE tComuna (
 CREATE TABLE `tBoard` (
   `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
   `cType` varchar(15) NOT NULL,
-  `cCode` BIGINT NOT NULL,
+  `cKey` varchar(10) DEFAULT '',
   `cValue` Varchar(200) NOT NULL,
   cEnable BIT NOT NULL DEFAULT 1
 ) ENGINE=InnoDB;
@@ -49,40 +39,39 @@ CREATE TABLE `tBoard` (
 DROP VIEW IF EXISTS vSex;
 CREATE VIEW vSex
 AS
-SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='SEX';
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='SEX';
 
 DROP VIEW IF EXISTS vSystem;
 CREATE VIEW vSystem
 AS
-SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='SYSTEM';
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='SYSTEM';
 
 DROP VIEW IF EXISTS vType;
 CREATE VIEW vType
 AS
-SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='TYPE';
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='TYPE';
 
 DROP VIEW IF EXISTS vTypeOption;
 CREATE VIEW vTypeOption
 AS
-SELECT cCode AS cId, cValue AS cName FROM tBoard WHERE cType='TYPE_OPTION';
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='TYPE_OPTION';
 
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('SEX', 0, 'Femenino');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('SEX', 1, 'Masculino');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('SEX', 'F', 'Femenino');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('SEX', 'M', 'Masculino');
 
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 1, 'Sistema');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 2, 'Remunaraciones');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('SYSTEM', 3, 'Contabilidad');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('SYSTEM', 'SYS', 'Sistema');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('SYSTEM', 'REMU', 'Remunaraciones');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('SYSTEM', 'CONTA', 'Contabilidad');
 
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 1, 'String');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 2, 'Double');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 3, 'Integer');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 4, 'Timestamp');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 5, 'Boolean');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE', 6, 'Long');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'STRING', 'String');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'DOUBLE', 'Double');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'INTEGER', 'Integer');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'TIMESTAMP', 'Timestamp');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'BOOLEAN', 'Boolean');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE', 'LONG', 'Long');
 
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 1, 'Menu');
-INSERT INTO tBoard(cType, cCode, cValue) VALUES('TYPE_OPTION', 2, 'Button');
-
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE_OPTION', 'MENU', 'Menu');
+INSERT INTO tBoard(cType, cKey, cValue) VALUES('TYPE_OPTION', 'BUTTON', 'Button');
 
 INSERT INTO `tComuna` (`cID`,`cName`,`cRegion`,`cPrioridad`) VALUES (1,'Alto Hospicio',1,0);
 INSERT INTO `tComuna` (`cID`,`cName`,`cRegion`,`cPrioridad`) VALUES (2,'Camina',1,0);

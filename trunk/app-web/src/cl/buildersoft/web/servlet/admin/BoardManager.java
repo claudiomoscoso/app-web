@@ -16,7 +16,7 @@ public class BoardManager extends BSHttpServlet {
 		BSTableConfig table = new BSTableConfig("bscommon", "tBoard");
 		table.setTitle("Tablón (tBoard)");
 
-		table.setSortField("cType, cCode");
+		table.setSortField("cType, cKey");
 		return table;
 	}
 

@@ -48,7 +48,7 @@
 	id="frm" method="post">
 	<input type="hidden" name="cId"
 		value="<%=request.getParameter("cId")%>">
-	<table border="0">
+	<table border="0"  width="50%">
 		<tr>
 			<td style="width: 30%" align="center"><span class="cLabel">Disponibles</span><br>
 				<select SIZE="10" id="left" style="width: 100%">

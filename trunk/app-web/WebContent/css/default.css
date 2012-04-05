@@ -46,13 +46,23 @@ SPAN.cMessage
     FONT-FAMILY: Tahoma
 }
 
-cError
+.cError
 {
     FONT-WEIGHT: bold;
     FONT-SIZE: smaller;
     CURSOR: default;
     FONT-FAMILY: Tahoma;
     COLOR: red;
+}
+
+.cErrorTD
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: smaller;
+    CURSOR: default;
+    FONT-FAMILY: Tahoma;
+    COLOR: yellow;
+    background-color: red
 }
 
 H1.cTitle

@@ -29,7 +29,7 @@ public class BSPaging {
 		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);
 		this.recordCount = recordCount(conn, mysql, table);
-		this.recordPerPage = getRecordsPerPage(context);
+		this.recordPerPage = getRecordsPerPage(conn);
 		this.requiresPaging = requiresPaging();
 		this.pageCount = calculatePageCount(this.recordCount,
 				this.recordPerPage);
@@ -140,6 +140,7 @@ public class BSPaging {
 		return this.recordCount > this.recordPerPage;
 	}
 
+	@Deprecated
 	private Integer getRecordsPerPage(ServletContext context) {
 		String recordPerPageString = context
 				.getInitParameter("bsframework.recordPerPage");
@@ -150,6 +151,11 @@ public class BSPaging {
 			recordPerPageInteger = new Integer(20);
 		}
 		return recordPerPageInteger;
+	}
+
+	private Integer getRecordsPerPage(Connection conn) {
+		BSConfig config = new BSConfig();
+		return config.getInteger(conn, "RECORDS_PER_PAGE");
 	}
 
 	/**********************/

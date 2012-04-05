@@ -23,7 +23,7 @@
 <!--  
 <form action="${pageContext.request.contextPath}/servlet/ShowParameters" method="post">
  -->
-	<table border="0">
+	<table border="0" width="50%">
 		<tr>
 			<td class="cLabel">Roles:</td>
 			<td><select name="Rol" onchange="javascript:changeSelect(this);">

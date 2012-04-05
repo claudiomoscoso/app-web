@@ -1,5 +1,7 @@
 USE bsframework;
 
+
+DROP TABLE IF EXISTS tParameter;
 DROP TABLE IF EXISTS tUser;
 DROP TABLE IF EXISTS tRol;
 DROP TABLE IF EXISTS tR_UserRol;
@@ -40,6 +42,16 @@ CREATE TABLE IF NOT EXISTS tFileCategory (
     cContentType	VARCHAR(100) NOT NULL
 ) ENGINE=innoDB;
 
+
+CREATE TABLE `tParameter` (
+  `cId` BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  `cSystem` BIGINT NOT NULL,
+  `cKey` 	varchar(20) NOT NULL,
+  cLabel	varchar(100) NOT NULL,
+  `cValue`	Varchar(100) NOT NULL,
+  `cType`	BIGINT NOT NULL
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS tUser (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cMail 		VARCHAR(50) NOT NULL UNIQUE,
@@ -73,6 +85,15 @@ CREATE TABLE IF NOT EXISTS tR_RolOption (
 	cOption		BIGINT NOT NULL,
 	PRIMARY KEY(cRol, cOption)
 ) ENGINE=innoDB;
+
+/** Datos escenciales */
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_NUMBER', 'Formato para montos', '#,###,###,###', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'CSV_SEPARATOR', 'Separador de archivos csv', ';', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', 8);
+
+
 
 INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
 SET @userId = LAST_INSERT_ID();
