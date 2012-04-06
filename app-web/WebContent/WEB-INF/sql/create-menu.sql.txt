@@ -1,0 +1,42 @@
+use bsframework;
+
+SELECT cId INTO @rolId FROM tRol WHERE cName = 'Administrador';
+
+/** Opciones para perfilar y crear usuarios */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ADMIN', 'Administracion', NULL, NULL);
+SET @menuIdAdmin = LAST_INSERT_ID();
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdAdmin);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/servlet/admin/UserManager', @menuIdAdmin);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuIdAdmin);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuIdAdmin);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuIdAdmin);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+
+/**Opciones de tablas del sistema*/
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMMON', 'Tablas', NULL, @menuIdAdmin);
+SET @menuIdTables = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('BOARD', 'Tablon', '/servlet/admin/BoardManager', @menuIdTables);
+/**INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, LAST_INSERT_ID());*/
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PARAMS', 'Par&aacute;metros del Sistema', '/servlet/common/ParameterManager', @menuIdTables);
+SET @menuIdSysparam = LAST_INSERT_ID();
+/*INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, @menuId);*/
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('ADD_PARAMS', 'Bot&oacute;n Nuevo', null, @menuIdSysparam, 2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Bot&oacute;n Modificar', null, @menuIdSysparam, 2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Bot&oacute;n Borrar', null, @menuIdSysparam, 2);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuIdTables);
+
+
+/** Opciones (ejemplo) de Sistema de remuneraciones */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
+SET @menuIdRemu = LAST_INSERT_ID();
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERSON', 'Personas', '/servlet/admin/PersonManager', @menuIdRemu);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/jsp/file/upload.jsp', @menuIdRemu);
+SET @menuIdFiles = LAST_INSERT_ID();
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuIdFiles);
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuIdFiles);

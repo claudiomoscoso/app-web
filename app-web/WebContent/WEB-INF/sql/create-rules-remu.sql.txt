@@ -1,0 +1,8 @@
+use remu;
+
+ALTER TABLE `remu`.`tperson` 
+ADD CONSTRAINT `withComuna` FOREIGN KEY (`cComuna` ) REFERENCES `bscommon`.`tcomuna` (`cId` ), 
+ADD INDEX `comuna_index` (`cComuna` ASC) ;
+
+ALTER TABLE `remu`.`tperson` 
+ADD CONSTRAINT `withSexo` FOREIGN KEY (`cSexo` ) REFERENCES `bscommon`.`tBoard` (`cId`); 

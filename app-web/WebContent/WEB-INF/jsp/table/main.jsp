@@ -255,7 +255,7 @@
 		String out = "-";
 		Long codeLong = (Long) code;
 
-		List<Object[]> data = field.getFkData();
+		List<Object[]> data = field.getFKData();
 		Long id = null;
 		for (Object[] row : data) {
 			id = (Long) row[0];

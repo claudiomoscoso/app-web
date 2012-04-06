@@ -151,7 +151,7 @@
 
 	private Boolean isFK(BSField field) {
 		Boolean out = Boolean.FALSE;
-		List<Object[]> data = field.getFkData();
+		List<Object[]> data = field.getFKData();
 		out = data != null;
 		return out;
 	}
@@ -177,7 +177,7 @@
 
 		String out = "<select name='";
 		out += name + "'>";
-		List<Object[]> data = field.getFkData();
+		List<Object[]> data = field.getFKData();
 		for (Object[] row : data) {
 			out += "<option value='" + row[0] + "' ";
 			if (value != null) {

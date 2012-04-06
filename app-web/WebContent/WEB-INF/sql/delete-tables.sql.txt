@@ -1,0 +1,18 @@
+use remu;
+drop table if exists tPerson;
+
+use bscommon;
+drop table if exists tComuna;
+drop table if exists tBoard;
+
+USE bsframework;
+DROP TABLE IF EXISTS tParameter;
+DROP TABLE IF EXISTS tUser;
+DROP TABLE IF EXISTS tRol;
+DROP TABLE IF EXISTS tR_UserRol;
+DROP TABLE IF EXISTS tOption;
+DROP TABLE IF EXISTS tR_RolOption;
+DROP TABLE IF EXISTS tFile;
+DROP TABLE IF EXISTS tFileCategory;
+
+

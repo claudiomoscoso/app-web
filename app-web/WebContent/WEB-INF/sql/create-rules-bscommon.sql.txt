@@ -1,0 +1,21 @@
+use bscommon;
+
+DROP VIEW IF EXISTS vSexo;
+CREATE VIEW vSexo
+AS
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='SEX';
+
+DROP VIEW IF EXISTS vSystem;
+CREATE VIEW vSystem
+AS
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='SYSTEM';
+
+DROP VIEW IF EXISTS vType;
+CREATE VIEW vType
+AS
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='TYPE';
+
+DROP VIEW IF EXISTS vTypeOption;
+CREATE VIEW vTypeOption
+AS
+SELECT cId, cValue AS cName FROM tBoard WHERE cType='TYPE_OPTION';

@@ -1,6 +1,7 @@
+/** 
 use bsframework;
 
-/** Creación del menu en base bsframework */
+Creación del menu en base bsframework 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
 SET @menuId = LAST_INSERT_ID();
 
@@ -10,6 +11,7 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', '/j
 SET @menuId = LAST_INSERT_ID();
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOAD', 'Carga', '/jsp/file/upload.jsp', @menuId);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DOWNLOAD', 'Descarga', '/jsp/file/upload.jsp', @menuId);
+*/
 
 use remu;
 
@@ -34,7 +36,9 @@ CREATE TABLE `tPerson` (
   `cMail` varchar(50) NOT NULL,
   PRIMARY KEY (`cId`)
 ) ENGINE=InnoDB;
-/*
+
+
+/* 
 ALTER TABLE `remu`.`tperson` 
   ADD CONSTRAINT `tcomuna`
   FOREIGN KEY (`cComuna` )
@@ -42,14 +46,13 @@ ALTER TABLE `remu`.`tperson`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION
 , ADD INDEX `tcomuna` (`cComuna` ASC) ;
-*/
+ 
 
-/*
 -- Query: SELECT * FROM scout.tperson
 LIMIT 0, 1000
 
 -- Date: 2012-03-25 22:21
-*/
+
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (1,'14184576-4',1,'2007-05-23','FELIPE FRANCISCO','IBANEZ','ESCOBAR','PJE. LAS CALESAS','1111','SAN GERONIMO','','',315,'2-8509029','8-3575908','gibson19@hotmail.com');
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (2,'16094925-2',0,'2007-05-23','VALENTINA CRISTAL','BRAVO','FARIAS','PJE. DAMIAN','1691','DOnA GARBIELA','','',315,'5361611','8-8590139','about_boo@hotmail.com');
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (3,'15843093-2',1,'2007-05-23','FELIPE ANDRES','PENALOZA','PIZARRO','DOMINGO TOCORNAL','462','DOMINGO TOCORNAL','','',315,0,'','fonaco@gmail.com');
@@ -206,3 +209,4 @@ INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellid
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (156,'13688666-5',0,'2007-06-08','Maria Alejandra','Machuca','Arana','La Quebrada ','4195','','','',315,'4478510','','');
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (157,'7895432-9',1,'2007-06-08','Ricardo Eduardo','Espinoza','Arellano','Tegualda','470','Galvarino','','',293,'2891136','09579844','Kaa470@gmail.com');
 INSERT INTO `tPerson` (`cId`,`cRUT`,`cSexo`,`cFechaRegistro`,`cNombre`,`cApellidoPaterno`,`cApellidoMaterno`,`cDireccion`,`cNumero`,`cVilla`,`cBlock`,`cDepartamento`,`cComuna`,`cTelefono`,`cCelular`,`cMail`) VALUES (161,'12166670-7',0,'2007-05-23','MARCIA OLIVIA','SANDOVAL','FARIAS','PJE. DAMIAN','1691','DONA GARBIELA','','',315,'2-5361611','9-3788354','marcia_sandovalf@hotmail.com');
+*/

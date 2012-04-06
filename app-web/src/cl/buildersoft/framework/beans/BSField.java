@@ -36,7 +36,7 @@ public class BSField {
 
 	public Boolean isFK() {
 		Boolean out = Boolean.FALSE;
-		List<Object[]> data = getFkData();
+		List<Object[]> data = getFKData();
 		out = data != null;
 		return out;
 	}
@@ -96,6 +96,14 @@ public class BSField {
 		return value;
 	}
 
+	public String getValueAsString() {
+		return getValue().toString();
+	}
+
+	public Long getValueAsLong() {
+		return Long.parseLong(getValueAsString());
+	}
+
 	public void setValue(Object value) {
 		this.value = value;
 	}
@@ -136,7 +144,7 @@ public class BSField {
 	public String getFKDatabase() {
 		return fk != null ? fk[0] : null;
 	}
-	
+
 	public String getFKTable() {
 		return fk != null ? fk[1] : null;
 	}
@@ -152,7 +160,7 @@ public class BSField {
 		this.fk[2] = fkField;
 	}
 
-	public List<Object[]> getFkData() {
+	public List<Object[]> getFKData() {
 		return fkData;
 	}
 

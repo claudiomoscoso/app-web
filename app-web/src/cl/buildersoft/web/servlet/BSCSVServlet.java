@@ -68,11 +68,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 			throw new BSSystemException("0201", e.getMessage());
 		}
 		for (FileItem item : items) {
-			if (item.isFormField()) {
-				String name = item.getFieldName();
-				String value = item.getString();
-
-			} else {
+			if (!item.isFormField()) {
 
 				CsvReader fileContent = new CsvReader(item.getInputStream(),
 						',', Charset.forName("ISO-8859-1"));
@@ -80,25 +76,30 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 				String[] headers = fileContent.getHeaders();
 				List<Map<String, BSData>> listaCampos = new ArrayList<Map<String, BSData>>();
 				while (fileContent.readRecord()) {
-					Map<String, BSData> fila = new LinkedHashMap<String, BSData>();
+					Map<String, BSData> dataRow = new LinkedHashMap<String, BSData>();
 					// BSField[] fields = new BSField[headers.length];
 					for (int i = 0; i < headers.length; i++) {
+						//
+						// System.out.println("campo = " + headers[i]
+						// + " valor = " + fileContent.get(headers[i]));
 
-						System.out.println("campo = " + headers[i]
-								+ " valor = " + fileContent.get(headers[i]));
 						BSField field = new BSField(headers[i], "");
 						field.setValue(fileContent.get(headers[i]));
 						// fields[i] = field;
 						// fila.add(new BSData(products.get(headers[i])));
-						fila.put(headers[i],
+
+						dataRow.put(headers[i],
 								new BSData(fileContent.get(headers[i])));
+
 					}
-					fila.put("result", new BSData(""));
-					listaCampos.add(fila);
+					dataRow.put("result", new BSData(""));
+					listaCampos.add(dataRow);
 
 				}
 				fileContent.close();
+
 				compareDataType(table.deleteIdMap(), listaCampos);
+
 				HttpSession session = request.getSession();
 				request.setAttribute("Headers", headers);
 				synchronized (session) {
@@ -114,28 +115,61 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 	}
 
 	private void compareDataType(Map<String, BSField> fields,
-			List<Map<String, BSData>> listaCampos) {
+			List<Map<String, BSData>> fieldList) {
+		Boolean typeRight = Boolean.FALSE;
+		Boolean fkRight = Boolean.FALSE;
+		Boolean isUpdate = null;
+		BSField field = null;
+		String value = null;
+		Boolean isRight = null;
 
-		BSTypeFactory bsTypeFactory = new BSTypeFactory();
-		for (Map<String, BSData> map : listaCampos) {
+		BSTypeFactory bsType = new BSTypeFactory();
+		for (Map<String, BSData> map : fieldList) {
 			Iterator it = map.entrySet().iterator();
+
 			while (it.hasNext()) {
-				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>) it
+				Map.Entry<String, BSData> entry = (Map.Entry<String, BSData>) it
 						.next();
 
-				if (!e.getKey().toString().equalsIgnoreCase("result")) {
-					Boolean resp = bsTypeFactory.evaluate(e.getValue()
-							.getValue(), fields.get(e.getKey()));
-					if (!resp) {
-						map.get("result").setState(false);
-						e.getValue().setState(false);
+				if (!entry.getKey().toString().equalsIgnoreCase("result")) {
+					field = fields.get(entry.getKey());
+					value = entry.getValue().getValue();
+					field.setValue(value);
+					typeRight = bsType.evaluate(value, field);
+
+					if (typeRight) {
+						fkRight = validFK(field);
 					}
+
+					isRight = typeRight && fkRight;
+
+					map.get("result").setState(isRight);
+					entry.getValue().setState(isRight);
+
 				}
 
 			}
 		}
+	}
 
-		// TODO Auto-generated method stub
+	private Boolean validFK(BSField field) {
+		Boolean out = Boolean.TRUE;
+		if (field.isFK()) {
+			List<Object[]> allData = field.getFKData();
+			Long value = field.getValueAsLong();
+			Long dataLong;
+			Boolean found = Boolean.FALSE;
+			for (Object[] data : allData) {
+				dataLong = Long.parseLong(data[0].toString());
+				if (dataLong.equals(value)) {
+					found = Boolean.TRUE;
+					break;
+				}
+			}
+			out = found;
+		}
+
+		return out;
 	}
 
 	private void insertData(BSmySQL mySQL, BSTableConfig table, BSField[] fields) {

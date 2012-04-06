@@ -1,0 +1,5 @@
+use bsframework;
+
+ALTER TABLE tR_RolOption ADD PRIMARY KEY(cRol, cOption);
+
+ALTER TABLE tR_UserRol ADD PRIMARY KEY(cUser,cRol);
