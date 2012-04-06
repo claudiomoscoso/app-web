@@ -6,14 +6,18 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.framework.type.BSFieldType;
+
+import com.mysql.jdbc.DatabaseMetaData;
 
 public class BSTableConfig {
 	private String database = null;
@@ -23,6 +27,8 @@ public class BSTableConfig {
 	private String uri = null;
 	private BSAction[] actions = null;
 	private String sortField = null;
+	private Map<String, String[]> fkInfo = null;
+	private Set<String> tablesCommon = null;
 
 	public BSTableConfig(String database, String tableName) {
 		this.database = database;
@@ -99,8 +105,8 @@ public class BSTableConfig {
 	}
 
 	public void configFields(Connection conn, BSmySQL mysql) {
-			configBasic(conn, mysql);
-			configFKFields(conn, mysql);
+		configBasic(conn, mysql);
+		configFKFields(conn, mysql);
 	}
 
 	private void configBasic(Connection conn, BSmySQL mysql) {
@@ -193,26 +199,154 @@ public class BSTableConfig {
 	}
 
 	private void configFKFields(Connection conn, BSmySQL mySQL) {
+		/**
+		 * <code>
+			IMPORTED KEYS:
+			--------------------
+			PKTABLE_CAT=bscommon
+			PKTABLE_SCHEM=null
+			PKTABLE_NAME=tboard
+			PKCOLUMN_NAME=cId
+			FKTABLE_CAT=remu
+			FKTABLE_SCHEM=null
+			FKTABLE_NAME=tPerson
+			FKCOLUMN_NAME=cSexo
+			KEY_SEQ=1
+			UPDATE_RULE=3
+			DELETE_RULE=3
+			FK_NAME=withSexo
+			PK_NAME=null
+			--------------------
+			PKTABLE_CAT=bscommon
+			PKTABLE_SCHEM=null
+			PKTABLE_NAME=tcomuna
+			PKCOLUMN_NAME=cId
+			FKTABLE_CAT=remu
+			FKTABLE_SCHEM=null
+			FKTABLE_NAME=tPerson
+			FKCOLUMN_NAME=cComuna
+			KEY_SEQ=1
+			UPDATE_RULE=3
+			DELETE_RULE=3
+			FK_NAME=withComuna
+			PK_NAME=null
+		</code>
+		 */
+
 		BSField[] fields = getFields();
 
 		String databaseFK = null;
 		String tableFK = null;
 		String fieldFK = null;
-	
-		for (BSField field : fields) {			
-			databaseFK = field.getFKDatabase();
-			tableFK = field.getFKTable();
-			fieldFK = field.getFKField();
 
-			if (tableFK != null && fieldFK != null) {
-				String sql = "SELECT cId," + fieldFK;
-				sql += " FROM " + databaseFK + "." + tableFK + " ORDER BY "
-						+ fieldFK;
+		for (BSField field : fields) {
+			String[] pkTableInfo = getPKTableInfo(conn, field);
 
-				field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(
-						conn, sql, null)));
+			if (pkTableInfo != null) {
+				field.setFK(pkTableInfo[0], pkTableInfo[1], pkTableInfo[2]);
+
+				databaseFK = field.getFKDatabase();
+				tableFK = field.getFKTable();
+				fieldFK = field.getFKField();
+
+				if (tableFK != null && fieldFK != null) {
+					String sql = "SELECT cId,cName ";
+					sql += "FROM " + databaseFK + ".";
+					sql += field2Table(conn, field.getName());
+					sql += " ORDER BY cName";
+
+					field.setFkData(mySQL.resultSet2Matrix(mySQL
+							.queryResultSet(conn, sql, null)));
+				}
 			}
 		}
+	}
+
+	private String field2Table(Connection conn, String fieldName) {
+		String out = null;
+		String table = "t" + fieldName.substring(1);
+		String view = "";
+		Boolean isExist = isExistInCommon(conn, table);
+		if (!isExist) {
+			view = "v" + fieldName.substring(1);
+			isExist = isExistInCommon(conn, view);
+			if (isExist) {
+				out = view;
+			}
+		} else {
+			out = table;
+		}
+		if (!isExist) {
+			throw new BSProgrammerException("", "No existe la tabla '" + table
+					+ "' o vista '" + view + "'");
+		}
+
+		return out;
+	}
+
+	private String[] getPKTableInfo(Connection conn, BSField field) {
+		/**
+		 * <code>
+		 * PKTABLE_CAT=bscommon 
+		 * PKTABLE_SCHEM=null 
+		 * PKTABLE_NAME=tboard
+		 * PKCOLUMN_NAME=cId
+		 * </code>
+		 */
+		DatabaseMetaData dbmd;
+		ResultSet rs;
+		String[] out = null;
+
+		if (this.fkInfo == null) {
+			this.fkInfo = new HashMap<String, String[]>();
+			try {
+				dbmd = (DatabaseMetaData) conn.getMetaData();
+				rs = dbmd.getImportedKeys(null, null, getTableName());
+
+				while (rs.next()) {
+					String code = rs.getString("FKCOLUMN_NAME");
+					String database = rs.getString("PKTABLE_CAT");
+					String table = rs.getString("PKTABLE_NAME");
+					String column = rs.getString("PKCOLUMN_NAME");
+
+					String[] info = new String[3];
+					info[0] = database;
+					info[1] = table;
+					info[2] = column;
+
+					this.fkInfo.put(code, info);
+				}
+
+			} catch (SQLException e) {
+				throw new BSDataBaseException("", e.getMessage());
+			}
+		}
+
+		out = this.fkInfo.get(field.getName());
+
+		return out;
+	}
+
+	private Boolean isExistInCommon(Connection conn, String table) {
+		// Boolean out = Boolean.FALSE;
+		if (this.tablesCommon == null) {
+			this.tablesCommon = new HashSet<String>();
+			try {
+				DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
+				ResultSet tables = dbmd.getTables("bscommon", null, null, null);
+
+				while (tables.next()) {
+					// ResultSetMetaData md = tables.getMetaData();
+					this.tablesCommon.add(tables.getString("TABLE_NAME")
+							.toLowerCase());
+				}
+				tables.close();
+			} catch (SQLException e) {
+				throw new BSDataBaseException("", e.getMessage());
+			}
+		}
+
+		return this.tablesCommon.contains(table.toLowerCase());
 	}
 
 	private void configField(ResultSetMetaData metaData, String name,
@@ -385,7 +519,7 @@ public class BSTableConfig {
 		}
 		return out;
 	}
-	
+
 	@Deprecated
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
@@ -397,13 +531,13 @@ public class BSTableConfig {
 		}
 		return out;
 	}
-	
-	public Map<String,BSField> deleteIdMap(){
+
+	public Map<String, BSField> deleteIdMap() {
 		BSField[] out = this.deleteId();
-		Map<String,BSField> mapField = new HashMap<String, BSField>();
+		Map<String, BSField> mapField = new HashMap<String, BSField>();
 		for (BSField s : out) {
 			mapField.put(s.getName(), s);
 		}
-		return mapField;		
+		return mapField;
 	}
 }

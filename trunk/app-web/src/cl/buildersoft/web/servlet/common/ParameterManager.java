@@ -21,6 +21,8 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 		BSTableConfig table = new BSTableConfig("bsframework", "tParameter");
 		BSField field;
 
+		table.setTitle("Parámetros del sistema");
+		
 		field = new BSField("cId", "Id");
 		table.addField(field);
 
@@ -28,7 +30,7 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 		field.setFK("bscommon", "vSystem", "cName");
 		table.addField(field);
 
-		field = new BSField("cKey", "Código");
+		field = new BSField("cKey", "Llave");
 		table.addField(field);
 
 		field = new BSField("cLabel", "Nombre");

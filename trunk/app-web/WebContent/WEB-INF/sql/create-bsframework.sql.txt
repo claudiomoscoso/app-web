@@ -1,30 +1,20 @@
 USE bsframework;
 
-
-DROP TABLE IF EXISTS tParameter;
-DROP TABLE IF EXISTS tUser;
-DROP TABLE IF EXISTS tRol;
-DROP TABLE IF EXISTS tR_UserRol;
-DROP TABLE IF EXISTS tOption;
-DROP TABLE IF EXISTS tR_RolOption;
-DROP TABLE IF EXISTS tFile;
-DROP TABLE IF EXISTS tFileCategory;
-
 /**
-http://www.mysqltutorial.org/mysql-stored-procedure-tutorial.aspx
-
-http://dev.mysql.com/doc/refman/5.5/en/connector-j-reference-type-conversions.html
-Los tipos de datos que vamos a usar...
-MYSQL				Java
------------------------------
-BIT					java.lang.Boolean
-INTEGER [UNSIGNED]	java.lang.Integer, if UNSIGNED java.lang.Long
-BIGINT [UNSIGNED]	java.lang.Long, if UNSIGNED java.math.BigInteger
-DOUBLE				java.lang.Double
-DATE				java.sql.Date
-TIMESTAMP			java.sql.Timestamp
-VARCHAR				java.lang.String
-LONGTEXT			java.lang.String
+* http://www.mysqltutorial.org/mysql-stored-procedure-tutorial.aspx
+* 
+* http://dev.mysql.com/doc/refman/5.5/en/connector-j-reference-type-conversions.html
+* Los tipos de datos que vamos a usar...
+* MYSQL				Java
+* -----------------------------
+* BIT					java.lang.Boolean
+* INTEGER [UNSIGNED]	java.lang.Integer, if UNSIGNED java.lang.Long
+* BIGINT [UNSIGNED]	java.lang.Long, if UNSIGNED java.math.BigInteger
+* DOUBLE				java.lang.Double
+* DATE				java.sql.Date
+* TIMESTAMP			java.sql.Timestamp
+* VARCHAR				java.lang.String
+* LONGTEXT			java.lang.String
 */
 
 CREATE TABLE IF NOT EXISTS tFile (
@@ -67,8 +57,7 @@ CREATE TABLE IF NOT EXISTS tRol (
 
 CREATE TABLE IF NOT EXISTS tR_UserRol (
 	cUser 		BIGINT NOT NULL,
-	cRol		BIGINT NOT NULL,
-	PRIMARY KEY(cUser,cRol)
+	cRol		BIGINT NOT NULL
 ) ENGINE=innoDB;
 
 CREATE TABLE IF NOT EXISTS tOption (
@@ -82,28 +71,12 @@ CREATE TABLE IF NOT EXISTS tOption (
 
 CREATE TABLE IF NOT EXISTS tR_RolOption (
 	cRol		BIGINT NOT NULL,
-	cOption		BIGINT NOT NULL,
-	PRIMARY KEY(cRol, cOption)
+	cOption		BIGINT NOT NULL
 ) ENGINE=innoDB;
 
-/** Datos escenciales */
-INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', 6);
-INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', 6);
-INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_NUMBER', 'Formato para montos', '#,###,###,###', 6);
-INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'CSV_SEPARATOR', 'Separador de archivos csv', ';', 6);
-INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', 8);
+/** Datos escenciales  
 
-
-
-INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
-SET @userId = LAST_INSERT_ID();
-
-INSERT INTO tRol(cName) VALUES('Administrador');
-SET @rolId = LAST_INSERT_ID();
-
-INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
-
-/** Creación del menu básico */
+ Creación del menu básico 
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ADMIN', 'Administracion', NULL, NULL);
 SET @menuIdAdmin = LAST_INSERT_ID();
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdAdmin);
@@ -123,3 +96,5 @@ INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuIdAdmin);
 SET @menuId = LAST_INSERT_ID();
 INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
+
+*/

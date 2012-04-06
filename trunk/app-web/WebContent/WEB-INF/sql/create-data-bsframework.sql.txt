@@ -1,0 +1,15 @@
+use bsframework;
+
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'FORMAT_NUMBER', 'Formato para montos', '#,###,###,###', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'CSV_SEPARATOR', 'Separador de archivos csv', ';', 6);
+INSERT INTO tParameter(cSystem, cKey, cLabel, cValue, cType) VALUES(3, 'RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', 8);
+
+INSERT INTO tUser(cMail, cName, cPassword) VALUES('admin', 'Administrador', md5('admin'));
+SET @userId = LAST_INSERT_ID();
+
+INSERT INTO tRol(cName) VALUES('Administrador');
+SET @rolId = LAST_INSERT_ID();
+
+INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);

@@ -1,23 +1,23 @@
 package cl.buildersoft.web.servlet.login;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysql.jdbc.DatabaseMetaData;
-
 import cl.buildersoft.framework.beans.User;
 import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
 import cl.buildersoft.framework.util.BSDataUtils;
 
-public class DBTest {
+import com.mysql.jdbc.DatabaseMetaData;
+
+public class PKandFKTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -29,41 +29,56 @@ public class DBTest {
 
 	@Test
 	public void testDB() {
-		String mail = "admin";
-		String password = "admin";
-
-		BSUserServiceImpl userService = new BSUserServiceImpl();
-
 		try {
 			BSDataUtils dau = new BSDataUtils();
 			Connection conn = null;
 			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"remu", "admin", "root");
+					"remu", "12870668", "root");
 			DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
-			ResultSet rs = dbmd.getImportedKeys(null,null,"tperson");
-			
+			ResultSet tables = dbmd.getTables("bscommon", null, null, null);
+
+			System.out.println("TABLES:");
+			System.out.println("--------------------");
+			while (tables.next()) {
+				ResultSetMetaData md = tables.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ tables.getString(md.getColumnName(i)));
+				}
+				System.out.println("--------------------");
+			}
+			tables.close();
+
+			ResultSet rs = dbmd.getImportedKeys(null, null, "tPerson");
+
+			System.out.println("IMPORTED KEYS:");
+			System.out.println("--------------------");
 			while (rs.next()) {
-				System.out.println("PKTABLE_NAME = "+ rs.getString("PKTABLE_NAME"));
-				System.out.println("PKCOLUMN_NAME =" + rs.getString("PKCOLUMN_NAME"));
-				System.out.println("FKTABLE_NAME = "+ rs.getString("FKTABLE_NAME"));
-				System.out.println("FKCOLUMN_NAME =" + rs.getString("FKCOLUMN_NAME"));
+				ResultSetMetaData md = rs.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ rs.getString(md.getColumnName(i)));
+				}
+				System.out.println("--------------------");
 			}
 			rs.close();
 
-			System.out.println("Exported keys:");
-			rs = dbmd.getExportedKeys(null, null,"tcomuna");
+			System.out.println("EXPORTED KEYS:");
+			System.out.println("--------------------");
+			rs = dbmd.getExportedKeys(null, null, "tcomuna");
 			while (rs.next()) {
-				System.out.println("PKTABLE_NAME = "+ rs.getString("PKTABLE_NAME"));
-				System.out.println("PKCOLUMN_NAME =" + rs.getString("PKCOLUMN_NAME"));
-				System.out.println("FKTABLE_NAME = "+ rs.getString("FKTABLE_NAME"));
-				System.out.println("FKCOLUMN_NAME =" + rs.getString("FKCOLUMN_NAME"));
+				ResultSetMetaData md = rs.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ rs.getString(md.getColumnName(i)));
+				}
+				System.out.println("----------");
 			}
 			rs.close();
-			conn.close();			
-			
-			
+
+			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
