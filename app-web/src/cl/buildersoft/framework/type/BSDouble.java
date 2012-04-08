@@ -16,19 +16,16 @@ public class BSDouble implements BSFieldDataType{
 
 	@Override
 	public Object convert(String data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String format(Object data, String format) {
-		// TODO Auto-generated method stub
-		return null;
+	public String format(Connection conn, Object data) {
+		return data.toString();
 	}
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

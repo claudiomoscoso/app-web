@@ -18,20 +18,17 @@ public class BSBoolean implements BSFieldDataType {
 
 	@Override
 	public Object convert(String data) {
-
 		return null;
 	}
 
 	@Override
-	public String format(Object data, String format) {
-
-		return null;
+	public String format(Connection conn, Object data) {
+		return data.toString();
 	}
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
-		// TODO Auto-generated method stub
-		return null;
+		return validData(data);
 	}
 
 }

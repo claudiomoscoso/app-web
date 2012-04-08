@@ -517,9 +517,7 @@ public class BSTableConfig {
 				ResultSet rs = dbmd.getPrimaryKeys(getDatabase(), null,
 						getTableName());
 				while (rs.next()) {
-					ResultSetMetaData md = rs.getMetaData();
 					fieldName = rs.getString("COLUMN_NAME");
-
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -554,7 +552,7 @@ public class BSTableConfig {
 		return out;
 	}
 
-	@Deprecated
+	@Deprecated 
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;
