@@ -2,7 +2,7 @@ package cl.buildersoft.framework.type;
 
 import java.sql.Connection;
 
-public class BSInteger implements BSFieldDataType{
+public class BSInteger implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(String data) {
@@ -21,9 +21,8 @@ public class BSInteger implements BSFieldDataType{
 	}
 
 	@Override
-	public String format(Object data, String format) {
-		// TODO Auto-generated method stub
-		return null;
+	public String format(Connection conn, Object data) {
+		return data.toString();
 	}
 
 	@Override

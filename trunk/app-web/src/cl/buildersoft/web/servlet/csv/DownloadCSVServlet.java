@@ -16,6 +16,9 @@ import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.type.BSFieldDataType;
+import cl.buildersoft.framework.type.BSTypeFactory;
+import cl.buildersoft.framework.util.BSConfig;
 
 /**
  * Servlet implementation class DownloadFile
@@ -43,8 +46,11 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 
 		String sql = getSQL(table, fields);
 
+		char separator = new BSConfig().getSeparator(conn);
+
 		ServletOutputStream output = setHeader(response, table.getTableName());
-		CsvWriter csv = new CsvWriter(output, ',', Charset.defaultCharset());
+		CsvWriter csv = new CsvWriter(output, separator,
+				Charset.defaultCharset());
 
 		for (BSField field : fields) {
 			csv.write(field.getName());
@@ -54,9 +60,13 @@ public abstract class DownloadCSVServlet extends HttpServlet {
 		ResultSet rs = mysql.queryResultSet(conn, sql, null);
 
 		try {
+			Object value = null;
 			while (rs.next()) {
 				for (BSField field : fields) {
-					csv.write(rs.getString(field.getName()));
+					value = rs.getObject(field.getName());
+					BSFieldDataType type = BSTypeFactory.create(field);
+					value = type.format(conn, value);
+					csv.write(value.toString());
 				}
 				csv.endRecord();
 			}

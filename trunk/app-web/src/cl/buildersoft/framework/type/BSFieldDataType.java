@@ -9,5 +9,5 @@ public interface BSFieldDataType {
 
 	public Object convert(String data);
 
-	public String format(Object data, String format);
+	public String format(Connection conn, Object data);
 }

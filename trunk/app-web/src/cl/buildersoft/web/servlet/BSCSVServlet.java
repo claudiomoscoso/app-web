@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JPopupMenu.Separator;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -22,7 +21,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
@@ -36,11 +34,7 @@ import cl.buildersoft.web.servlet.table.AbstractServletUtil;
 public abstract class BSCSVServlet extends AbstractServletUtil {
 	private static final long serialVersionUID = 1L;
 
-	protected abstract BSTableConfig getBSTableConfig(
-			HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException;
-
-	protected abstract BSHeadConfig getBSHeadConfig();
+	protected abstract BSTableConfig getBSTableConfig();
 
 	public BSCSVServlet() {
 		super();
@@ -57,10 +51,9 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		Connection conn = mySQL.getConnection(request.getServletContext(),
 				"remu");
 
-		BSTableConfig table = getBSTableConfig(request, response);
+		BSTableConfig table = getBSTableConfig();
 		table.configFields(conn, mySQL);
-		// TODO Auto-generated method stub
-		// String desc = request.getParameter("desc");
+
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -134,7 +127,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		String value = null;
 		Boolean isRight = null;
 
-//		BSTypeFactory bsType = new BSTypeFactory();
+		// BSTypeFactory bsType = new BSTypeFactory();
 		for (Map<String, BSData> map : fieldList) {
 			Iterator it = map.entrySet().iterator();
 

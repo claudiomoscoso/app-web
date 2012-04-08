@@ -3,6 +3,7 @@ package cl.buildersoft.framework.type;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSConfig;
@@ -21,14 +22,23 @@ public class BSDate implements BSFieldDataType {
 	}
 
 	@Override
-	public String format(Object data, String format) {
-		return null;
+	public String format(Connection conn, Object data) {
+		BSConfig config = new BSConfig();
+		String formatDate = config.getString(conn, "FORMAT_DATE");
+		String out = null;
+		DateFormat formatter = new SimpleDateFormat(formatDate);
+		try {
+			out = formatter.format((Date) data);
+		} catch (Exception e) {
+			throw new BSProgrammerException("",
+					"No se puede formatear el dato " + data);
+		}
+		return out;
 	}
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
 		BSConfig config = new BSConfig();
-
 		String formatDate = config.getString(conn, "FORMAT_DATE");
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {

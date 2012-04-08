@@ -16,4 +16,9 @@ public class BSConfig extends BSDataUtils {
 		return super.queryField(conn, sql, key);
 	}
 
+	public char getSeparator(Connection conn) {
+		String seperator = getString(conn, "CSV_SEPARATOR");
+		return seperator.toCharArray()[0];
+	}
+
 }
