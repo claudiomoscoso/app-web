@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JPopupMenu.Separator;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -26,7 +27,9 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
 import cl.buildersoft.framework.type.BSData;
+import cl.buildersoft.framework.type.BSFieldDataType;
 import cl.buildersoft.framework.type.BSTypeFactory;
+import cl.buildersoft.framework.util.BSConfig;
 import cl.buildersoft.web.servlet.csv.CsvReader;
 import cl.buildersoft.web.servlet.table.AbstractServletUtil;
 
@@ -70,8 +73,10 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		for (FileItem item : items) {
 			if (!item.isFormField()) {
 
+				char separator = getSeparator(conn);
+
 				CsvReader fileContent = new CsvReader(item.getInputStream(),
-						',', Charset.forName("ISO-8859-1"));
+						separator, Charset.forName("ISO-8859-1"));
 				fileContent.readHeaders();
 				String[] headers = fileContent.getHeaders();
 				List<Map<String, BSData>> listaCampos = new ArrayList<Map<String, BSData>>();
@@ -98,7 +103,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 				}
 				fileContent.close();
 
-				compareDataType(table.deleteIdMap(), listaCampos);
+				compareDataType(conn, table.deleteIdMap(), listaCampos);
 
 				HttpSession session = request.getSession();
 				request.setAttribute("Headers", headers);
@@ -114,7 +119,13 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 	}
 
-	private void compareDataType(Map<String, BSField> fields,
+	private char getSeparator(Connection conn) {
+		BSConfig config = new BSConfig();
+		String seperator = config.getString(conn, "CSV_SEPARATOR");
+		return seperator.toCharArray()[0];
+	}
+
+	private void compareDataType(Connection conn, Map<String, BSField> fields,
 			List<Map<String, BSData>> fieldList) {
 		Boolean typeRight = Boolean.FALSE;
 		Boolean fkRight = Boolean.FALSE;
@@ -123,7 +134,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		String value = null;
 		Boolean isRight = null;
 
-		BSTypeFactory bsType = new BSTypeFactory();
+//		BSTypeFactory bsType = new BSTypeFactory();
 		for (Map<String, BSData> map : fieldList) {
 			Iterator it = map.entrySet().iterator();
 
@@ -132,10 +143,14 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 						.next();
 
 				if (!entry.getKey().toString().equalsIgnoreCase("result")) {
-					field = fields.get(entry.getKey());
+					String key = entry.getKey();
+					field = fields.get(key);
 					value = entry.getValue().getValue();
 					field.setValue(value);
-					typeRight = bsType.evaluate(value, field);
+
+					BSFieldDataType validator = BSTypeFactory.create(field);
+					typeRight = validator.validData(conn, value);
+					// typeRight = bsType.evaluate(value, field);
 
 					if (typeRight) {
 						fkRight = validFK(field);

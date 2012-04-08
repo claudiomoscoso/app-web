@@ -26,7 +26,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXX
 		%>
 		<tr>
 			<%
-				if (field.isPk()) {
+				if (field.isPK()) {
 			%>
 			<td class="cLabel"><%=field.getLabel()%>:</td>
 			<td class="cData">[Nuevo]</td>

@@ -101,7 +101,7 @@
 
 					out.print(">" + field.getLabel() + "</td>");
 				}
-				if (field.isPk()) {
+				if (field.isPK()) {
 					pkName = field.getName();
 				}
 			}
@@ -203,7 +203,7 @@
 		for (BSField field : fields) {
 			type = field.getType();
 
-			value = field.isPk() ? values[0] : values[i++];
+			value = field.isPK() ? values[0] : values[i++];
 			if (field.showField()) {
 				out += "<td class='" + color + "'";
 				out += getAlign(field);

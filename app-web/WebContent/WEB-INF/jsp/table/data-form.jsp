@@ -75,7 +75,7 @@
 		String format = "";
 		Integer size = 0;
 		String afterInput = "";
-		Boolean isPk = field.isPk();
+		Boolean isPk = field.isPK();
 		Boolean isReadOnly = isPk ? Boolean.TRUE : field.isReadonly();
 		String validationOnBlur = field.getValidationOnBlur() != null ? field
 				.getValidationOnBlur() : "";

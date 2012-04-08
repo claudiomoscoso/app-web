@@ -19,7 +19,7 @@ drop table if exists tPerson;
 
 CREATE TABLE `tPerson` (
   `cId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cRUT` varchar(10) NOT NULL,
+  `cRUT` varchar(10) NOT NULL UNIQUE,
   `cSexo` bigint NOT NULL,
   `cFechaRegistro` date NOT NULL,
   `cNombre` varchar(50) NOT NULL,

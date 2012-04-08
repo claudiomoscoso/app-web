@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class BSData implements Serializable{
 
+	private static final long serialVersionUID = 6783147765454853907L;
 	private String value;
 	private boolean state = true;
 	

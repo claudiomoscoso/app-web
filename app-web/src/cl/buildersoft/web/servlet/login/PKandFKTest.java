@@ -65,7 +65,7 @@ public class PKandFKTest {
 
 			System.out.println("EXPORTED KEYS:");
 			System.out.println("--------------------");
-			rs = dbmd.getExportedKeys(null, null, "tcomuna");
+			rs = dbmd.getExportedKeys(null, null, "tPerson");
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
@@ -76,6 +76,45 @@ public class PKandFKTest {
 			}
 			rs.close();
 
+
+			
+
+			System.out.println("INDICES:");
+			System.out.println("--------------------");
+			rs = dbmd.getIndexInfo("remu", null, "tPerson",true, 	false);
+			while (rs.next()) {
+				ResultSetMetaData md = rs.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ rs.getString(md.getColumnName(i)));
+				}
+				System.out.println("----------");
+			}
+			rs.close();
+
+			
+			System.out.println("getPrimaryKeys:");
+			System.out.println("--------------------");
+			rs = dbmd.getPrimaryKeys("remu", null, "tPerson");
+			while (rs.next()) {
+				ResultSetMetaData md = rs.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ rs.getString(md.getColumnName(i)));
+				}
+				System.out.println("----------");
+			}
+			rs.close();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			conn.close();
 		} catch (SQLException e) {
 

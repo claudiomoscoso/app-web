@@ -1,5 +1,6 @@
 package cl.buildersoft.framework.beans;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cl.buildersoft.framework.type.BSFieldType;
@@ -30,7 +31,7 @@ public class BSField {
 	}
 
 	public Boolean showField() {
-		Boolean out = !isPk() && isVisible();
+		Boolean out = !isPK() && isVisible();
 		return out;
 	}
 
@@ -68,11 +69,11 @@ public class BSField {
 		this.label = label;
 	}
 
-	public Boolean isPk() {
+	public Boolean isPK() {
 		return pk;
 	}
 
-	public void setPk(Boolean pk) {
+	public void setPK(Boolean pk) {
 		this.pk = pk;
 	}
 
@@ -168,14 +169,15 @@ public class BSField {
 		this.fkData = fkData;
 	}
 
-	/***/
-
 	@Override
 	public String toString() {
 		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk
 				+ ", unique=" + unique + ", readonly=" + readonly + ", length="
 				+ length + ", type=" + type + ", value=" + value
 				+ ", validationOnBlur=" + validationOnBlur + ", visible="
-				+ visible + "]";
+				+ visible + ", fk=" + Arrays.toString(fk) + ", fkData="
+				+ fkData + "]";
 	}
+
+	/***/
 }
