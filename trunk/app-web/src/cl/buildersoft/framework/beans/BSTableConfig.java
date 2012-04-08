@@ -23,16 +23,19 @@ public class BSTableConfig {
 	private String database = null;
 	private String tableName = null;
 	private BSField[] fields = null;
+	private Map<String, BSField> fieldsMap = null;
 	private String title = null;
 	private String uri = null;
 	private BSAction[] actions = null;
 	private String sortField = null;
 	private Map<String, String[]> fkInfo = null;
 	private Set<String> tablesCommon = null;
+	private String pk = null;
 
 	public BSTableConfig(String database, String tableName) {
 		this.database = database;
 		this.fields = new BSField[0];
+		this.fieldsMap = new HashMap<String, BSField>();
 		this.actions = new BSAction[0];
 		this.tableName = tableName;
 		this.title = tableName;
@@ -141,11 +144,12 @@ public class BSTableConfig {
 					throw new BSDataBaseException("300", e.getMessage());
 				}
 				field = new BSField(name, name);
-				configField(metaData, name, i, field);
-				if (field.isPk() && !hasPK) {
+				addField(field);
+				configField(conn, metaData, name, i, field);
+				if (field.isPK() && !hasPK) {
 					hasPK = Boolean.TRUE;
 				}
-				addField(field);
+
 			}
 
 			if (!hasPK) {
@@ -156,7 +160,7 @@ public class BSTableConfig {
 			for (BSField field : fields) {
 				name = field.getName();
 
-				configField(metaData, name, i, field);
+				configField(conn, metaData, name, i, field);
 
 				i++;
 			}
@@ -240,7 +244,7 @@ public class BSTableConfig {
 		String fieldFK = null;
 
 		for (BSField field : fields) {
-			String[] pkTableInfo = getPKTableInfo(conn, field);
+			String[] pkTableInfo = getFKTableInfo(conn, field);
 
 			if (pkTableInfo != null) {
 				field.setFK(pkTableInfo[0], pkTableInfo[1], pkTableInfo[2]);
@@ -284,7 +288,7 @@ public class BSTableConfig {
 		return out;
 	}
 
-	private String[] getPKTableInfo(Connection conn, BSField field) {
+	private String[] getFKTableInfo(Connection conn, BSField field) {
 		/**
 		 * <code>
 		 * PKTABLE_CAT=bscommon 
@@ -349,15 +353,15 @@ public class BSTableConfig {
 		return this.tablesCommon.contains(table.toLowerCase());
 	}
 
-	private void configField(ResultSetMetaData metaData, String name,
-			Integer i, BSField field) {
-
+	private void configField(Connection conn, ResultSetMetaData metaData,
+			String name, Integer i, BSField field) {
 		try {
 			if (field.getType() == null) {
 				setRealType(metaData, i, field);
 			}
-			if (field.isPk() == null) {
-				field.setPk(metaData.isAutoIncrement(i));
+			if (field.isPK() == null) {
+				BSField pk = getPKField(conn);
+				field.setPK(pk.getName().equals(name));
 			}
 			if (field.getLength() == null) {
 				field.setLength(metaData.getColumnDisplaySize(i));
@@ -365,6 +369,7 @@ public class BSTableConfig {
 		} catch (SQLException e) {
 			throw new BSDataBaseException("300", e.getMessage());
 		}
+
 	}
 
 	private void setRealType(ResultSetMetaData metaData, Integer i,
@@ -461,6 +466,7 @@ public class BSTableConfig {
 	}
 
 	public void addField(BSField field) {
+		this.fieldsMap.put(field.getName(), field);
 		BSField[] target = new BSField[this.fields.length + 1];
 		System.arraycopy(this.fields, 0, target, 0, this.fields.length);
 		target[target.length - 1] = field;
@@ -501,6 +507,34 @@ public class BSTableConfig {
 		this.uri = uri;
 	}
 
+	public BSField getPKField(Connection conn) {
+		String fieldName = null;
+		if (this.pk == null) {
+			DatabaseMetaData dbmd;
+			try {
+				dbmd = (DatabaseMetaData) conn.getMetaData();
+
+				ResultSet rs = dbmd.getPrimaryKeys(getDatabase(), null,
+						getTableName());
+				while (rs.next()) {
+					ResultSetMetaData md = rs.getMetaData();
+					fieldName = rs.getString("COLUMN_NAME");
+
+				}
+				rs.close();
+			} catch (SQLException e) {
+				throw new BSDataBaseException("", e.getMessage());
+			}
+			this.pk = fieldName;
+		}
+		return getField(this.pk);
+	}
+
+	private BSField getField(String fieldName) {
+		return this.fieldsMap.get(fieldName);
+	}
+
+	@Deprecated
 	public BSField getIdField() {
 		BSField[] fields = getFields();
 		BSField out = null;
@@ -524,9 +558,9 @@ public class BSTableConfig {
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;
-		for (BSField s : fields) {
-			if (!s.isId()) {
-				out[i++] = s;
+		for (BSField f : fields) {
+			if (!f.isId()) {
+				out[i++] = f;
 			}
 		}
 		return out;

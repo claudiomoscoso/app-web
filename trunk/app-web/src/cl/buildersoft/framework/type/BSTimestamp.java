@@ -1,7 +1,9 @@
 package cl.buildersoft.framework.type;
+
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 
-public class BSTimestamp implements BSFieldDataType{
+public class BSTimestamp implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(String data) {
@@ -19,12 +21,16 @@ public class BSTimestamp implements BSFieldDataType{
 
 	@Override
 	public Object convert(String data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String format(Object data, String format) {
+		return null;
+	}
+
+	@Override
+	public Boolean validData(Connection conn, String data) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,5 +1,7 @@
 package cl.buildersoft.framework.type;
 
+import java.sql.Connection;
+
 public class BSDouble implements BSFieldDataType{
 
 	@Override
@@ -20,6 +22,12 @@ public class BSDouble implements BSFieldDataType{
 
 	@Override
 	public String format(Object data, String format) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean validData(Connection conn, String data) {
 		// TODO Auto-generated method stub
 		return null;
 	}

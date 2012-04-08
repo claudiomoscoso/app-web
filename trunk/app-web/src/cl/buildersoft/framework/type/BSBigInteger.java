@@ -1,11 +1,11 @@
 package cl.buildersoft.framework.type;
 import java.math.BigInteger;
+import java.sql.Connection;
 
 public class BSBigInteger implements BSFieldDataType{
 
 	@Override
 	public Boolean validData(String data) {
-
 		try {
 			BigInteger.valueOf(Long.parseLong(data));
 			return true;
@@ -22,6 +22,12 @@ public class BSBigInteger implements BSFieldDataType{
 
 	@Override
 	public String format(Object data, String format) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean validData(Connection conn, String data) {
 		// TODO Auto-generated method stub
 		return null;
 	}
