@@ -65,6 +65,7 @@ public class ValidateLoginServlet extends HttpServlet {
 			synchronized (session) {
 				session.setAttribute("User", user);
 				session.setAttribute("Rol", rols);
+				session.setAttribute("Menu",true);
 			}
 			page = "/servlet/login/GetMenuServlet";
 		} else {

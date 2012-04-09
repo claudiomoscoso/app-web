@@ -24,6 +24,7 @@ import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
+import cl.buildersoft.framework.exception.BSUserException;
 import cl.buildersoft.framework.type.BSData;
 import cl.buildersoft.framework.type.BSFieldDataType;
 import cl.buildersoft.framework.type.BSTypeFactory;
@@ -46,7 +47,7 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 	 */
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+//		Integer rowCount = 0;
 		BSmySQL mySQL = new BSmySQL();
 		Connection conn = mySQL.getConnection(request.getServletContext(),
 				"remu");
@@ -65,51 +66,53 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		}
 		for (FileItem item : items) {
 			if (!item.isFormField()) {
-
 				char separator = getSeparator(conn);
 
 				CsvReader fileContent = new CsvReader(item.getInputStream(),
 						separator, Charset.forName("ISO-8859-1"));
 				fileContent.readHeaders();
 				String[] headers = fileContent.getHeaders();
-				List<Map<String, BSData>> listaCampos = new ArrayList<Map<String, BSData>>();
+				if (headers.length == 1) {
+					throw new BSUserException(
+							"",
+							"Aparentemente el archivo no está correctamente definido, puede verificar el caracter de separación cvs, debe ser '"
+									+ separator + "'");
+				}
+				List<Map<String, BSData>> allData = new ArrayList<Map<String, BSData>>();
+				
 				while (fileContent.readRecord()) {
 					Map<String, BSData> dataRow = new LinkedHashMap<String, BSData>();
-					// BSField[] fields = new BSField[headers.length];
-					for (int i = 0; i < headers.length; i++) {
-						//
-						// System.out.println("campo = " + headers[i]
-						// + " valor = " + fileContent.get(headers[i]));
 
+					for (int i = 0; i < headers.length; i++) {
 						BSField field = new BSField(headers[i], "");
 						field.setValue(fileContent.get(headers[i]));
-						// fields[i] = field;
-						// fila.add(new BSData(products.get(headers[i])));
 
 						dataRow.put(headers[i],
 								new BSData(fileContent.get(headers[i])));
-
 					}
 					dataRow.put("result", new BSData(""));
-					listaCampos.add(dataRow);
-
+					allData.add(dataRow);
+					
 				}
 				fileContent.close();
 
-				compareDataType(conn, table.deleteIdMap(), listaCampos);
+				Integer rightCount = compareDataType(conn, table.deleteIdMap(),
+						allData);
 
 				HttpSession session = request.getSession();
 				request.setAttribute("Headers", headers);
+				request.setAttribute("RightCount", rightCount);
+				request.setAttribute("RowCount", allData.size());
 				synchronized (session) {
-					session.setAttribute("respCSV", listaCampos);
+					session.setAttribute("respCSV", allData);
+					session.setAttribute("BSTable", table);
 				}
+
 				request.getRequestDispatcher(
 						"/WEB-INF/jsp/table/csvResponse.jsp").forward(request,
 						response);
 			}
-
 		}
-
 	}
 
 	private char getSeparator(Connection conn) {
@@ -118,23 +121,24 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		return seperator.toCharArray()[0];
 	}
 
-	private void compareDataType(Connection conn, Map<String, BSField> fields,
-			List<Map<String, BSData>> fieldList) {
+	private Integer compareDataType(Connection conn,
+			Map<String, BSField> fields, List<Map<String, BSData>> fieldList) {
+		Integer rightCount = 0;
 		Boolean typeRight = Boolean.FALSE;
 		Boolean fkRight = Boolean.FALSE;
 		Boolean isUpdate = null;
 		BSField field = null;
 		String value = null;
 		Boolean isRight = null;
+		Boolean isRowRight = null;
 
-		// BSTypeFactory bsType = new BSTypeFactory();
 		for (Map<String, BSData> map : fieldList) {
 			Iterator it = map.entrySet().iterator();
 
+			isRowRight = Boolean.TRUE;
 			while (it.hasNext()) {
 				Map.Entry<String, BSData> entry = (Map.Entry<String, BSData>) it
 						.next();
-
 				if (!entry.getKey().toString().equalsIgnoreCase("result")) {
 					String key = entry.getKey();
 					field = fields.get(key);
@@ -143,7 +147,6 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 					BSFieldDataType validator = BSTypeFactory.create(field);
 					typeRight = validator.validData(conn, value);
-					// typeRight = bsType.evaluate(value, field);
 
 					if (typeRight) {
 						fkRight = validFK(field);
@@ -151,13 +154,21 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 
 					isRight = typeRight && fkRight;
 
+					if (!isRight) {
+						if (isRowRight) {
+							isRowRight = Boolean.FALSE;
+						}
+					}
+
 					map.get("result").setState(isRight);
 					entry.getValue().setState(isRight);
-
 				}
-
+			}
+			if (isRowRight) {
+				rightCount++;
 			}
 		}
+		return rightCount;
 	}
 
 	private Boolean validFK(BSField field) {
@@ -180,49 +191,5 @@ public abstract class BSCSVServlet extends AbstractServletUtil {
 		return out;
 	}
 
-	private void insertData(BSmySQL mySQL, BSTableConfig table, BSField[] fields) {
-		Connection conn;
-		String sql = getSQL(table, fields);
-		List<Object> params = getValues4Insert(fields);
-
-		conn = mySQL.getConnection(getServletContext(), "bsframework");
-		mySQL.insert(conn, sql, params);
-	}
-
-	private void copyTypeTableToField(BSField[] tableField, BSField[] fields) {
-		Field: for (BSField field : fields) {
-
-			for (BSField tblField : tableField) {
-				if (tblField.getName().equals(field.getName())) {
-					field.setType(tblField.getType());
-					continue Field;
-				}
-			}
-		}
-
-	}
-
-	private String getSQL(BSTableConfig table, BSField[] fields) {
-		// fields = deleteId(fields);
-		String sql = "INSERT INTO " + table.getDatabase() + "."
-				+ table.getTableName();
-		sql += "(" + unSplit(fields, ",") + ") ";
-		sql += " VALUES (" + getCommas(fields) + ")";
-
-		return sql;
-	}
-
-	private List<Object> getValues4Insert(BSField[] fields) {
-
-		List<Object> out = new ArrayList<Object>();
-		Object value = null;
-
-		for (BSField field : fields) {
-			value = new String(field.getValue().toString());
-			out.add(value);
-
-		}
-		return out;
-	}
 
 }
