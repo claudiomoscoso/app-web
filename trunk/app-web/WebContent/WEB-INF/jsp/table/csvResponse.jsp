@@ -10,7 +10,7 @@
 
 
 <h1 class="cTitle">Respuesta del CSV</h1>
-<div style="overflow: scroll; width: 1080px; height: 450px">
+<div style="overflow: scroll; width: 1080px; height: 400px">
 	<%
 		List<Map<String, BSData>> respCSV = (List<Map<String, BSData>>) session
 				.getAttribute("respCSV");
@@ -18,6 +18,9 @@
 		out.println("<tr>");
 
 		String[] headers = (String[]) request.getAttribute("Headers");
+		Integer rightCount = (Integer) request.getAttribute("RightCount");
+		Integer totalCount = (Integer) request.getAttribute("RowCount");
+		Integer wrongCount = totalCount - rightCount;
 
 		for (String hearder : headers) {
 			out.println("<td class='cHeadTD'>" + hearder.substring(1)
@@ -25,11 +28,11 @@
 		}
 		out.println("</tr>");
 		Integer rowCount = 0;
-
 		for (Map<String, BSData> map : respCSV) {
 			String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
 			out.println("<tr>");
 			Iterator it = map.entrySet().iterator();
+			Boolean isRowWrong = Boolean.FALSE;
 			while (it.hasNext()) {
 				Map.Entry<String, BSData> e = (Map.Entry<String, BSData>) it
 						.next();
@@ -38,53 +41,47 @@
 							+ (!e.getValue().isState() ? "cErrorTD" : color)
 							+ "' align='left'>");
 					out.print(e.getValue().getValue());
+
+					if (!isRowWrong) {
+						isRowWrong = !e.getValue().isState();
+					}
+
 					out.println("</td>");
 				}
+
 			}
-			/**<code>
-			 if (!map.get("result").isState()) {
-			 out.println("<td  class='cErrorTD' align='left'>");
-			 out.print("NOK");
-			 out.println("</td>");
-			 } else {
-			 out.println("<td  class='cDataTD' align='left'>");
-			 out.print("OK");
-			 out.println("</td>");
-			 }
-			 </code>*/
+
 			out.println("</tr>");
 		}
 		out.println("</table>");
-
-		/**<code>
-		 List<List<BSData>> respCSV = (List<List<BSData>>)session.getAttribute("respCSV");
-		
-		 out.println("<table class='cList' cellpadding='0' cellspacing='0'>");
-		 out.println("<tr>");	
-		 for(int i=0;i<15;i++)
-		 {
-		 out.println("<td class='cHeadTD'>encabezado</td>");		
-		 }
-		 out.println("</tr>");
-		 Integer rowCount = 0;
-		 for (List<BSData> fila : respCSV) {
-		 String color = ++rowCount % 2 != 0 ? "cDataTD" : "cDataTD_odd";
-		 out.println("<tr>");	
-		 int longRow = fila.size();
-		 for (int i = 0; i < longRow; i++) {
-		 BSData celda = fila.get(i);
-		
-		 out.println("<td  class='"+(!celda.isState() ? "cDataErrorTD" : color)+"' align='left'>");
-		 out.print(celda.getValue());
-		 out.println("</td>");
-		 }
-		 out.println("</tr>");
-		 }
-		 out.println("</table>");
-		</code>
-		 */
 	%>
 </div>
+<span class="cLabel">Registros correctos:</span>
+&nbsp;
+<span class="cData"><%=rightCount%></span>
+&nbsp;&nbsp;&nbsp;
+<span class="cLabel">Registros erroneos:</span>
+&nbsp;
+<span class="cData"><%=wrongCount%></span>
+&nbsp;&nbsp;&nbsp;
+<span class="cLabel">Total de Registros:</span>
+&nbsp;
+<span class="cData"><%=totalCount%></span>
+
+<form action="${pageContext.request.contextPath}/servlet/csv/ConfirmCSV"> 
+<%
+	if (totalCount.equals(rightCount)) {
+%>
+<span class="cLabel">La información es correcta</span>
+<input type="submit" value="Confirmar" />
+<a href="${pageContext.request.contextPath}/servlet/Home">Cancelar</a>
+<%
+	} else {
+%>
+<span class="cData">Corrija el archivo e intentelo de nuevo...</span>
+<%
+	}
+%>
+</form>
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
-

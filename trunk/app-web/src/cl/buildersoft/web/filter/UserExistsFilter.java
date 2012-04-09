@@ -33,7 +33,7 @@ public class UserExistsFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		Boolean goHome = Boolean.FALSE;
 
-		// System.out.println(request.getRequestURI());
+		//System.out.println(request.getRequestURI());
 
 		HttpSession session = request.getSession(false);
 
@@ -42,7 +42,8 @@ public class UserExistsFilter implements Filter {
 		} else {
 			Object user = session.getAttribute("User");
 			Object rol = session.getAttribute("Rol");
-			if (user == null || rol == null) {
+			Object menu = session.getAttribute("Menu");
+			if (user == null || rol == null || menu == null) {
 				goHome = Boolean.TRUE;
 			}
 		}
