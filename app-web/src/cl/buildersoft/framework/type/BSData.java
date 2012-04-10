@@ -24,6 +24,10 @@ public class BSData implements Serializable{
 	public void setState(boolean state) {
 		this.state = state;
 	}
+	@Override
+	public String toString() {
+		return "BSData [value=" + value + ", state=" + state + "]";
+	}
 	
 	
 }

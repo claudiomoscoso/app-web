@@ -30,7 +30,6 @@ INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Bo
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Bot&oacute;n Borrar', null, @menuIdSysparam, 2);
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuIdTables);
 
-
 /** Opciones (ejemplo) de Sistema de remuneraciones */
 INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
 SET @menuIdRemu = LAST_INSERT_ID();

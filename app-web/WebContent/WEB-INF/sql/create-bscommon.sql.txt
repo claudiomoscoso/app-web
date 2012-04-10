@@ -1,26 +1,3 @@
-/** 
-use bsframework;
-
-Creación del menu en base bsframework 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMMON', 'Tablas', NULL, NULL);
-SET @menuMain = LAST_INSERT_ID();
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('BOARD', 'Tablon', '/servlet/admin/BoardManager', 1);
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, LAST_INSERT_ID());
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PARAMS', 'Par&aacute;metros del Sistema', '/servlet/common/ParameterManager', 1);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(1, @menuId);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('ADD_PARAMS', 'Bot&oacute;n Nuevo', null, @menuId, 2);
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Bot&oacute;n Modificar', null, @menuId, 2);
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Bot&oacute;n Borrar', null, @menuId, 2);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/ComunaManager', @menuMain);
-
-drop table if exists tComuna;
-drop table if exists tBoard;
-*/
-
 use bscommon;
 
 CREATE TABLE tComuna (

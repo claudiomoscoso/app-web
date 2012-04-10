@@ -31,4 +31,9 @@ public class BSInteger implements BSFieldDataType {
 		return null;
 	}
 
+	@Override
+	public Object parse(Connection conn, String data) {
+		return Integer.parseInt(data);
+	}
+
 }

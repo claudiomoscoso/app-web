@@ -2,7 +2,7 @@ package cl.buildersoft.framework.type;
 
 import java.sql.Connection;
 
-public class BSDouble implements BSFieldDataType{
+public class BSDouble implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(String data) {
@@ -27,6 +27,11 @@ public class BSDouble implements BSFieldDataType{
 	@Override
 	public Boolean validData(Connection conn, String data) {
 		return null;
+	}
+
+	@Override
+	public Object parse(Connection conn, String data) {
+		return Double.parseDouble(data);
 	}
 
 }

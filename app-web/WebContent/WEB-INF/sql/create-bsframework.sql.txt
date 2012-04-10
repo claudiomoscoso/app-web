@@ -73,28 +73,3 @@ CREATE TABLE IF NOT EXISTS tR_RolOption (
 	cRol		BIGINT NOT NULL,
 	cOption		BIGINT NOT NULL
 ) ENGINE=innoDB;
-
-/** Datos escenciales  
-
- Creación del menu básico 
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ADMIN', 'Administracion', NULL, NULL);
-SET @menuIdAdmin = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdAdmin);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('USER', 'Usuarios', '/servlet/admin/UserManager', @menuIdAdmin);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL', 'Roles', '/servlet/admin/RolManager', @menuIdAdmin);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ROL_DEF', 'Definici&oacute;n de roles', '/servlet/admin/RoleDef', @menuIdAdmin);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
-
-INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CH_PASS', 'Cambio de clave', '/servlet/admin/SearchPassword', @menuIdAdmin);
-SET @menuId = LAST_INSERT_ID();
-INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuId);
-
-*/

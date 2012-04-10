@@ -48,4 +48,18 @@ public class BSDate implements BSFieldDataType {
 			return false;
 		}
 	}
+
+	@Override
+	public Object parse(Connection conn, String data) {
+		BSConfig config = new BSConfig();
+		String formatDate = config.getString(conn, "FORMAT_DATE");
+		Date out = null;
+		DateFormat formatter = new SimpleDateFormat(formatDate);
+		try {
+			out = formatter.parse(data);
+		} catch (Exception e) {
+			throw new BSProgrammerException("", e.getMessage());
+		}
+		return out;
+	}
 }
