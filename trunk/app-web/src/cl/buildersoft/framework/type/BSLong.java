@@ -30,4 +30,9 @@ public class BSLong implements BSFieldDataType {
 		return validData(data);
 	}
 
+	@Override
+	public Object parse(Connection conn, String data) {
+		return Long.parseLong(data);
+	}
+
 }

@@ -31,4 +31,9 @@ public class BSBoolean implements BSFieldDataType {
 		return validData(data);
 	}
 
+	@Override
+	public Object parse(Connection conn, String data) {
+		return Boolean.parseBoolean(data);
+	}
+
 }

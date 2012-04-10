@@ -31,6 +31,7 @@ public class BSTableConfig {
 	private Map<String, String[]> fkInfo = null;
 	private Set<String> tablesCommon = null;
 	private String pk = null;
+	private String key = null;
 
 	public BSTableConfig(String database, String tableName) {
 		this.database = database;
@@ -507,6 +508,32 @@ public class BSTableConfig {
 		this.uri = uri;
 	}
 
+	public BSField getKeyField(Connection conn) {
+		String pk = getPKField(conn).getName();
+
+		String fieldName = null;
+		if (this.key == null) {
+			DatabaseMetaData dbmd;
+			try {
+				dbmd = (DatabaseMetaData) conn.getMetaData();
+
+				ResultSet rs = dbmd.getIndexInfo(getDatabase(), null,
+						getTableName(), true, false);
+				while (rs.next()) {
+					fieldName = rs.getString("COLUMN_NAME");
+					if (!pk.equals(fieldName)) {
+						break;
+					}
+				}
+				rs.close();
+			} catch (SQLException e) {
+				throw new BSDataBaseException("", e.getMessage());
+			}
+			this.key = fieldName;
+		}
+		return getField(this.key);
+	}
+
 	public BSField getPKField(Connection conn) {
 		String fieldName = null;
 		if (this.pk == null) {
@@ -552,7 +579,7 @@ public class BSTableConfig {
 		return out;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;

@@ -29,4 +29,9 @@ public class BSString implements BSFieldDataType {
 		return true;
 	}
 
+	@Override
+	public Object parse(Connection conn, String data) {
+		return data.toString();
+	}
+
 }

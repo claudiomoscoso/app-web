@@ -35,23 +35,9 @@ public class PKandFKTest {
 			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
 					"remu", "12870668", "root");
 			DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
-			ResultSet tables = dbmd.getTables("bscommon", null, null, null);
+			ResultSet rs = dbmd.getTables("bscommon", null, null, null);
 
 			System.out.println("TABLES:");
-			System.out.println("--------------------");
-			while (tables.next()) {
-				ResultSetMetaData md = tables.getMetaData();
-				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ tables.getString(md.getColumnName(i)));
-				}
-				System.out.println("--------------------");
-			}
-			tables.close();
-
-			ResultSet rs = dbmd.getImportedKeys(null, null, "tPerson");
-
-			System.out.println("IMPORTED KEYS:");
 			System.out.println("--------------------");
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
@@ -63,7 +49,21 @@ public class PKandFKTest {
 			}
 			rs.close();
 
-			System.out.println("EXPORTED KEYS:");
+			rs = dbmd.getImportedKeys(null, null, "tPerson");
+
+			System.out.println("getImportedKeys:");
+			System.out.println("--------------------");
+			while (rs.next()) {
+				ResultSetMetaData md = rs.getMetaData();
+				for (int i = 1; i < md.getColumnCount(); i++) {
+					System.out.println(md.getColumnName(i) + "="
+							+ rs.getString(md.getColumnName(i)));
+				}
+				System.out.println("--------------------");
+			}
+			rs.close();
+
+			System.out.println("getExportedKeys():");
 			System.out.println("--------------------");
 			rs = dbmd.getExportedKeys(null, null, "tPerson");
 			while (rs.next()) {
@@ -76,12 +76,9 @@ public class PKandFKTest {
 			}
 			rs.close();
 
-
-			
-
-			System.out.println("INDICES:");
+			System.out.println("getIndexInfo():");
 			System.out.println("--------------------");
-			rs = dbmd.getIndexInfo("remu", null, "tPerson",true, 	false);
+			rs = dbmd.getIndexInfo("remu", null, "tPerson", true, false);
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
@@ -92,8 +89,7 @@ public class PKandFKTest {
 			}
 			rs.close();
 
-			
-			System.out.println("getPrimaryKeys:");
+			System.out.println("getPrimaryKeys():");
 			System.out.println("--------------------");
 			rs = dbmd.getPrimaryKeys("remu", null, "tPerson");
 			while (rs.next()) {
@@ -105,16 +101,7 @@ public class PKandFKTest {
 				System.out.println("----------");
 			}
 			rs.close();
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			conn.close();
 		} catch (SQLException e) {
 
