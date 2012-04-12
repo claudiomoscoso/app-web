@@ -1,15 +1,10 @@
 package cl.buildersoft.web.servlet.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSAction;
-import cl.buildersoft.framework.beans.BSCss;
 import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSHeadConfig;
-import cl.buildersoft.framework.beans.BSScript;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.web.servlet.BSHttpServlet;
@@ -27,7 +22,7 @@ public class UserManager extends BSHttpServlet {
 	}
 
 	@Override
-	protected BSTableConfig getBSTableConfig() {
+	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table = new BSTableConfig("bsframework", "tUser");
 		table.setTitle("Mantenimiento de usuarios");
 
@@ -55,7 +50,8 @@ public class UserManager extends BSHttpServlet {
 		return table;
 	}
 
-	@Override
+	/** 	@Override <code>
+
 	protected BSHeadConfig getBSHeadConfig() {
 		BSHeadConfig head = new BSHeadConfig();
 		BSScript bsScript = new BSScript("/js/user/");
@@ -76,4 +72,5 @@ public class UserManager extends BSHttpServlet {
 
 		return head;
 	}
+	</code>*/
 }

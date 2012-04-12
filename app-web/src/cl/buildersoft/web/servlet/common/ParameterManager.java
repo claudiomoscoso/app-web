@@ -1,11 +1,13 @@
 package cl.buildersoft.web.servlet.common;
 
+import java.sql.Connection;
+
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
+import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
 @WebServlet("/servlet/common/ParameterManager")
@@ -17,31 +19,37 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 	}
 
 	@Override
-	protected BSTableConfig getBSTableConfig() {
+	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table = new BSTableConfig("bsframework", "tParameter");
-		BSField field;
+		
+		BSmySQL mysql = new BSmySQL();
+		Connection conn = mysql.getConnection(request.getServletContext(), "bsframework");
+		table.configFields(conn, mysql);
+//		BSField field;
 
 		table.setTitle("Parámetros del sistema");
 		
-		field = new BSField("cId", "Id");
-		table.addField(field);
+		
+		
+//		field = new BSField("cId", "Id");
+//		table.addField(field);
 
-		field = new BSField("cSystem", "Sistema");
-		field.setFK("bscommon", "vSystem", "cName");
-		table.addField(field);
+//		field = new BSField("cSystem", "Sistema");
+//		field.setFK("bscommon", "vSystem", "cName");
+//		table.addField(field);
 
-		field = new BSField("cKey", "Llave");
-		table.addField(field);
+//		field = new BSField("cKey", "Llave");
+//		table.addField(field);
 
-		field = new BSField("cLabel", "Nombre");
-		table.addField(field);
+//		field = new BSField("cLabel", "Nombre");
+//		table.addField(field);
 
-		field = new BSField("cValue", "Valor");
-		table.addField(field);
-
-		field = new BSField("cType", "Tipo");
-		field.setFK("bscommon", "vType", "cName");
-		table.addField(field);
+//		field = new BSField("cValue", "Valor");
+//		table.addField(field);
+//
+//		field = new BSField("cType", "Tipo");
+//		field.setFK("bscommon", "vType", "cName");
+//		table.addField(field);
 
 		// table.setSortField("cNombre");
 
@@ -53,9 +61,6 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 		return table;
 	}
 
-	@Override
-	protected BSHeadConfig getBSHeadConfig() {
-		return null;
-	}
+	 
 
 }

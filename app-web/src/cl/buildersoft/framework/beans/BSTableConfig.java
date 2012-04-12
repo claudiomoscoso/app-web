@@ -22,7 +22,7 @@ import com.mysql.jdbc.DatabaseMetaData;
 public class BSTableConfig {
 	private String database = null;
 	private String tableName = null;
-	private BSField[] fields = null;
+	private String[] fields = null;
 	private Map<String, BSField> fieldsMap = null;
 	private String title = null;
 	private String uri = null;
@@ -35,7 +35,7 @@ public class BSTableConfig {
 
 	public BSTableConfig(String database, String tableName) {
 		this.database = database;
-		this.fields = new BSField[0];
+		this.fields = new String[0];
 		this.fieldsMap = new HashMap<String, BSField>();
 		this.actions = new BSAction[0];
 		this.tableName = tableName;
@@ -53,9 +53,11 @@ public class BSTableConfig {
 
 	public BSField[] getFKFields() {
 		List<BSField> fkFields = new ArrayList<BSField>();
-		for (BSField s : fields) {
-			if (s.isFK()) {
-				fkFields.add(s);
+		BSField field = null;
+		for (String f : fields) {
+			field = getField(f);
+			if (field.isFK()) {
+				fkFields.add(field);
 			}
 		}
 		BSField[] out = (BSField[]) fkFields.toArray();
@@ -66,8 +68,8 @@ public class BSTableConfig {
 		return sortField;
 	}
 
-	public void setSortField(String sortField) {
-		this.sortField = sortField;
+	public void setSortField(String sortFieldName) {
+		this.sortField = sortFieldName;
 	}
 
 	public void setSortField(BSField field) {
@@ -144,7 +146,7 @@ public class BSTableConfig {
 				} catch (SQLException e) {
 					throw new BSDataBaseException("300", e.getMessage());
 				}
-				field = new BSField(name, name);
+				field = new BSField(name, name.substring(1));
 				addField(field);
 				configField(conn, metaData, name, i, field);
 				if (field.isPK() && !hasPK) {
@@ -418,7 +420,12 @@ public class BSTableConfig {
 	}
 
 	public BSField[] getFields() {
-		return fields;
+		BSField[] out = new BSField[this.fields.length];
+		Integer i = 0;
+		for (String field : this.fields) {
+			out[i++] = getField(field);
+		}
+		return out;
 	}
 
 	public BSAction[] getActions() {
@@ -468,9 +475,10 @@ public class BSTableConfig {
 
 	public void addField(BSField field) {
 		this.fieldsMap.put(field.getName(), field);
-		BSField[] target = new BSField[this.fields.length + 1];
+
+		String[] target = new String[this.fields.length + 1];
 		System.arraycopy(this.fields, 0, target, 0, this.fields.length);
-		target[target.length - 1] = field;
+		target[target.length - 1] = field.getName();
 		this.fields = target;
 	}
 
@@ -555,8 +563,8 @@ public class BSTableConfig {
 		return getField(this.pk);
 	}
 
-	private BSField getField(String fieldName) {
-		return this.fieldsMap.get(fieldName);
+	public BSField getField(String name) {
+		return this.fieldsMap.get(name);
 	}
 
 	@Deprecated
@@ -583,9 +591,11 @@ public class BSTableConfig {
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;
-		for (BSField f : fields) {
-			if (!f.isId()) {
-				out[i++] = f;
+		BSField field = null;
+		for (String fieldName : this.fields) {
+			field = getField(fieldName);
+			if (!field.isId()) {
+				out[i++] = field;
 			}
 		}
 		return out;
