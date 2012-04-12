@@ -1,12 +1,14 @@
 package cl.buildersoft.web.servlet.admin;
 
+import java.sql.Connection;
+
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSAction;
-import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
+import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
@@ -19,68 +21,32 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 	}
 
 	@Override
-	protected BSTableConfig getBSTableConfig() {
+	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table = new BSTableConfig("remu", "tPerson");
-		BSField field;
+
+		BSmySQL mysql = new BSmySQL();
+		Connection conn = mysql.getConnection(request.getServletContext(),
+				"remu");
+		table.configFields(conn, mysql);
 
 		table.setSortField("cNombre");
-
 		table.setTitle("Mantenedor de Personas");
 
-		field = new BSField("cId", "Código");
-		table.addField(field);
+		// BSField field;
 
-		field = new BSField("cRUT", "Rut");
-		table.addField(field);
+		table.getField("cFechaRegistro").setLabel("Incorporación");
+		table.getField("cApellidoPaterno").setLabel("A. Paterno");
+		table.getField("cApellidoMaterno").setLabel("A. Materno");
 
-		field = new BSField("cSexo", "Sexo");
-		field.setFK("bscommon", "vSex", "cName");
-		table.addField(field);
-
-		field = new BSField("cFechaRegistro", "Fecha Ingreso");
-		table.addField(field);
-
-		field = new BSField("cNombre", "Nombre");
-		table.addField(field);
-
-		field = new BSField("cApellidoPaterno", "A. Paterno");
-		table.addField(field);
-
-		field = new BSField("cApellidoMaterno", "A. Materno");
-		table.addField(field);
-
-		field = new BSField("cDireccion", "Dirección");
-		field.setVisible(false);
-		table.addField(field);
-
-		field = new BSField("cNumero", "Número");
-		field.setVisible(false);
-		table.addField(field);
-
-		field = new BSField("cVilla", "Villa");
-		field.setVisible(false);
-		table.addField(field);
-
-		field = new BSField("cBlock", "Block");
-		table.addField(field);
-
-		field = new BSField("cDepartamento", "Departamento");
-		field.setVisible(false);
-		table.addField(field);
-
-		field = new BSField("cComuna", "Comuna");
-		field.setFK("bscommon", "tComuna", "cName");
-		table.addField(field);
-
-		field = new BSField("cTelefono", "Teléfono");
-		table.addField(field);
-
-		field = new BSField("cCelular", "Celular");
-		table.addField(field);
-
-		field = new BSField("cMail", "Mail");
-		field.setVisible(false);
-		table.addField(field);
+		/**
+		table.getField("cComuna").setFK("bscommon", "tComuna", "cName");
+		table.getField("cSexo").setFK("bscommon", "vSex", "cName");
+*/
+		String[] noVisibleFields = { "cNumero", "cDireccion", "cDepartamento",
+				"cVilla", "cBlock", "cMail" };
+		for (String fieldName : noVisibleFields) {
+			table.getField(fieldName).setVisible(false);
+		}
 
 		BSAction uploadFile = new BSAction("UPLOAD_PERSON", BSActionType.Table);
 		uploadFile.setLabel("Carga por archivo");
@@ -97,13 +63,7 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 		viewFKdetails.setUrl("/servlet/admin/PersonFK");
 		table.addAction(viewFKdetails);
 
-		
 		return table;
-	}
-
-	@Override
-	protected BSHeadConfig getBSHeadConfig() {
-		return null;
 	}
 
 }

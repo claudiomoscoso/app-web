@@ -1,9 +1,9 @@
 package cl.buildersoft.web.servlet.admin;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSHeadConfig;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.web.servlet.BSHttpServlet;
 
@@ -20,7 +20,7 @@ public class RolManager extends BSHttpServlet {
 	}
 
 	@Override
-	protected BSTableConfig getBSTableConfig() {
+	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table = new BSTableConfig("bsframework", "tRol");
 		table.setTitle("Mantenimeito de Roles");
 
@@ -33,9 +33,4 @@ public class RolManager extends BSHttpServlet {
 		return table;
 	}
 
-	@Override
-	protected BSHeadConfig getBSHeadConfig() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -14,9 +14,8 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 public abstract class BSHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected abstract BSTableConfig getBSTableConfig();
+	protected abstract BSTableConfig getBSTableConfig(HttpServletRequest request);
 
-	protected abstract BSHeadConfig getBSHeadConfig();
 
 	public BSHttpServlet() {
 		super();
@@ -25,17 +24,18 @@ public abstract class BSHttpServlet extends HttpServlet {
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		BSHeadConfig head = getBSHeadConfig();
-		BSTableConfig table = getBSTableConfig();
+//		BSHeadConfig head = getBSHeadConfig();
+		BSTableConfig table = getBSTableConfig(request);
 
-		String uri = request.getRequestURI().substring(request.getContextPath().length());
-		
+		String uri = request.getRequestURI().substring(
+				request.getContextPath().length());
+
 		table.setUri(uri);
 
 		HttpSession session = request.getSession();
 		synchronized (session) {
 			session.setAttribute("BSTable", table);
-			session.setAttribute("BSHead", head);
+//			session.setAttribute("BSHead", head);
 		}
 
 		request.getRequestDispatcher("/servlet/table/LoadTable").forward(
