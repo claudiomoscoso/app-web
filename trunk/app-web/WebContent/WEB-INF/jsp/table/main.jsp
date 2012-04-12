@@ -12,7 +12,8 @@
 	ResultSet rs = (ResultSet) request.getAttribute("Data");
 	BSTableConfig table = (BSTableConfig) session
 			.getAttribute("BSTable");
-
+	String ctxPath = request.getContextPath();
+	
 	BSAction[] tableActions = table.getActions(BSActionType.Table);
 	BSAction[] recordActions = table.getActions(BSActionType.Record);
 	BSAction[] multirecordActions = table

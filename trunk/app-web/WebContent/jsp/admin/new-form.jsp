@@ -86,7 +86,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXX
 			out += "maxlength='" + len + "'";
 			out += " size='" + len + "px'";
 			out += "> (formato: dd/mm/aaaa)";
-		} else if (field.getType().equals(BSFieldType.Datetime)) {
+		} else if (field.getType().equals(BSFieldType.Timestamp)) {
 			len = 16;
 			out += "<input type='text' name='";
 			out += field.getName();
