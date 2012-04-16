@@ -14,8 +14,18 @@
 	List<Submenu> rolMenu = menuAux.list();
 %>
 
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/admin/role-def.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/role-def.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery.checkboxtree.js"></script>
+	
+    <script type="text/javascript">
+        //<!--
+        $(document).ready(function() {
+           $('#tree1').checkboxTree();
+        });
+        //-->
+    </script>
 
 <h1 class="cTitle">Definición de Roles</h1>
  
@@ -38,7 +48,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<ul>
+				<ul id="tree1">
 					<%=write(fullMenu, rolMenu)%>
 				</ul>
 
@@ -62,9 +72,8 @@
 			option = menu.getOption();
 			out += "<li class='cLabel' type='none'>"
 					+ drowCheckbox(option, rolMenu)
-					+ menu.getOption().getLabel() + "</li>";
+					+ menu.getOption().getLabel() + writeSubOption(menu, rolMenu) +"</li>";
 
-			out += writeSubOption(menu, rolMenu);
 		}
 
 		return out;
@@ -112,10 +121,10 @@
 				option = sub.getOption();
 				out += "<li class='cLabel' type='none'>"
 						+ drowCheckbox(option, rolMenu) + option.getLabel()
-						+ "</li>";
-				out += writeSubOption(sub, rolMenu);
+						+ writeSubOption(sub, rolMenu) +"</li>";
 			}
 			out += "</ul>";
 		}
 		return out;
 	}%>
+	
