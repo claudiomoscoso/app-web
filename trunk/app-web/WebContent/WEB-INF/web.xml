@@ -38,7 +38,7 @@
   </context-param>
   <context-param>
     <param-name>bsframework.database.password</param-name>
-    <param-value>12870668</param-value>
+    <param-value>admin</param-value>
   </context-param>
   <context-param>
     <param-name>bscommon.database.driver</param-name>
@@ -58,7 +58,7 @@
   </context-param>
   <context-param>
     <param-name>bscommon.database.password</param-name>
-    <param-value>12870668</param-value>
+    <param-value>admin</param-value>
   </context-param>
   <context-param>
     <param-name>remu.database.driver</param-name>
@@ -78,7 +78,7 @@
   </context-param>
   <context-param>
     <param-name>remu.database.password</param-name>
-    <param-value>12870668</param-value>
+    <param-value>admin</param-value>
   </context-param>
   <error-page>
     <exception-type>java.lang.BSException</exception-type>
