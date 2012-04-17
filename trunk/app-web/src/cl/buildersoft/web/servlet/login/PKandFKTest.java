@@ -33,7 +33,7 @@ public class PKandFKTest {
 			BSDataUtils dau = new BSDataUtils();
 			Connection conn = null;
 			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"remu", "12870668", "root");
+					"remu", "admin", "root");
 			DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
 			ResultSet rs = dbmd.getTables("bscommon", null, null, null);
 
@@ -49,7 +49,7 @@ public class PKandFKTest {
 			}
 			rs.close();
 
-			rs = dbmd.getImportedKeys(null, null, "tPerson");
+			rs = dbmd.getImportedKeys("remu", null, "tEmployee");
 
 			System.out.println("getImportedKeys:");
 			System.out.println("--------------------");
