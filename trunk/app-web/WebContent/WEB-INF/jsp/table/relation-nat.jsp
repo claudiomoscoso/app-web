@@ -11,6 +11,7 @@
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <%
+	String ctxPath = request.getContextPath();
 	ResultSet relation = (ResultSet) request.getAttribute("Relation");
 	ResultSet list = (ResultSet) request.getAttribute("List");
 
