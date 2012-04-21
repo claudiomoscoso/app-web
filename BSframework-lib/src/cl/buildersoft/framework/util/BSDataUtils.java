@@ -9,9 +9,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import cl.buildersoft.framework.beans.DomainAttribute;
 import cl.buildersoft.framework.exception.BSConfigurationException;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
@@ -177,8 +181,33 @@ public class BSDataUtils extends BSUtils {
 		}
 	}
 
+	@Deprecated
 	public Connection getConnection(ServletContext context) {
 		return getConnection(context, "cosoav");
+	}
+
+	
+	
+	public Connection getConnection(Map<String, DomainAttribute> domainAttribute) {
+		String driverName = domainAttribute.get("database.driver").getValue();
+		String serverName = domainAttribute.get("database.server").getValue();
+		String database = domainAttribute.get("database.database").getValue();
+		String username = domainAttribute.get("database.username").getValue();
+		String password = domainAttribute.get("database.password").getValue();
+
+		return getConnection(driverName, serverName, database, password,
+				username);
+	}
+	
+	public Connection getConnection(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Map<String, DomainAttribute> domainAttribute = null;
+		synchronized (session) {
+			domainAttribute = (Map<String, DomainAttribute>) session
+					.getAttribute("DomainAttribute");
+		}
+
+		return getConnection(domainAttribute);
 	}
 
 	public Connection getConnection(ServletContext context, String prefix) {
@@ -192,7 +221,6 @@ public class BSDataUtils extends BSUtils {
 				+ ".database.username");
 		String password = context.getInitParameter(prefix
 				+ ".database.password");
-
 		return getConnection(driverName, serverName, database, password,
 				username);
 	}
