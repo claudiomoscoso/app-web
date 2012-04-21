@@ -3,11 +3,12 @@ package cl.buildersoft.framework.beans;
 import java.io.Serializable;
 
 public class User extends BSBean implements Serializable {
-	  
+
 	private static final long serialVersionUID = 68866001748593379L;
 	private String mail = null;
 	private String name = null;
 	private String password = null;
+	private Boolean admin = null;
 	private String TABLE = "tUser";
 
 	public String getMail() {
@@ -32,6 +33,14 @@ public class User extends BSBean implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 
 }
