@@ -35,7 +35,7 @@ public class User extends BSBean implements Serializable {
 		this.password = password;
 	}
 
-	public Boolean isAdmin() {
+	public Boolean getAdmin() {
 		return admin;
 	}
 
