@@ -24,4 +24,9 @@ public class Domain extends BSBean implements Serializable {
 		this.alias = alias;
 	}
 
+	@Override
+	public String toString() {
+		return "Domain [name=" + name + ", alias=" + alias + "]";
+	}
+
 }
