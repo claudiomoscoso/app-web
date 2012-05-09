@@ -169,7 +169,7 @@ public class BSBeanUtils extends BSDataUtils {
 			out = Boolean.class;
 		} else if (type.toString().indexOf("Calendar") > -1) {
 			out = Calendar.class;
-		} else if (type.toString().equals("java.util.Date")) {
+		} else if (type.toString().indexOf("Date") > -1) {
 			out = Date.class;
 		} else {
 			throw new BSProgrammerException("0110",
