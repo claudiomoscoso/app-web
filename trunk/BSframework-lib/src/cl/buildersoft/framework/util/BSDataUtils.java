@@ -67,8 +67,7 @@ public class BSDataUtils extends BSUtils {
 		Long newKey = 0L;
 
 		try {
-			preparedStatement = conn.prepareStatement(sql,
-					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			parametersToStatement(parameter, preparedStatement);
 			newKey = (long) preparedStatement.executeUpdate();
 
@@ -106,16 +105,14 @@ public class BSDataUtils extends BSUtils {
 		return out;
 	}
 
-	public ResultSet queryResultSet(Connection conn, String sql,
-			Object parameter) {
+	public ResultSet queryResultSet(Connection conn, String sql, Object parameter) {
 		List<Object> prms = new ArrayList<Object>();
 		prms.add(parameter);
 
 		return queryResultSet(conn, sql, prms);
 	}
 
-	public ResultSet queryResultSet(Connection conn, String sql,
-			List<Object> parameters) {
+	public ResultSet queryResultSet(Connection conn, String sql, List<Object> parameters) {
 		ResultSet out = null;
 
 		try {
@@ -129,43 +126,39 @@ public class BSDataUtils extends BSUtils {
 		return out;
 	}
 
-	protected void parametersToStatement(List<Object> parameters,
-			PreparedStatement preparedStatement) {
+	protected void parametersToStatement(List<Object> parameters, PreparedStatement preparedStatement) {
+		parametersToStatement(parameters, preparedStatement, 0);
+
+	}
+
+	protected void parametersToStatement(List<Object> parameters, PreparedStatement preparedStatement, Integer initIndex) {
 		// this.callableStatement = conn.prepareCall(sqlStatement);
 		try {
 			if (parameters != null) {
 				// int len = parameters.size();
-				int i = 0;
+				// int initIndex = 0;
 				// Object param = null;
 				// for (int i = 0; i < len; i++) {
 				// param = parameters[i];
 				for (Object param : parameters) {
-
 					if (param instanceof String) {
-						preparedStatement.setString(i + 1, (String) param);
+						preparedStatement.setString(initIndex + 1, (String) param);
 					} else if (param instanceof Integer) {
-						preparedStatement.setInt(i + 1,
-								((Integer) param).intValue());
+						preparedStatement.setInt(initIndex + 1, ((Integer) param).intValue());
 					} else if (param instanceof Double) {
-						preparedStatement.setDouble(i + 1,
-								((Double) param).doubleValue());
+						preparedStatement.setDouble(initIndex + 1, ((Double) param).doubleValue());
 					} else if (param instanceof Long) {
-						preparedStatement.setLong(i + 1,
-								((Long) param).longValue());
+						preparedStatement.setLong(initIndex + 1, ((Long) param).longValue());
 					} else if (param instanceof Boolean) {
-						preparedStatement.setBoolean(i + 1,
-								((Boolean) param).booleanValue());
-					} else if (param instanceof java.util.Calendar
-							|| param instanceof java.util.GregorianCalendar) {
-						java.sql.Timestamp time = new java.sql.Timestamp(
-								((java.util.Calendar) param).getTimeInMillis());
-						preparedStatement.setTimestamp(i + 1, time);
+						preparedStatement.setBoolean(initIndex + 1, ((Boolean) param).booleanValue());
+					} else if (param instanceof java.util.Calendar || param instanceof java.util.GregorianCalendar) {
+						java.sql.Timestamp time = new java.sql.Timestamp(((java.util.Calendar) param).getTimeInMillis());
+						preparedStatement.setTimestamp(initIndex + 1, time);
 					} else if (param instanceof java.util.Date) {
-						java.sql.Timestamp time = new java.sql.Timestamp(
-								((java.util.Date) param).getTime());
-						preparedStatement.setTimestamp(i + 1, time);
+						java.sql.Timestamp time = new java.sql.Timestamp(((java.util.Date) param).getTime());
+						preparedStatement.setTimestamp(initIndex + 1, time);
 					} else if (param == null) {
-						preparedStatement.setNull(i + 1, java.sql.Types.NULL);
+						preparedStatement.setNull(initIndex + 1, java.sql.Types.NULL);
 					} else {
 						String message = "Object type not cataloged, please insert code in \"AbstractProcess\" for class \""
 								+ param.getClass().getName() + "\"";
@@ -173,7 +166,7 @@ public class BSDataUtils extends BSUtils {
 						throw new BSProgrammerException("0103", message);
 					}
 
-					i++;
+					initIndex++;
 				}
 			}
 		} catch (Exception e) {
@@ -186,8 +179,6 @@ public class BSDataUtils extends BSUtils {
 		return getConnection(context, "cosoav");
 	}
 
-	
-	
 	public Connection getConnection(Map<String, DomainAttribute> domainAttribute) {
 		String driverName = domainAttribute.get("database.driver").getValue();
 		String serverName = domainAttribute.get("database.server").getValue();
@@ -195,38 +186,29 @@ public class BSDataUtils extends BSUtils {
 		String username = domainAttribute.get("database.username").getValue();
 		String password = domainAttribute.get("database.password").getValue();
 
-		return getConnection(driverName, serverName, database, password,
-				username);
+		return getConnection(driverName, serverName, database, password, username);
 	}
-	
+
 	public Connection getConnection(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Map<String, DomainAttribute> domainAttribute = null;
 		synchronized (session) {
-			domainAttribute = (Map<String, DomainAttribute>) session
-					.getAttribute("DomainAttribute");
+			domainAttribute = (Map<String, DomainAttribute>) session.getAttribute("DomainAttribute");
 		}
 
 		return getConnection(domainAttribute);
 	}
 
 	public Connection getConnection(ServletContext context, String prefix) {
-		String driverName = context.getInitParameter(prefix
-				+ ".database.driver");
-		String serverName = context.getInitParameter(prefix
-				+ ".database.server");
-		String database = context.getInitParameter(prefix
-				+ ".database.database");
-		String username = context.getInitParameter(prefix
-				+ ".database.username");
-		String password = context.getInitParameter(prefix
-				+ ".database.password");
-		return getConnection(driverName, serverName, database, password,
-				username);
+		String driverName = context.getInitParameter(prefix + ".database.driver");
+		String serverName = context.getInitParameter(prefix + ".database.server");
+		String database = context.getInitParameter(prefix + ".database.database");
+		String username = context.getInitParameter(prefix + ".database.username");
+		String password = context.getInitParameter(prefix + ".database.password");
+		return getConnection(driverName, serverName, database, password, username);
 	}
 
-	public Connection getConnection(String driverName, String serverName,
-			String database, String password, String username) {
+	public Connection getConnection(String driverName, String serverName, String database, String password, String username) {
 
 		Connection connection = null;
 		try {
@@ -259,9 +241,7 @@ public class BSDataUtils extends BSUtils {
 				colNames[i - 1] = metaData.getColumnName(i);
 			}
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300",
-					"Error al trabajar con la definicion de una tabla "
-							+ e.getMessage());
+			throw new BSDataBaseException("0300", "Error al trabajar con la definicion de una tabla " + e.getMessage());
 		}
 
 		Object[] innerArray = null;
@@ -276,9 +256,8 @@ public class BSDataUtils extends BSUtils {
 				out.add(innerArray);
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300",
-					"Error al recorrer un ResultSet " + e.getMessage() + " "
-							+ e.getLocalizedMessage());
+			throw new BSDataBaseException("0300", "Error al recorrer un ResultSet " + e.getMessage() + " "
+					+ e.getLocalizedMessage());
 		}
 		this.closeSQL(rs);
 
