@@ -14,10 +14,15 @@ public abstract class BSException extends RuntimeException {
 	}
 
 	public BSException(String code) {
-		this(code, "Código de error: " + code);
+		this(code, "CÃ³digo de error: " + code);
 	}
 
 	public String getCode() {
 		return this.code;
 	}
+
+	public BSException(Exception e) {
+		throw new RuntimeException(e.getMessage());
+	}
+
 }
