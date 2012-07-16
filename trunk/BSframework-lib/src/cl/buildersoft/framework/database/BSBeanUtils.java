@@ -66,8 +66,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Class<? extends BSBean> c = bean.getClass();
 
 		String[] objectFields = getObjectFields(c);
-		Integer idValue = (Integer) getMethodValue(c, "get"
-				+ getIdField(objectFields), bean);
+		Integer idValue = (Integer) getMethodValue(c, "get" + getIdField(objectFields), bean);
 
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields, bean);
@@ -80,6 +79,14 @@ public class BSBeanUtils extends BSDataUtils {
 	}
 
 	public Boolean search(Connection conn, BSBean bean) {
+		return search(conn, bean, null, new ArrayList<Object>());
+	}
+
+	public Boolean search(Connection conn, BSBean bean, String where, Object... parameters) {
+		return search(conn, bean, where, array2List(parameters));
+	}
+
+	public Boolean search(Connection conn, BSBean bean, String where, List<Object> parameters) {
 		Class<? extends BSBean> theClass = bean.getClass();
 		Boolean out = Boolean.FALSE;
 
@@ -88,13 +95,20 @@ public class BSBeanUtils extends BSDataUtils {
 		String[] tableFieldsWithOutId = deleteId(tableFields);
 		String tableName = getTableName(theClass, bean);
 
-		String sql = buildSelectSQLString(tableName, tableFields,
-				tableFieldsWithOutId);
+		String sql = null;
+		if (where == null) {
+			sql = buildSelectSQLString(tableName, tableFields, tableFieldsWithOutId);
+		} else {
+			sql = buildSelectSQLString(tableName, tableFields, tableFieldsWithOutId, where);
+		}
 
-		Long idValue = getIdValue(theClass, "get" + getIdField(objectFields),
-				bean);
 		ResultSet rs;
-		rs = queryResultSet(conn, sql, idValue);
+		if (parameters == null || parameters.size() == 0) {
+			Long idValue = getIdValue(theClass, "get" + getIdField(objectFields), bean);
+			rs = queryResultSet(conn, sql, idValue);
+		} else {
+			rs = queryResultSet(conn, sql, parameters);
+		}
 		Object value = null;
 
 		try {
@@ -111,9 +125,7 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
-	private void fillObject(Class<? extends BSBean> c, String[] objectFields,
-			Object[] params, BSBean bean) {
-
+	private void fillObject(Class<? extends BSBean> c, String[] objectFields, Object[] params, BSBean bean) {
 		Class objectClass = null;
 		String fieldName = null;
 		Object value = null;
@@ -126,12 +138,12 @@ public class BSBeanUtils extends BSDataUtils {
 		}
 	}
 
-	private void fillField(Class<? extends BSBean> c, String fieldName,
-			Object value, BSBean bean) {
+	private void fillField(Class<? extends BSBean> c, String fieldName, Object value, BSBean bean) {
 		/**
-		 * http://www.roseindia.net/jdbc/jdbc-mysql/mapping-mysql-data-types-in-
-		 * java.shtml
-		 * */
+		 * <code>
+		  http://www.roseindia.net/jdbc/jdbc-mysql/mapping-mysql-data-types-in-java.shtml
+		 </code>
+		 */
 		Class<?> type = getTypeMethod(c, fieldName);
 		Class[] paramTypes = new Class[] { type };
 		Method method;
@@ -172,16 +184,14 @@ public class BSBeanUtils extends BSDataUtils {
 		} else if (type.toString().indexOf("Date") > -1) {
 			out = Date.class;
 		} else {
-			throw new BSProgrammerException("0110",
-					"No se encuentra el tipo de datos que retorna el método '"
-							+ methodName + "()'");
+			throw new BSProgrammerException("0110", "No se encuentra el tipo de datos que retorna el mï¿½todo '" + methodName
+					+ "()'");
 		}
 
 		return out;
 	}
 
-	private String buildInsertSQLString(Class<? extends BSBean> c,
-			String[] tableFields, BSBean bean) {
+	private String buildInsertSQLString(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
 		String sql = "INSERT INTO " + getTableName(c, bean) + "(";
 
 		sql += unSplit(tableFields, ",") + ") VALUES(";
@@ -189,8 +199,7 @@ public class BSBeanUtils extends BSDataUtils {
 		return sql;
 	}
 
-	private String buildUpdateSQLString(Class<? extends BSBean> c,
-			String[] tableFields, BSBean bean) {
+	private String buildUpdateSQLString(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
 
 		String id = getIdField(tableFields);
 		tableFields = deleteId(tableFields);
@@ -201,21 +210,19 @@ public class BSBeanUtils extends BSDataUtils {
 		return sql;
 	}
 
-	private String buildDeleteSQLString(Class<? extends BSBean> c,
-			String[] tableFields, BSBean bean) {
-
-		String sql = "DELETE FROM " + getTableName(c, bean) + " WHERE "
-				+ getIdField(tableFields) + "=?";
-
+	private String buildDeleteSQLString(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
+		String sql = "DELETE FROM " + getTableName(c, bean) + " WHERE " + getIdField(tableFields) + "=?";
 		return sql;
 	}
 
-	private String buildSelectSQLString(String tableName, String[] tableFields,
-			String[] tableFieldsWithOutId) {
+	private String buildSelectSQLString(String tableName, String[] tableFields, String[] tableFieldsWithOutId, String where) {
+		String sql = "SELECT " + unSplit(tableFieldsWithOutId, ",") + " FROM " + tableName + " WHERE " + where;
+		return sql;
+	}
 
-		String sql = "SELECT " + unSplit(tableFieldsWithOutId, ",") + " FROM "
-				+ tableName + " WHERE " + getIdField(tableFields) + "=?";
-
+	private String buildSelectSQLString(String tableName, String[] tableFields, String[] tableFieldsWithOutId) {
+		String sql = "SELECT " + unSplit(tableFieldsWithOutId, ",") + " FROM " + tableName + " WHERE " + getIdField(tableFields)
+				+ "=?";
 		return sql;
 	}
 
@@ -230,15 +237,12 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
-	private Long getIdValue(Class<? extends BSBean> c, String idFieldName,
-			BSBean bean) {
+	private Long getIdValue(Class<? extends BSBean> c, String idFieldName, BSBean bean) {
 		return (Long) getMethodValue(c, idFieldName, bean);
 
 	}
 
-	private Object[] getValues4Insert(Class<? extends BSBean> c,
-			String[] tableFields, BSBean bean) {
-
+	private Object[] getValues4Insert(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
 		Object[] out = new Object[tableFields.length];
 		Method method = null;
 		int i = 0;
@@ -258,9 +262,7 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
-	private Object[] getValues4Update(Class<? extends BSBean> c,
-			String[] objectFields, BSBean bean) {
-
+	private Object[] getValues4Update(Class<? extends BSBean> c, String[] objectFields, BSBean bean) {
 		Object[] out = new Object[objectFields.length];
 		Object aux = null;
 		Object value = null;
@@ -282,8 +284,7 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
-	private Object getMethodValue(Class<? extends BSBean> c, String methodName,
-			BSBean bean) {
+	private Object getMethodValue(Class<? extends BSBean> c, String methodName, BSBean bean) {
 		Object value;
 		Method method;
 		try {
@@ -352,14 +353,12 @@ public class BSBeanUtils extends BSDataUtils {
 				name = name.substring(3);
 				list.add(pre + name);
 			}
-
 		}
 
 		out = new String[list.size()];
 		int i = 0;
 		for (String o : list) {
 			out[i++] = o;
-
 		}
 
 		return out;
@@ -372,13 +371,11 @@ public class BSBeanUtils extends BSDataUtils {
 
 		if (!c.equals(Object.class)) {
 
-			List<Method> parentMethods = array2List(c.getSuperclass()
-					.getDeclaredMethods());
+			List<Method> parentMethods = array2List(c.getSuperclass().getDeclaredMethods());
 
 			for (Method o : parentMethods) {
 				out.add(o);
 			}
-
 		}
 
 		return list2Array(out);
@@ -415,8 +412,7 @@ public class BSBeanUtils extends BSDataUtils {
 
 		if (m == null) {
 			if (clazz.equals(Object.class)) {
-				throw new BSProgrammerException("0110",
-						"Method not found in any super class.");
+				throw new BSProgrammerException("0110", "Method not found in any super class.");
 			}
 			return getMethod(clazz.getSuperclass(), name);
 		}
