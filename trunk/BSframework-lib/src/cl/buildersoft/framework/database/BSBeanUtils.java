@@ -86,6 +86,36 @@ public class BSBeanUtils extends BSDataUtils {
 		return search(conn, bean, where, array2List(parameters));
 	}
 
+	public List<? extends BSBean> listAll(Connection conn, BSBean bean) {
+		Class<? extends BSBean> theClass = bean.getClass();
+		List out = new ArrayList();
+
+		String[] tableFields = getTableFields(theClass);
+		String[] objectFields = getObjectFields(theClass);
+//		String[] tableFieldsWithOutId = deleteId(tableFields);
+		String tableName = getTableName(theClass, bean);
+
+		String sql = buildSelectAllString(tableName, tableFields);
+
+		ResultSet rs = queryResultSet(conn, sql, null);
+
+		Object value = null;
+
+		try {
+			while (rs.next()) {
+				Object object = bean.getClass().newInstance();
+				for (String f : tableFields) {
+					value = rs.getObject(f);
+					fillField(theClass, f.substring(1, f.length()), value, object);
+				}
+				out.add(object);
+			}
+		} catch (Exception e) {
+			throw new BSDataBaseException(e);
+		}
+		return out;
+	}
+
 	public Boolean search(Connection conn, BSBean bean, String where, List<Object> parameters) {
 		Class<? extends BSBean> theClass = bean.getClass();
 		Boolean out = Boolean.FALSE;
@@ -138,7 +168,7 @@ public class BSBeanUtils extends BSDataUtils {
 		}
 	}
 
-	private void fillField(Class<? extends BSBean> c, String fieldName, Object value, BSBean bean) {
+	private void fillField(Class<? extends BSBean> c, String fieldName, Object value, Object bean) {
 		/**
 		 * <code>
 		  http://www.roseindia.net/jdbc/jdbc-mysql/mapping-mysql-data-types-in-java.shtml
@@ -189,6 +219,11 @@ public class BSBeanUtils extends BSDataUtils {
 		}
 
 		return out;
+	}
+
+	private String buildSelectAllString(String tableName, String[] tableFields) {
+		String sql = "SELECT " + unSplit(tableFields, ",") + " FROM " + tableName;
+		return sql;
 	}
 
 	private String buildInsertSQLString(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
