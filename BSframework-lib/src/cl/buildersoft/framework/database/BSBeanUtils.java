@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,7 +67,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Class<? extends BSBean> c = bean.getClass();
 
 		String[] objectFields = getObjectFields(c);
-		Integer idValue = (Integer) getMethodValue(c, "get" + getIdField(objectFields), bean);
+		Long idValue = (Long) getMethodValue(c, "get" + getIdField(objectFields), bean);
 
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields, bean);
@@ -92,7 +93,7 @@ public class BSBeanUtils extends BSDataUtils {
 
 		String[] tableFields = getTableFields(theClass);
 		String[] objectFields = getObjectFields(theClass);
-//		String[] tableFieldsWithOutId = deleteId(tableFields);
+		// String[] tableFieldsWithOutId = deleteId(tableFields);
 		String tableName = getTableName(theClass, bean);
 
 		String sql = buildSelectAllString(tableName, tableFields);
@@ -145,6 +146,7 @@ public class BSBeanUtils extends BSDataUtils {
 			if (rs.next()) {
 				for (String f : tableFieldsWithOutId) {
 					value = rs.getObject(f);
+//					value = convertToCalendar(value);
 					fillField(theClass, f.substring(1, f.length()), value, bean);
 				}
 				out = Boolean.TRUE;
@@ -154,6 +156,18 @@ public class BSBeanUtils extends BSDataUtils {
 		}
 		return out;
 	}
+
+//	private Object convertToCalendar(Object value) {
+//		Object out = null;
+//		if (value instanceof java.util.Date || value instanceof java.sql.Date || value instanceof Timestamp) {
+//			Calendar temp = Calendar.getInstance();
+//			temp.setTimeInMillis(((java.util.Date) value).getTime());
+//			out = temp;
+//		} else {
+//			out = value;
+//		}
+//		return out;
+//	}
 
 	private void fillObject(Class<? extends BSBean> c, String[] objectFields, Object[] params, BSBean bean) {
 		Class objectClass = null;
@@ -209,12 +223,12 @@ public class BSBeanUtils extends BSDataUtils {
 			out = Long.class;
 		} else if (type.toString().indexOf("Boolean") > -1) {
 			out = Boolean.class;
-		} else if (type.toString().indexOf("Calendar") > -1) {
-			out = Calendar.class;
+		} else if (type.toString().indexOf("Timestamp") > -1) {
+			out = Timestamp.class;
 		} else if (type.toString().indexOf("Date") > -1) {
 			out = Date.class;
 		} else {
-			throw new BSProgrammerException("0110", "No se encuentra el tipo de datos que retorna el m�todo '" + methodName
+			throw new BSProgrammerException("0110", "No se encuentra el tipo de datos que retorna el método '" + methodName
 					+ "()'");
 		}
 
