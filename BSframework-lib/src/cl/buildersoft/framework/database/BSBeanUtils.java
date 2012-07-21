@@ -117,6 +117,36 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
+	public List<? extends BSBean> list(Connection conn, BSBean bean, String where, Object... parameters) {
+		Class<? extends BSBean> theClass = bean.getClass();
+		List out = new ArrayList();
+
+		String[] tableFields = getTableFields(theClass);
+//		String[] objectFields = getObjectFields(theClass);
+		// String[] tableFieldsWithOutId = deleteId(tableFields);
+		String tableName = getTableName(theClass, bean);
+
+		String sql = buildSelectSQLString(tableName, tableFields, tableFields, where);
+
+		ResultSet rs = queryResultSet(conn, sql, array2List(parameters));
+
+		Object value = null;
+
+		try {
+			while (rs.next()) {
+				Object object = bean.getClass().newInstance();
+				for (String f : tableFields) {
+					value = rs.getObject(f);
+					fillField(theClass, f.substring(1, f.length()), value, object);
+				}
+				out.add(object);
+			}
+		} catch (Exception e) {
+			throw new BSDataBaseException(e);
+		}
+		return out;
+	}
+
 	public Boolean search(Connection conn, BSBean bean, String where, List<Object> parameters) {
 		Class<? extends BSBean> theClass = bean.getClass();
 		Boolean out = Boolean.FALSE;
@@ -146,7 +176,7 @@ public class BSBeanUtils extends BSDataUtils {
 			if (rs.next()) {
 				for (String f : tableFieldsWithOutId) {
 					value = rs.getObject(f);
-//					value = convertToCalendar(value);
+					// value = convertToCalendar(value);
 					fillField(theClass, f.substring(1, f.length()), value, bean);
 				}
 				out = Boolean.TRUE;
@@ -157,17 +187,18 @@ public class BSBeanUtils extends BSDataUtils {
 		return out;
 	}
 
-//	private Object convertToCalendar(Object value) {
-//		Object out = null;
-//		if (value instanceof java.util.Date || value instanceof java.sql.Date || value instanceof Timestamp) {
-//			Calendar temp = Calendar.getInstance();
-//			temp.setTimeInMillis(((java.util.Date) value).getTime());
-//			out = temp;
-//		} else {
-//			out = value;
-//		}
-//		return out;
-//	}
+	// private Object convertToCalendar(Object value) {
+	// Object out = null;
+	// if (value instanceof java.util.Date || value instanceof java.sql.Date ||
+	// value instanceof Timestamp) {
+	// Calendar temp = Calendar.getInstance();
+	// temp.setTimeInMillis(((java.util.Date) value).getTime());
+	// out = temp;
+	// } else {
+	// out = value;
+	// }
+	// return out;
+	// }
 
 	private void fillObject(Class<? extends BSBean> c, String[] objectFields, Object[] params, BSBean bean) {
 		Class objectClass = null;
