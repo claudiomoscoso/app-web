@@ -8,8 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cl.buildersoft.framework.exception.BSProgrammerException;
+
 public class BSUtils {
-	protected List<Object> array2List(Object... prms) {
+	public static List<Object> array2List(Object... prms) {
 		List<Object> out = new ArrayList<Object>();
 
 		for (Object o : prms) {
@@ -19,7 +21,7 @@ public class BSUtils {
 		return out;
 	}
 
-	protected Object[] list2Array(List<Object> prms) {
+	public static Object[] list2Array(List<Object> prms) {
 		Object[] out = new Object[prms.size()];
 
 		int i = 0;
@@ -30,31 +32,31 @@ public class BSUtils {
 		return out;
 	}
 
-	protected String calendar2String(Calendar calendar) {
-		String out = calendar.get(Calendar.YEAR) + "-"
-				+ (calendar.get(Calendar.MONTH) + 1) + "-"
-				+ calendar.get(Calendar.DAY_OF_MONTH) + " "
-				+ calendar.get(Calendar.HOUR_OF_DAY) + ":"
-				+ calendar.get(Calendar.MINUTE) + " - "
-				+ (new Date(calendar.getTimeInMillis()).toString());
+	public static String calendar2String(Calendar calendar) {
+		String out = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-"
+				+ calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":"
+				+ calendar.get(Calendar.MINUTE) + " - " + (new Date(calendar.getTimeInMillis()).toString());
 		return out;
 	}
 
-	protected Calendar date2Calendar(java.util.Date date) {
+	public static Calendar date2Calendar(java.util.Date date) {
 		Calendar out = Calendar.getInstance();
 		out.setTimeInMillis(date.getTime());
 		return out;
 	}
 
-	protected Calendar string2Calendar(String dateString, String format)
-			throws ParseException {
+	public static Calendar string2Calendar(String dateString, String format) {
 		DateFormat formatter = new SimpleDateFormat(format);
-		java.util.Date date = (java.util.Date) formatter.parse(dateString);
-
-		Calendar out = date2Calendar(date);
-
+		Calendar out = null;
+		try {
+			java.util.Date date = (java.util.Date) formatter.parse(dateString);
+			out = date2Calendar(date);
+			date = null;
+		} catch (ParseException e) {
+			throw new BSProgrammerException(e);
+		}
 		// System.out.println(calendar2String(out));
-		date = null;
+
 		return out;
 	}
 

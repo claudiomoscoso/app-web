@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +16,9 @@ import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.exception.BSSystemException;
 import cl.buildersoft.framework.util.BSDataUtils;
+import cl.buildersoft.framework.util.BSUtils;
+
+//import static cl.buildersoft.framework.util.BSUtils.array2List;
 
 public class BSBeanUtils extends BSDataUtils {
 
@@ -33,7 +35,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Object[] params = getValues4Insert(theClass, objectFields, bean);
 
 		Long newId;
-		newId = insert(conn, sql, array2List(params));
+		newId = insert(conn, sql, BSUtils.array2List(params));
 
 		String idField = getIdField(getObjectFields(theClass));
 		fillField(theClass, idField, newId, bean);
@@ -51,7 +53,7 @@ public class BSBeanUtils extends BSDataUtils {
 		Object[] params = getValues4Update(theClass, objectFields, bean);
 
 		Integer out;
-		out = update(conn, sql, array2List(params));
+		out = update(conn, sql, BSUtils.array2List(params));
 
 		return out;
 
@@ -72,7 +74,7 @@ public class BSBeanUtils extends BSDataUtils {
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields, bean);
 
-		update(conn, sql, array2List(idValue));
+		update(conn, sql, BSUtils.array2List(idValue));
 
 		Object[] prms = new Object[objectFields.length];
 
@@ -84,7 +86,7 @@ public class BSBeanUtils extends BSDataUtils {
 	}
 
 	public Boolean search(Connection conn, BSBean bean, String where, Object... parameters) {
-		return search(conn, bean, where, array2List(parameters));
+		return search(conn, bean, where, BSUtils.array2List(parameters));
 	}
 
 	public List<? extends BSBean> listAll(Connection conn, BSBean bean) {
@@ -128,7 +130,7 @@ public class BSBeanUtils extends BSDataUtils {
 
 		String sql = buildSelectSQLString(tableName, tableFields, tableFields, where);
 
-		ResultSet rs = queryResultSet(conn, sql, array2List(parameters));
+		ResultSet rs = queryResultSet(conn, sql, BSUtils.array2List(parameters));
 
 		Object value = null;
 
