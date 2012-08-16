@@ -1,6 +1,7 @@
 package cl.buildersoft.framework.services.impl;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.services.BSUserService;
 import cl.buildersoft.framework.util.BSDataUtils;
+import static cl.buildersoft.framework.util.BSUtils.array2List;
 
 public class BSUserServiceImpl extends BSDataUtils implements BSUserService {
 	public BSUserServiceImpl() {

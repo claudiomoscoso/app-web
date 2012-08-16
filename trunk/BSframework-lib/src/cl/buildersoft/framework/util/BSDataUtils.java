@@ -20,7 +20,7 @@ import cl.buildersoft.framework.exception.BSConfigurationException;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 
-public class BSDataUtils extends BSUtils {
+public class BSDataUtils {
 	PreparedStatement preparedStatement = null;
 
 	public void closeSQL(ResultSet rs) {

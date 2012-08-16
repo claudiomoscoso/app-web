@@ -13,6 +13,8 @@ import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.util.BSDataUtils;
+import static cl.buildersoft.framework.util.BSUtils.array2List;
+
 
 public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 

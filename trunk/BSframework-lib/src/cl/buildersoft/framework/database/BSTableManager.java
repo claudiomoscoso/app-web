@@ -14,6 +14,7 @@ import java.util.List;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSDataUtils;
+import static cl.buildersoft.framework.util.BSUtils.array2List;
 
 public abstract class BSTableManager extends BSDataUtils {
 	private Connection connection = null;
@@ -182,7 +183,7 @@ public abstract class BSTableManager extends BSDataUtils {
 			out = Date.class;
 		} else {
 			throw new BSProgrammerException("0110", "El tipo de dato "
-					+ type.toString() + " no está soportado");
+					+ type.toString() + " no estï¿½ soportado");
 		}
 
 		return out;
