@@ -60,4 +60,23 @@ public class BSUtils {
 		return out;
 	}
 
+	public static Boolean isValidDate(String date, String format) {
+		Boolean out = Boolean.TRUE;
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+		Date testDate = null;
+
+		try {
+			testDate = sdf.parse(date);
+		} catch (ParseException e) {
+			out = Boolean.FALSE;
+		}
+
+		if (!sdf.format(testDate).equals(date)) {
+			out = Boolean.FALSE;
+		}
+
+		return out;
+
+	}
 }
