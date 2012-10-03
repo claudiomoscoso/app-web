@@ -1,14 +1,7 @@
 package cl.buildersoft.framework.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import cl.buildersoft.framework.exception.BSProgrammerException;
 
 public class BSUtils {
 	public static List<Object> array2List(Object... prms) {
