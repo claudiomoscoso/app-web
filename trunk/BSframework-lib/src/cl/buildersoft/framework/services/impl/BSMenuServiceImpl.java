@@ -15,13 +15,13 @@ import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.util.BSDataUtils;
 import static cl.buildersoft.framework.util.BSUtils.array2List;
 
-
 public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 
 	@Override
 	public Menu getMenu(Connection conn, List<Rol> rols) {
 		return getMenu(conn, rols, null);
 	}
+
 	@Override
 	public Menu getMenu(Connection conn, List<Rol> rols, Long type) {
 		Menu menu = null;
@@ -54,8 +54,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		return menu;
 	}
 
-	private List<Submenu> fillSubmenu(Connection conn, Submenu main, Rol rol,
-			Menu menu, Long type) {
+	private List<Submenu> fillSubmenu(Connection conn, Submenu main, Rol rol, Menu menu, Long type) {
 		List<Submenu> subList = getSubmenu(conn, main, rol, type);
 
 		for (Submenu sub : subList) {
@@ -65,8 +64,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		return subList;
 	}
 
-	private void complement(Connection conn, Submenu main, Rol rol, Menu menu,
-			Long type) {
+	private void complement(Connection conn, Submenu main, Rol rol, Menu menu, Long type) {
 		List<Submenu> subList = getSubmenu(conn, main, rol, type);
 
 		main.addSubmenu(subList, menu);
@@ -76,8 +74,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		}
 	}
 
-	private List<Submenu> getSubmenu(Connection conn, Submenu sub, Rol rol,
-			Long type) {
+	private List<Submenu> getSubmenu(Connection conn, Submenu sub, Rol rol, Long type) {
 		String sql = null;
 		List<Object> prms = null;
 		Option parent = sub != null ? sub.getOption() : null;
@@ -109,7 +106,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		if (type != null) {
 			sql += " AND o.cType=1";
 		}
-
+		sql += " ORDER BY cOrder";
 		return getSubmenuFromDB(conn, sql, prms);
 
 	}
@@ -122,8 +119,7 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		}
 	}
 
-	private List<Submenu> getSubmenuFromDB(Connection conn, String sql,
-			List<Object> prms) {
+	private List<Submenu> getSubmenuFromDB(Connection conn, String sql, List<Object> prms) {
 		Submenu submenu = null;
 		List<Submenu> out = new ArrayList<Submenu>();
 
