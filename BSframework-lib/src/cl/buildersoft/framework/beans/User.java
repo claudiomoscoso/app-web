@@ -9,7 +9,7 @@ public class User extends BSBean implements Serializable {
 	private String name = null;
 	private String password = null;
 	private Boolean admin = null;
-	private String TABLE = "tUser";
+	private String TABLE = "bsframework.tUser";
 
 	public String getMail() {
 		return mail;
