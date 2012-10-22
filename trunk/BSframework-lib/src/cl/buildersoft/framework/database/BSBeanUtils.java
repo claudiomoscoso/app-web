@@ -3,6 +3,7 @@ package cl.buildersoft.framework.database;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -124,7 +125,7 @@ public class BSBeanUtils extends BSDataUtils {
 		List out = new ArrayList();
 
 		String[] tableFields = getTableFields(theClass);
-//		String[] objectFields = getObjectFields(theClass);
+		// String[] objectFields = getObjectFields(theClass);
 		// String[] tableFieldsWithOutId = deleteId(tableFields);
 		String tableName = getTableName(theClass, bean);
 
@@ -243,26 +244,28 @@ public class BSBeanUtils extends BSDataUtils {
 			throw new BSProgrammerException("0110", e.getMessage());
 		}
 		Type type = m.getGenericReturnType();
-
+		String typeString = type.toString();
 		Class<?> out = null;
 
-		if (type.toString().indexOf("String") > -1) {
+		if (typeString.indexOf("String") > -1) {
 			out = "".getClass();
-		} else if (type.toString().indexOf("Integer") > -1) {
+		} else if (typeString.indexOf("Integer") > -1) {
 			out = Integer.class;
-		} else if (type.toString().indexOf("Double") > -1) {
+		} else if (typeString.indexOf("Double") > -1) {
 			out = Double.class;
-		} else if (type.toString().indexOf("Long") > -1) {
+		} else if (typeString.indexOf("BigDecimal") > -1) {
+			out = BigDecimal.class;
+		} else if (typeString.indexOf("Long") > -1) {
 			out = Long.class;
-		} else if (type.toString().indexOf("Boolean") > -1) {
+		} else if (typeString.indexOf("Boolean") > -1) {
 			out = Boolean.class;
-		} else if (type.toString().indexOf("Timestamp") > -1) {
+		} else if (typeString.indexOf("Timestamp") > -1) {
 			out = Timestamp.class;
-		} else if (type.toString().indexOf("Date") > -1) {
+		} else if (typeString.indexOf("Date") > -1) {
 			out = Date.class;
 		} else {
-			throw new BSProgrammerException("0110", "No se encuentra el tipo de datos que retorna el mÃ©todo '" + methodName
-					+ "()'");
+			throw new BSProgrammerException("0110", "El tipo de dato '" + type + "' que retorna el método '" + methodName
+					+ "()', no fue encontrado");
 		}
 
 		return out;
