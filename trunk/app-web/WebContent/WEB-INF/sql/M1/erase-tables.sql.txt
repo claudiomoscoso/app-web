@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS tHoliday;
 DROP TABLE IF EXISTS tLicense;
 DROP TABLE IF EXISTS tLicenseCause;
 
-
 DROP TABLE IF EXISTS tAssetDiscountValue;
 DROP TABLE IF EXISTS tAssetDiscount;
 DROP TABLE IF EXISTS tAssetDiscountType;
