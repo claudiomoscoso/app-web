@@ -19,6 +19,9 @@ import com.mysql.jdbc.DatabaseMetaData;
 
 public class PKandFKTest {
 
+	private static String TABLE = "tAFP";
+	private static String DATABASE = "remu";
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -32,32 +35,29 @@ public class PKandFKTest {
 		try {
 			BSDataUtils dau = new BSDataUtils();
 			Connection conn = null;
-			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-					"remu", "admin", "root");
+			conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost", DATABASE, "admin", "root");
 			DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
-			ResultSet rs = dbmd.getTables("bscommon", null, null, null);
+			ResultSet rs = dbmd.getTables(DATABASE, null, null, null);
 
 			System.out.println("TABLES:");
 			System.out.println("--------------------");
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ rs.getString(md.getColumnName(i)));
+					System.out.println(md.getColumnName(i) + "=" + rs.getString(md.getColumnName(i)));
 				}
 				System.out.println("--------------------");
 			}
 			rs.close();
 
-			rs = dbmd.getImportedKeys("remu", null, "tEmployee");
+			rs = dbmd.getImportedKeys(null, null, TABLE);
 
 			System.out.println("getImportedKeys:");
 			System.out.println("--------------------");
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ rs.getString(md.getColumnName(i)));
+					System.out.println(md.getColumnName(i) + "=" + rs.getString(md.getColumnName(i)));
 				}
 				System.out.println("--------------------");
 			}
@@ -65,12 +65,11 @@ public class PKandFKTest {
 
 			System.out.println("getExportedKeys():");
 			System.out.println("--------------------");
-			rs = dbmd.getExportedKeys(null, null, "tPerson");
+			rs = dbmd.getExportedKeys(null, null, TABLE);
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ rs.getString(md.getColumnName(i)));
+					System.out.println(md.getColumnName(i) + "=" + rs.getString(md.getColumnName(i)));
 				}
 				System.out.println("----------");
 			}
@@ -78,12 +77,11 @@ public class PKandFKTest {
 
 			System.out.println("getIndexInfo():");
 			System.out.println("--------------------");
-			rs = dbmd.getIndexInfo("remu", null, "tPerson", true, false);
+			rs = dbmd.getIndexInfo(DATABASE, null, TABLE, true, false);
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ rs.getString(md.getColumnName(i)));
+					System.out.println(md.getColumnName(i) + "=" + rs.getString(md.getColumnName(i)));
 				}
 				System.out.println("----------");
 			}
@@ -91,12 +89,11 @@ public class PKandFKTest {
 
 			System.out.println("getPrimaryKeys():");
 			System.out.println("--------------------");
-			rs = dbmd.getPrimaryKeys("remu", null, "tPerson");
+			rs = dbmd.getPrimaryKeys(DATABASE, null, TABLE);
 			while (rs.next()) {
 				ResultSetMetaData md = rs.getMetaData();
 				for (int i = 1; i < md.getColumnCount(); i++) {
-					System.out.println(md.getColumnName(i) + "="
-							+ rs.getString(md.getColumnName(i)));
+					System.out.println(md.getColumnName(i) + "=" + rs.getString(md.getColumnName(i)));
 				}
 				System.out.println("----------");
 			}
@@ -120,8 +117,7 @@ public class PKandFKTest {
 		User user = null;
 		BSDataUtils dau = new BSDataUtils();
 		Connection conn = null;
-		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-				"bsframework", "12870668", "root");
+		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost", "bsframework", "admin", "root");
 
 		user = userService.login(conn, mail, password);
 
@@ -139,8 +135,7 @@ public class PKandFKTest {
 		User user = null;
 		BSDataUtils dau = new BSDataUtils();
 		Connection conn = null;
-		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost",
-				"bsframework", "12870668", "root");
+		conn = dau.getConnection("org.gjt.mm.mysql.Driver", "localhost", "bsframework", "admin", "root");
 
 		user = userService.login(conn, mail, password);
 

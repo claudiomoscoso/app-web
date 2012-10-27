@@ -2,42 +2,87 @@ package cl.buildersoft.framework.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.KeySpec;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.exception.BSSystemException;
 
 public class BSSecurity {
+	private static final String UNICODE_FORMAT = "UTF8";
+	public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
+	private KeySpec myKeySpec;
+	private SecretKeyFactory mySecretKeyFactory;
+	private Cipher cipher;
+	byte[] keyAsBytes;
+	private String myEncryptionKey;
+	private String myEncryptionScheme;
+	SecretKey key;
 
-	/**
-	 * public String cript(String s) { return md5fromClass(s); } private String
-	 * md5fromClass(String s) throws BSProgrammerException { MD5 x = new MD5(s);
-	 * String out = x.compute(); x = null; return out; }
-	 */
-	public String encript3des(String key, String s) {
-		throw new BSProgrammerException("0101", "No se ha implementado el método encript3des()");
+	public BSSecurity() {
+		myEncryptionKey = "BuilderSoftEncryptionKey_";
+		myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
+
+		try {
+			keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+			myKeySpec = new DESedeKeySpec(keyAsBytes);
+			mySecretKeyFactory = SecretKeyFactory.getInstance(myEncryptionScheme);
+			cipher = Cipher.getInstance(myEncryptionScheme);
+			key = mySecretKeyFactory.generateSecret(myKeySpec);
+		} catch (Exception e) {
+			throw new BSProgrammerException(e);
+		}
 	}
 
-	public String decript3des(String key, String s) {
-		throw new BSProgrammerException("0102", "No se ha implementado el método decript3des()");
+	public String encript3des(String clearString) {
+		String encryptedString = null;
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			byte[] plainText = clearString.getBytes(UNICODE_FORMAT);
+			byte[] encryptedText = cipher.doFinal(plainText);
+			BASE64Encoder base64encoder = new BASE64Encoder();
+			encryptedString = base64encoder.encode(encryptedText);
+		} catch (Exception e) {
+			throw new BSProgrammerException(e);
+		}
+		return encryptedString;
+	}
+
+	public String decript3des(String encryptedString) {
+		String clearString = null;
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			BASE64Decoder base64decoder = new BASE64Decoder();
+			byte[] encryptedText = base64decoder.decodeBuffer(encryptedString);
+			byte[] plainText = cipher.doFinal(encryptedText);
+			clearString = bytes2String(plainText);
+		} catch (Exception e) {
+			throw new BSProgrammerException(e);
+		}
+		return clearString;
+	}
+
+	private String bytes2String(byte[] bytes) {
+		StringBuffer stringBuffer = new StringBuffer();
+		for (byte b : bytes) {
+			stringBuffer.append((char) b);
+		}
+		return stringBuffer.toString();
 	}
 
 	public String md5(String str) {
-
 		MessageDigest md5;
 		try {
 			md5 = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			throw new BSSystemException("0200", e.getMessage());
+			throw new BSSystemException(e);
 		}
-
-		// convert input String to a char[]
-		// convert that char[] to byte[]
-		// get the md5 digest as byte[]
-		// bit-wise AND that byte[] with 0xff
-		// prepend "0" to the output StringBuffer to make sure that we don't end
-		// up with
-		// something like "e21ff" instead of "e201ff"
-
 		char[] charArray = str.toCharArray();
 
 		byte[] byteArray = new byte[charArray.length];
@@ -58,5 +103,4 @@ public class BSSecurity {
 
 		return hexValue.toString();
 	}
-
 }

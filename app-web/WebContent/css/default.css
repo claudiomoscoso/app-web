@@ -1,20 +1,45 @@
+input:focus, textarea:focus, select:focus
+{
+	BORDER-RIGHT: black 1px solid;
+    BORDER-TOP: black 1px solid;
+    BORDER-LEFT: black 1px solid;
+    BORDER-BOTTOM: black 1px solid;
+    FONT-FAMILY: Tahoma;
+    /*BACKGROUND-COLOR: lemonchiffon;
+    COLOR: brown;*/
+}
+
+input, textarea, select
+{
+	BORDER-RIGHT: black 1px solid;
+    BORDER-TOP: black 1px solid;
+    BORDER-LEFT: black 1px solid;
+    COLOR: black;
+    BORDER-BOTTOM: black 1px solid;
+    FONT-FAMILY: Tahoma;
+    BACKGROUND-COLOR: #F0F0F0   
+}
+
+/*
 A:hover
 {
     TEXT-DECORATION: none 
 }
-
-
-A
+*/
+a.cCancel
 {
     FONT-SIZE: 10pt;
     COLOR: #000e78;
-    FONT-FAMILY: Arial;
+    FONT-FAMILY: Tahoma;
     TEXT-DECORATION: none
 }
+/*
+html { overflow-x:hidden; }
+*/
 BODY
 {
-    FONT-FAMILY: Symbol, OpenSymbol, 'MT Extra', Marlett, 'Courier New';
-    BACKGROUND-COLOR: white
+    FONT-FAMILY: msam10, Symbol, OpenSymbol, 'MT Extra', Marlett, 'Courier New';
+    BACKGROUND-COLOR: #FCFCFC
 }
 SPAN.cInfo
 {
@@ -44,6 +69,15 @@ SPAN.cMessage
     CURSOR: default;
     COLOR: brown;
     FONT-FAMILY: Tahoma
+}
+
+.cWarning
+{
+    FONT-WEIGHT: bold; 
+    FONT-SIZE: smaller;
+    FONT-FAMILY: Tahoma;
+    COLOR: #303030 ;
+    background-color:#FFFF99 ;
 }
 
 .cError
@@ -76,7 +110,7 @@ H2.cTitle2
 {
     CURSOR: default;
     COLOR: firebrick;
-    FONT-FAMILY: 'Arial Black';
+    FONT-FAMILY: 'Arial';
     TEXT-DECORATION: underline
 }
 TD.cHeadTD
@@ -120,7 +154,7 @@ TD.cDataTD_odd
     BACKGROUND-COLOR: #F5F5F5
 }
 
-INPUT.cInputFocus
+XINPUT.cInputFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -130,7 +164,7 @@ INPUT.cInputFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: lemonchiffon
 }
-INPUT.cInputNoFocus
+XINPUT.cInputNoFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -140,7 +174,7 @@ INPUT.cInputNoFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: white
 }
-SELECT.cSelectFocus
+XSELECT.cSelectFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -150,7 +184,7 @@ SELECT.cSelectFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: lemonchiffon
 }
-SELECT.cSelectNoFocus
+XSELECT.cSelectNoFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -160,7 +194,7 @@ SELECT.cSelectNoFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: white
 }
-INPUT.cButtonFocus
+XINPUT.cButtonFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -170,7 +204,8 @@ INPUT.cButtonFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: lemonchiffon
 }
-INPUT.cButtonNoFocus
+
+XINPUT.cButtonNoFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -200,7 +235,7 @@ CAPTION
     BACKGROUND-COLOR: darkred;
     TEXT-ALIGN: center
 }
-TEXTAREA.cTextareaFocus
+XTEXTAREA.cTextareaFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -210,7 +245,7 @@ TEXTAREA.cTextareaFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: lemonchiffon
 }
-TEXTAREA.cTextareaNoFocus
+XTEXTAREA.cTextareaNoFocus
 {
     BORDER-RIGHT: black 1px solid;
     BORDER-TOP: black 1px solid;
@@ -220,7 +255,8 @@ TEXTAREA.cTextareaNoFocus
     FONT-FAMILY: Tahoma;
     BACKGROUND-COLOR: white
 }
-div.content{
+
+div.contentScroll{
 	height: 250px;
 	width: 90%;
 	overflow: scroll;

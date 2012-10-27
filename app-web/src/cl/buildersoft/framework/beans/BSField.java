@@ -25,9 +25,11 @@ public class BSField {
 		this.label = label;
 	}
 
+	/**
+	 * @deprecated Use isPK()
+	 * */
 	public Boolean isId() {
-		return "id".equalsIgnoreCase(this.name)
-				|| "cid".equalsIgnoreCase(this.name);
+		return "id".equalsIgnoreCase(this.name) || "cid".equalsIgnoreCase(this.name);
 	}
 
 	public Boolean showField() {
@@ -43,8 +45,7 @@ public class BSField {
 	}
 
 	public Boolean isNumber() {
-		return getType().equals(BSFieldType.Double)
-				|| getType().equals(BSFieldType.Integer)
+		return getType().equals(BSFieldType.Double) || getType().equals(BSFieldType.Integer)
 				|| getType().equals(BSFieldType.Long);
 	}
 
@@ -171,12 +172,9 @@ public class BSField {
 
 	@Override
 	public String toString() {
-		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk
-				+ ", unique=" + unique + ", readonly=" + readonly + ", length="
-				+ length + ", type=" + type + ", value=" + value
-				+ ", validationOnBlur=" + validationOnBlur + ", visible="
-				+ visible + ", fk=" + Arrays.toString(fk) + ", fkData="
-				+ fkData + "]";
+		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk + ", unique=" + unique + ", readonly=" + readonly
+				+ ", length=" + length + ", type=" + type + ", value=" + value + ", validationOnBlur=" + validationOnBlur
+				+ ", visible=" + visible + ", fk=" + Arrays.toString(fk) + ", fkData=" + fkData + "]";
 	}
 
 	/***/

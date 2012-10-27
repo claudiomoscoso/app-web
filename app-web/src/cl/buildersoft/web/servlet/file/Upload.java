@@ -3,7 +3,6 @@ package cl.buildersoft.web.servlet.file;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,7 +18,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import cl.buildersoft.framework.beans.DatabaseFile;
+import cl.buildersoft.business.beans.DatabaseFile;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
@@ -33,14 +32,11 @@ public class Upload extends HttpServlet {
 
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
-				.forward(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// String desc = request.getParameter("desc");
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -79,12 +75,10 @@ public class Upload extends HttpServlet {
 		w.flush();
 
 		BSmySQL mysql = new BSmySQL();
-		Connection conn;
-
-		conn = mysql.getConnection(getServletContext(), "bsframework");
+		Connection conn = mysql.getConnection(request);
 
 		BSBeanUtils bu = new BSBeanUtils();
 		bu.insert(conn, file);
-
+		mysql.closeConnection(conn);
 	}
 }

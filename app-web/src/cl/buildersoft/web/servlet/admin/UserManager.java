@@ -30,7 +30,7 @@ public class UserManager extends BSHttpServlet {
 		field = new BSField("cId", "ID");
 		table.addField(field);
 
-		field = new BSField("cMail", "Correo electrónico/usuario");
+		field = new BSField("cMail", "Correo electrï¿½nico/usuario");
 		field.setValidationOnBlur("validationUser");
 		table.addField(field);
 
@@ -43,14 +43,15 @@ public class UserManager extends BSHttpServlet {
 		table.addAction(changePassword);
 
 		BSAction rolRelation = new BSAction("ROL_RELATION", null);
-		rolRelation.setNatTable("tR_UserRol", "tRol");
+		rolRelation.setNatTable("bsframework", "tR_UserRol", "bsframework", "tRol");
 		rolRelation.setLabel("Roles de usuario");
 		table.addAction(rolRelation);
 
 		return table;
 	}
 
-	/** 	@Override <code>
+	/**
+	 * @Override <code>
 
 	protected BSHeadConfig getBSHeadConfig() {
 		BSHeadConfig head = new BSHeadConfig();
@@ -72,5 +73,6 @@ public class UserManager extends BSHttpServlet {
 
 		return head;
 	}
-	</code>*/
+	</code>
+	 */
 }

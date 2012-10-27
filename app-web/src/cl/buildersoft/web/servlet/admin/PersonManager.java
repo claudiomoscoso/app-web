@@ -10,7 +10,7 @@ import cl.buildersoft.framework.beans.BSAction;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.type.BSActionType;
-import cl.buildersoft.web.servlet.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/admin/PersonManager")
 public class PersonManager extends BSHttpServlet implements Servlet {
@@ -22,11 +22,10 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 	@Override
 	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
-		BSTableConfig table = new BSTableConfig("remu", "tPerson");
+		BSTableConfig table =  initTable(request, "tPerson");
 
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request.getServletContext(),
-				"remu");
+		Connection conn = mysql.getConnection(request);
 		table.configFields(conn, mysql);
 
 		table.setSortField("cNombre");
@@ -34,7 +33,7 @@ public class PersonManager extends BSHttpServlet implements Servlet {
 
 		// BSField field;
 
-		table.getField("cFechaRegistro").setLabel("Incorporación");
+		table.getField("cFechaRegistro").setLabel("IncorporaciÃ³n");
 		table.getField("cApellidoPaterno").setLabel("A. Paterno");
 		table.getField("cApellidoMaterno").setLabel("A. Materno");
 

@@ -1,0 +1,18 @@
+DROP FUNCTION IF EXISTS fGetOpenedPeriod;
+
+DELIMITER $$
+
+CREATE FUNCTION fGetOpenedPeriod() RETURNS BIGINT
+BEGIN
+	DECLARE vOut BIGINT DEFAULT 0;
+
+	SELECT	cId 
+	INTO	vOut
+	FROM	tPeriod
+	WHERE	cPeriodStatus = 2;
+
+	RETURN vOut;
+END$$
+
+
+DELIMITER ;

@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*","/Test*" })
+@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*", "/Test*" })
 public class NoCacheFilter implements Filter {
 
 	public NoCacheFilter() {
@@ -22,14 +22,12 @@ public class NoCacheFilter implements Filter {
 
 	}
 
-	public void doFilter(ServletRequest servletRequest,
-			ServletResponse servletResponse, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException,
+			ServletException {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		response.setDateHeader("Date", new Date().getTime());
 		response.setDateHeader("Expires", 0);
-		response.setHeader("Cache-Control",
-				"no-cache, must-revalidate, s-maxage=0, proxy-revalidate, private");
+		response.setHeader("Cache-Control", "no-cache, must-revalidate, s-maxage=0, proxy-revalidate, private");
 		response.setHeader("Pragma", "no-cache");
 		response.setContentType("text/html");
 
