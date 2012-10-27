@@ -1,0 +1,836 @@
+CREATE TABLE IF NOT EXISTS tBranch(
+	cId					BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName				VARCHAR(50),
+	cEnterprise			BIGINT,
+	cAddress			VARCHAR(100),
+	cComuna				BIGINT,
+	cPhone				VARCHAR(15)
+) ENGINE=innoDB;
+
+/**
+Ejemplo de archivo a cargar
+RUT       FechaHora como Long
+128706682-12345678901234567890.docx
+
+C:\archivos\	-> Configuracion
+           \1	-> (id de categoria) Categoria Curriculums
+           \2	-> Fotos
+           	 \128706682-12345678901234567890.png -> Foto carnet del empleado 12870668-2
+
+*/
+CREATE TABLE IF NOT EXISTS tFile (
+	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cEmployee		BIGINT NOT NULL,
+	cDesc			VARCHAR(100) COMMENT 'Descripcion que ingresa el usuario',
+    cFileName		VARCHAR(255) NOT NULL COMMENT 'Nombre del archivo que se subio, ej. foto-01.jpg',
+    cFileRealName	VARCHAR(50) NOT NULL COMMENT 'Archivo en el disco 128706682-12345678901234567890.png',
+    cSize			BIGINT NOT NULL COMMENT 'Tamaño del archivo',
+    cFileCategory	BIGINT NOT NULL COMMENT 'Tipo del archivo',
+    cDateTime		DATETIME NOT NULL COMMENT 'Fecha de creacion',
+    cContentType	VARCHAR(100) COMMENT 'Tipo de archivo'
+) ENGINE=innoDB;
+
+/*
+Categoria de archivo.
+*/
+CREATE TABLE IF NOT EXISTS tFileCategory (
+	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName			VARCHAR(30) NOT NULL
+) ENGINE=innoDB;
+
+CREATE TABLE tParameter (
+  cId			BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  cKey 			VARCHAR(20) NOT NULL,
+  cLabel		VARCHAR(100) NOT NULL,
+  cValue		Varchar(100) NOT NULL,
+  cDataType		BIGINT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS tRol (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName		VARCHAR(50) NULL ,
+	cDeleted	BIT NOT NULL DEFAULT 0
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tR_UserRol (
+	cUser 		BIGINT NOT NULL,
+	cRol		BIGINT NOT NULL,
+	PRIMARY KEY(cUser,cRol)
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tOption (
+	cId			BIGINT  NOT NULL AUTO_INCREMENT,
+	cKey		VARCHAR(20) NOT NULL UNIQUE,
+	cLabel 		VARCHAR(50) NOT NULL,
+	cUrl		VARCHAR(100) NULL,
+	cParent		BIGINT NULL,
+	cType		BIGINT NOT NULL DEFAULT '1',
+	cOrder		INTEGER NOT NULL DEFAULT '0',
+	PRIMARY KEY(cId)
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tR_RolOption (
+	cRol		BIGINT NOT NULL,
+	cOption		BIGINT NOT NULL,
+	PRIMARY KEY(cRol, cOption)
+) ENGINE=innoDB;
+
+CREATE TABLE tComuna (
+	cId			BIGINT UNIQUE AUTO_INCREMENT,
+	cName		VARCHAR(50) NOT NULL,
+	cRegion		INTEGER NOT NULL,
+	cPriority	INTEGER NOT NULL DEFAULT '0',
+	PRIMARY KEY(cId)  
+) ENGINE=InnoDB;
+
+CREATE TABLE tBank (
+	cId BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(5) NOT NULL, 
+	cName	VARCHAR(35) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tCurrency (
+	cId BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(3) NOT NULL, 
+	cName	VARCHAR(25) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tDataType (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(10) NOT NULL, 
+	cName	VARCHAR(20) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tAPV (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(3) NOT NULL,
+	cName	VARCHAR(80) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tExBoxSystem (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(4) NOT NULL,
+	cName	VARCHAR(50) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tMaritalStatus (
+	cId BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(10) NOT NULL,
+	cName	VARCHAR(15) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tMutual (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(2) NOT NULL,
+	cName	VARCHAR(70) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tAccountType (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(10)  NOT NULL, 
+	cName	VARCHAR(20) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tCountry (
+ 	cId			BIGINT UNIQUE AUTO_INCREMENT,
+ 	cKey		CHAR(3) NOT NULL DEFAULT '' UNIQUE,
+ 	cName		VARCHAR(60) NOT NULL DEFAULT '',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tAssetDiscount (
+ 	cId			BIGINT UNIQUE AUTO_INCREMENT,
+ 	cName		VARCHAR(50)	NOT NULL DEFAULT '',
+ 	cEnable		BIT			NOT NULL DEFAULT 0 COMMENT 'Flag para indicar si esta habilitado o no',
+ 	cLimit		DOUBLE		NULL COMMENT 'Limite del valor que se ingresa',
+ 	cOrder		INTEGER		NOT NULL COMMENT 'Orden en el cual se muestran en pantalla o en reporte',
+ 	cIndex		INTEGER		NOT NULL COMMENT 'Corresponde al indice de los campos de la tabla tBookAssets o tBookDiscounts',
+ 	cAssetDiscountType	BIGINT NOT NULL COMMENT 'Tipo de haber o descuento',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tAssetDiscountType (
+ 	cId			BIGINT UNIQUE AUTO_INCREMENT,
+ 	cKey		CHAR(3) NOT NULL UNIQUE COMMENT 'IMP=Haberes Imponibles, NIM=Haberes no imponibles, DES=Otros Descuentos',
+ 	cName		VARCHAR(25) NOT NULL DEFAULT '',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tAssetDiscountValue (
+ 	cId				BIGINT UNIQUE AUTO_INCREMENT,
+ 	cAssetDiscount	BIGINT NOT NULL COMMENT 'Id que apunta a la tabla tAssertDiscount',
+ 	cBook			BIGINT NOT NULL COMMENT 'Flag para indicar si esta habilitado o no',
+ 	cValue			DOUBLE NOT NULL COMMENT 'Valor del haber o descuento',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS tProgressive (
+	cId				BIGINT NOT NULL AUTO_INCREMENT,
+	cEmployee		BIGINT NOT NULL,
+	cYear			INTEGER NOT NULL,
+	PRIMARY KEY (cId)	
+) ENGINE=innoDB;
+
+
+/* Crea tabla Empleados */
+create table tEmployee (
+	cId					BIGINT(20)  NOT NULL auto_increment, 
+	cRut				VARCHAR(11) NOT NULL unique,
+	cName				VARCHAR(20) NOT NULL,
+	cLastName1			VARCHAR(20) NOT NULL,
+	cLastName2			VARCHAR(20) NOT NULL,
+	cBirthDate			DATE COMMENT 'Fecha de nacimiento',
+	cAddress			VARCHAR(100) COMMENT 'Direccion particular',
+	cGenere				BIGINT(20) NOT NULL COMMENT 'Genero Femenino o Masculino',
+	cComuna				BIGINT(20) NOT NULL,
+	cCountry			BIGINT(20) NOT NULL COMMENT 'Nacionalidad',
+	cPhone				VARCHAR(10),
+	cMaritalStatus		BIGINT(20) NOT NULL COMMENT 'Estado Civil',
+	cMovil				VARCHAR(10),
+	cEmail				VARCHAR(50),
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tGenere(
+	cId 				BIGINT(20) NOT NULL auto_increment,
+	cKey				CHAR(1) NOT NULL DEFAULT ' ',
+	cName				VARCHAR(20) NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tAgreement(
+	cId					BIGINT(20) NOT NULL auto_increment, 
+	cEmployee			BIGINT(20) NOT NULL UNIQUE	COMMENT 'Id del empleado',
+	cContractType		BIGINT(20) NOT NULL 		COMMENT 'Tipo de contrato: fijo o indefinido',
+	cStartContract		DATE NOT NULL 				COMMENT 'Inicio de contrato',
+	cEndContract		DATE NULL 					COMMENT 'Fin de contrato',
+	cProfile			BIGINT(20) NOT NULL 		COMMENT 'Cargo de la persona',
+	cSalaryRoot			DOUBLE NOT NULL DEFAULT '1'	COMMENT 'Sueldo Base',
+	cPFM				BIGINT(20) NOT NULL			COMMENT 'AFP',
+	cMonthsQuoted		INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Meses cotizados, esto se usa para el calculo de vacaciones progresivas',
+	cHealth				BIGINT(20) NOT NULL			COMMENT 'Sistema de salud, isapre o fonasa',
+	cGratificationType	BIGINT(20) NOT NULL 		COMMENT 'Tipo de gratificacion',
+	cPaymentType		BIGINT(20) NOT NULL 		COMMENT 'Tipo de pago',
+	
+	cBank				BIGINT(20) NULL 			COMMENT 'Banco para efectos de pago de sueldo',
+	cAccountType		BIGINT(20) NULL 			COMMENT 'Tipo de cuenta a la cual se hará el deposito',
+	cAccountNumber		NVARCHAR(20) NOT NULL DEFAULT ''	COMMENT 'Número de la cuenta a la cual se le hará el deposito',
+	
+	cCurrencyAccount2	BIGINT(20) NULL 			COMMENT 'Moneda de la cuenta 2',
+	cAmountAccount2		DOUBLE NULL DEFAULT '0'		COMMENT 'Monto de la cuenta 2',
+	
+	cHorary				BIGINT(20) NOT NULL 		COMMENT 'Tipo de jornada, full-time o part-time (tHorary)',
+	cMobilization		DOUBLE DEFAULT '0'			COMMENT 'Movilizacion',
+	cFeeding			DOUBLE DEFAULT '0'			COMMENT 'Alimentacion',
+	cExBoxSystem		BIGINT(20) NULL				COMMENT 'Caja Ex-Regimen',
+	cExBoxSystemPRC		DOUBLE NULL					COMMENT 'Porcentaje de Caja Ex-Regimen (esto debiera ir a otra tabla al parecer)',
+	
+	cHealthAmount		DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Monto sistema de salud',
+	cHealthCurrency 	BIGINT(20) NULL	DEFAULT '0'	COMMENT 'Moneda en el cual se expresa de salud',
+
+	cAdditionalPFMAmount	DOUBLE NULL DEFAULT '0'	COMMENT 'Monto de ahorro en afp',
+	cAdditionalPFMCurrency	BIGINT(20) NULL				COMMENT 'Moneda de ahorro en afp',
+		
+	cSimpleLoads		INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Simples',
+	cDisabilityBurdens	INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Invalidez',
+	cMaternalLoads		INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Maternales',
+	
+	cFamilyAssignmentStretch	BIGINT(20) NOT NULL		COMMENT 'Tramo de asignación familiar',
+	cPensionary			BIT NOT NULL DEFAULT 0			COMMENT 'Indica si es pensionado',
+	
+	PRIMARY KEY (cId)
+)ENGINE=InnoDB;
+
+create table tFamilyAssignmentStretch(
+	cId					BIGINT(20)  NOT NULL auto_increment,
+	cKey				CHAR(1) NOT NULL DEFAULT ' ' COMMENT 'Tramo de asignación familiar',
+	cAmount				DOUBLE COMMENT 'Monto a considerar por cada una de las cargas',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tFamilyAssignmentStretchHistory(
+	cId					BIGINT(20) NOT NULL auto_increment,
+	cPeriod				BIGINT(20) NOT NULL COMMENT 'Codigo del período',
+	cKey				CHAR(1) NOT NULL DEFAULT ' ' COMMENT 'Tramo de asignación familiar',
+	cAmount				DOUBLE COMMENT 'Monto a considerar por cada una de las cargas',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tEnterprise (
+	cId					BIGINT(20)  NOT NULL auto_increment, 
+	cRut				VARCHAR(11) NOT NULL UNIQUE,
+	cName				VARCHAR(30) NOT NULL  COMMENT 'Nombre o razon social',
+	cLegalRep			VARCHAR(50) NOT NULL  COMMENT 'Representante legal',
+	cRutLegalRep		VARCHAR(11) NOT NULL  COMMENT 'Rut del representante legal',
+	cCategory			VARCHAR(50)  COMMENT 'Giro o Rubro',
+	cAddress			VARCHAR(100),
+	cComuna				BIGINT(20) NOT NULL,
+	cPhone				VARCHAR(10),
+	cMutual				BIGINT(20) NOT NULL,
+	cMutualFactor		DOUBLE COMMENT 'Factor de Mutual, varía de empresa en empresa',
+	cCompensationFund	BIGINT(20) NOT NULL COMMENT 'Caja de compensacion',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tCompensationFund(
+	cId 				BIGINT(20) NOT NULL auto_increment, 
+	cName				VARCHAR(20) NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS tEnterpriseConfig (
+   cId 					BIGINT(20) NOT NULL AUTO_INCREMENT,
+   cEnterprise			BIGINT(20) NOT NULL DEFAULT 1 COMMENT 'Referencia a la tabla tEnterprise' ,
+   cShowDateUfUtm		BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Fecha, UF y UTM',
+   cShowProfile			BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Cargo',
+   cShowCostCenter		BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Centro de Costos',
+   cShowDataAgreement	BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Datos del Contrato',
+   cShowSalaryRoot		BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Renta Base',
+   cShowEmployerBonus	BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Aportes del Empleador',
+   cShowWorkDay			BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Días Trabajados',
+   cShowNetPaymentScope	BIT NOT NULL DEFAULT 1 COMMENT 'Mostrar Alcance Líquido', 
+   cTextFootSalary		TEXT NOT NULL COMMENT 'Texto al Pie de la Liquidacion',
+   cMailNotice			VARCHAR(40) NOT NULL DEFAULT '' COMMENT 'los contratos que vencen dentro de los proximos 15 días',
+   cViewLastSettlements	INTEGER NOT NULL DEFAULT '3' COMMENT 'Cantidad de liquidaciones que pueden revisar las personas por la web',
+   PRIMARY KEY (cId)
+)ENGINE = InnoDB;
+
+create table tCostCenter(
+	cId 				BIGINT(20) NOT NULL auto_increment, 
+	cName				VARCHAR(20) NOT NULL,
+	cBranch				BIGINT(20) NOT NULL,
+	cBusinessArea		BIGINT(20) NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tBusinessArea(
+	cId				BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	cName			VARCHAR(20) NOT NULL COMMENT 'Descripcion'
+) ENGINE=innoDB;
+
+create table tContractType(
+	cId 						BIGINT(20) NOT NULL auto_increment, 
+	cKey						CHAR(3) NOT NULL UNIQUE,
+	cName						VARCHAR(20) NOT NULL,
+	cInsuranceFactorEmployee	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Factor que aporta el empleado por seguro de cesantía',
+	cInsuranceFactorEnterprise	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Factor que aporta la empresa',
+	cBody						LONGTEXT,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tPaymentType(
+	cId 				BIGINT(20) NOT NULL auto_increment,
+	cKey				VARCHAR(15) NOT NULL,
+	cName				VARCHAR(20) NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS tR_AgreementAPV (
+	cAgreement 		BIGINT NOT NULL COMMENT 'Id del contrato',
+	cAPV			BIGINT NOT NULL COMMENT 'Id del apv',
+	cCurrency		BIGINT NOT NULL COMMENT 'Moneda en la que se deposita el apv',
+	cAmount			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto a ahorrar en apv',
+	PRIMARY KEY(cAgreement,cAPV,cCurrency)
+) ENGINE=innoDB;
+
+CREATE TABLE IF NOT EXISTS tR_AgreementAPVHistory (
+	cPeriod 		BIGINT NOT NULL COMMENT 'Id del período',
+	cAgreement 		BIGINT NOT NULL COMMENT 'Id del contrato',
+	cAPV			BIGINT NOT NULL COMMENT 'Id del apv',
+	cCurrency		BIGINT NOT NULL COMMENT 'Moneda en la que se deposita el apv',
+	cAmount			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto a ahorrar en apv',
+	PRIMARY KEY(cPeriod,cAgreement,cAPV,cCurrency)
+) ENGINE=innoDB;
+
+create table tProfile (
+	cId					BIGINT(20) NOT NULL auto_increment, 
+	cName				VARCHAR(20) NOT NULL,
+	cCostCenter			BIGINT(20) NOT NULL,
+	cCompanyCost		DOUBLE NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+Administadora de fondos de pension(AFP), en ingles se escribe como "Pension Fund Manager" (PFM), 
+de aqui el nombre de la tabla. 
+*/
+create table tPFM(
+	cId				BIGINT(20) NOT NULL auto_increment, 
+	cKey			VARCHAR(2) NOT NULL,
+	cName			VARCHAR(50) NOT NULL,
+	cFactor			DOUBLE NOT NULL,
+	cSIS			DOUBLE NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tPFMHistory(
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cPeriod			BIGINT(20) NOT NULL,
+	cKey			VARCHAR(2) NOT NULL,
+	cName			VARCHAR(50) NOT NULL,
+	cFactor			DOUBLE NOT NULL,
+	cSIS			DOUBLE NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tHealth (
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cKey			VARCHAR(2) NOT NULL,	
+	cName			VARCHAR(50) NOT NULL,
+	cFactor			DOUBLE NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tHealthHistory(
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cPeriod			BIGINT(20) NOT NULL,
+	cKey			VARCHAR(2) NOT NULL,	
+	cName			VARCHAR(50) NOT NULL,
+	cFactor			DOUBLE NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+En esta tabla se graban para cada Employee:
+	- Los APV
+	- La cuenta2
+	- El adicional de salud (son 3: CLP, UF y/o %).
+create table tAccount (
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cEmployee		BIGINT(20) NOT NULL, 
+	cInstitution	BIGINT(20) NOT NULL,
+	cAccountType	BIGINT(20) NOT NULL,
+	cNumber			VARCHAR(15),
+	cCurrency		BIGINT(20) NOT NULL,
+	cAmount			DOUBLE,	
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+*/
+
+create table tGratificationType(
+	cId			BIGINT(20) NOT NULL auto_increment,
+	cName		VARCHAR(50) NOT NULL,
+	cPolynomial	VARCHAR(200) NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tHorary(
+	cId			BIGINT(20) NOT NULL auto_increment,
+	cName		VARCHAR(50) NOT NULL,
+	cDetail		VARCHAR(500) NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+Tabla para registrar las horas extras del empleado.
+*/
+create table tOvertime(
+	cId					BIGINT(20) NOT NULL auto_increment,
+	cEmployee			BIGINT(20) NOT NULL COMMENT 'Identificador del empleado quien tiene las horas extras',
+	cPeriod				BIGINT(20) NOT NULL COMMENT 'Id del período para el cual se registran las horas',
+	cDate				DATE NOT NULL COMMENT 'Fecha en la cual se registran las horas',
+	cPercent			INTEGER NOT NULL DEFAULT '50' COMMENT 'Porcentaje que se paga la hora extra',
+	cAmount				INTEGER NOT NULL DEFAULT '1' COMMENT 'Cantidad de horas extras trabajadas',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tFiscalDate(
+	cId			BIGINT(20) NOT NULL auto_increment,
+	cDate		DATE NOT NULL UNIQUE,
+	cReason		VARCHAR(50) DEFAULT '',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+Tabla para registrar las aucencias y las licencias de los empleados.
+*/
+create table tLicense(
+	cId					BIGINT(20) NOT NULL auto_increment,
+	cEmployee			BIGINT(20) NOT NULL COMMENT 'Identificador del empleado quien tiene las horas extras',
+	cPeriod				BIGINT(20) NOT NULL COMMENT 'Id del período para el cual se registran las horas',
+	cFrom				INTEGER NOT NULL COMMENT 'Día del período de comienzo de licencia',
+	cTo					INTEGER NOT NULL COMMENT 'Día del período de término de licencia',
+	cLicenseCause		BIGINT NOT NULL COMMENT 'Razon de la aucencia',
+	cFile				BIGINT NULL COMMENT 'Archivo de licencia',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tHoliday(
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cEmployee		BIGINT(20) NOT NULL COMMENT 'Identificador del empleado quien tiene las horas extras',
+	cCreation		DATE NOT NULL COMMENT 'Fecha de ingreso de las vacaciones',
+	cFrom			DATE NOT NULL COMMENT 'Inicio de las vacaciones',
+	cNormal			INTEGER NOT NULL COMMENT 'Cantidad de días normales',
+	cCreeping		INTEGER NOT NULL COMMENT 'Cantidad de días progresivos',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+create table tHolidayDetail(
+	cId				BIGINT(20) NOT NULL auto_increment,
+	cHoliday		BIGINT(20) NOT NULL COMMENT 'Identificador de las vacaciones asociadas',
+	cDays			DOUBLE NOT NULL COMMENT 'Cantidad de días normales y progresivos',
+	cYear			INTEGER NOT NULL COMMENT 'Año del período',
+	cHolidayDetailType	BIGINT(20) NOT NULL COMMENT 'Tipo del detalle: T=Días tomados, D=Días disponibles',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tHolidayDetailType (
+	cId 			BIGINT UNIQUE AUTO_INCREMENT,
+	cName			VARCHAR(15) NOT NULL COMMENT 'Descripción del detalle',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+CREATE TABLE tLicenseCause (
+	cId BIGINT UNIQUE AUTO_INCREMENT,
+	cKey			CHAR(5) UNIQUE NOT NULL COMMENT 'Llave irrepetiblehabran procesos que la usan', 
+	cName			VARCHAR(15) NOT NULL COMMENT 'Descripción de la causa',
+	cFileCategory	BIGINT COMMENT 'Tipo del archivo asociado a la categoría',
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+/*
+La tabla tPeriodStatus es para indicar si el período está cerrado o abierto, si está cerrado, no se 
+pueden cambiar los valores de la tabla.
+*/
+create table tPeriodStatus(
+	cId			BIGINT(20) NOT NULL auto_increment,
+	cName		VARCHAR(50) NOT NULL,
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/* Esta tabla tiene los tramos de los Impuestos únicos */ 
+create table tUniqueTax(
+	cId			BIGINT(20) NOT NULL auto_increment,
+	cPeriod		BIGINT(20) NOT NULL COMMENT 'Enlace con la tabla tPeriod - 01/Mes/Año',
+	cKey		VARCHAR(1) NOT NULL,
+	cLimit		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Limite superior del tramo, se multiplica con UTM, Ej. 30xUTM',
+	cFactor		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Factor de descuento',
+	cDiscount	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Factor de rebaja que se multiplica por la UTM, Ej. 0,675 x UTM',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/**
+La tabla tPeriod sirve para identificar los períodos para los cuales existe cálculo, y 
+los parámetros que aplican en forma general.
+*/
+create table tPeriod(
+	cId							BIGINT(20) NOT NULL auto_increment,
+	cDate						DATE NOT NULL UNIQUE COMMENT 'Siempre es el día 1 del mes',
+	cPeriodStatus				BIGINT(20) NOT NULL DEFAULT '1' COMMENT 'Mirar tabla tPeriodStatus',
+	cUF							DOUBLE NOT NULL COMMENT 'Valor de la UF para el período',
+	cOvertimeFactor				DOUBLE NOT NULL COMMENT 'Para calcular las horas extras, puede ser 0.07777 o 0.0333',
+	cMinSalary					DOUBLE NOT NULL COMMENT 'Ingreso Mínimo Mensual', 
+	cLimitGratification			DOUBLE NOT NULL COMMENT 'Limite gratificacion - 4.75 Ingresos mínimos',
+	cGratificationFactor		DOUBLE NOT NULL COMMENT 'Factor de cálculo de gratificacion',
+	cLimitIPS					DOUBLE NOT NULL COMMENT 'Tope imponible para afiliados al IPS (ex INP) en UFs',
+	cLimitInsurance				DOUBLE NOT NULL COMMENT 'Tope de seguro de cesantia',
+	cLimitHealth				DOUBLE NOT NULL COMMENT 'Tope de salud, expresado en UF',
+	
+	/*
+	cInsuranceFactorEmployee	DOUBLE NOT NULL COMMENT 'Factor que se aplica al empleado por seguro de sesantía',
+	cInsuranceFactorEnterprise	DOUBLE NOT NULL COMMENT 'Factor para empresa, por seguro de cesantía',
+	*/
+	
+	cUTM						DOUBLE NOT NULL COMMENT 'Valor de una UTM',
+	cDaysForYear				INTEGER NOT NULL DEFAULT '15' COMMENT 'Días de vacaciones por año trabajado',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+Esta tabla tiene todos los empleados agrupados por período.
+*/
+create table tBook(
+	cId							BIGINT(20) NOT NULL auto_increment,
+	cPeriod						BIGINT(20) NOT NULL COMMENT 'Enlace con la tabla tPeriod - 01/Mes/Año',
+	cEmployee					BIGINT(20) NOT NULL COMMENT 'Empleado - tEmployee.cId',
+	cHorary						BIGINT(20) NOT NULL COMMENT 'Tipo de jornada: part-time / full-time - tAgreement.cHoray',
+	cWorkedDays					INTEGER NOT NULL DEFAULT '30' COMMENT 'Días trabajados - Ingresa por el período',
+	cSalaryRoot					DOUBLE NOT NULL COMMENT 'Sueldo Base - cp from tAgreement.cSalaryRoot',
+	cOvertime					INTEGER	NOT NULL DEFAULT '0' COMMENT 'Cantidad Horas Extras - Sumar tabla tOvertime',
+	/*
+	cPFM				BIGINT(20) NOT NULL COMMENT 'Id de afp de la época',
+	cExBoxSystem		BIGINT(20) NOT NULL COMMENT 'Id del ex-regimen de la época',
+	*/
+	cSalaryReceived				DOUBLE NULL DEFAULT '0' COMMENT 'Salario recibido - calculo de sueldo_base/30 x días trabajados',
+	cInsuranceFactorEmployee	DOUBLE NOT NULL COMMENT 'Factor con el que aporta el empleado para seguro de cesantía',
+	cInsuranceFactorEnterprise	DOUBLE NOT NULL COMMENT 'Factor con el que aporta la empresa para seguro de cesantía',
+	cContractType				BIGINT(20) NOT NULL COMMENT 'Tipo de contrato, define el tipo de seguro de cesantia',
+	cNetPaymentScope			DOUBLE NULL DEFAULT '0' COMMENT 'Alcance líquido',
+	cToPayEmployee				DOUBLE NULL DEFAULT '0' COMMENT 'Líquido a Pagar al empleado',
+	cInsuranceAmountEnterprise	DOUBLE NULL DEFAULT '0' COMMENT 'Monto que cancela el empleador por cesantía',
+	cMutualFactor				DOUBLE NULL DEFAULT '0' COMMENT 'Facor de lo que la empresa le paga a la Mutual',
+	cPayToMutulEnterprise		DOUBLE NULL DEFAULT '0' COMMENT 'Monto que la empresa debe pagar a la mutual correspondiente',
+	cFamilyAssignmentEnterprise	DOUBLE NULL DEFAULT '0' COMMENT 'Monto que la empresa debe pagar por concepto de cargas familiares',
+	cCostEnterprise				DOUBLE NULL DEFAULT '0' COMMENT 'Costo para la empresa por trabajador',
+	cPensionary					BIT NOT NULL DEFAULT 0	COMMENT 'Indica si es pensionado',
+	cSimpleAdjustment			DOUBLE NULL DEFAULT '0' COMMENT 'Valor para ajusta el monto de pago',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+/*
+Tabla del libro con los Haberes
+*/
+create table tBookAssets(
+	cId							BIGINT(20) NOT NULL auto_increment,
+	cBook						BIGINT(20) NOT NULL,
+	cGratificationType			BIGINT(20) NOT NULL COMMENT 'Tipo de Gratificación - cp from tAgreement.cGratificationType',
+	cGratificationAmount		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto de la gratificación',
+/*
+	cRewardAmount				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto Gratificacion - Basado en cGratificationType, buscar el que le corresponde(%, monto o 0)',
+Tramo SE INGRESA A MANO LA LETRA "A,B,C,D" ya que es la caja de compensacion la que determina el tramo al que pertenece 
+el trabajor, No se calcula
+*/
+	cOvertimeAmount				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto ganado por horas extras - se calcula',
+	cParticipation				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Aplica cuando tiene participacion en empresa - Ingreso por período',
+	cB01						DOUBLE NOT NULL DEFAULT '0' COMMENT 'Bono 1 - Se ingresa por período, o copiar del mes anterior',
+	cB02						DOUBLE NOT NULL DEFAULT '0',
+	cB03						DOUBLE NOT NULL DEFAULT '0',
+	cB04						DOUBLE NOT NULL DEFAULT '0',
+	cB05						DOUBLE NOT NULL DEFAULT '0',
+	cB06						DOUBLE NOT NULL DEFAULT '0',
+	cB07						DOUBLE NOT NULL DEFAULT '0',
+	cB08						DOUBLE NOT NULL DEFAULT '0',
+	cB09						DOUBLE NOT NULL DEFAULT '0',
+	cB10						DOUBLE NOT NULL DEFAULT '0',
+	cExtraPay					DOUBLE NOT NULL DEFAULT '0' COMMENT 'Aguinaldo - Se ingresa por período',
+	cTotalIncomeTaxable			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Total Haberes Imponibles - suma de bonos, gratificacion y sueldo ganado',
+	cIncome						DOUBLE NOT NULL DEFAULT '0' COMMENT 'Renta afecta',
+	
+	cFamilyAssignmentStretch	CHAR(1)	NOT NULL DEFAULT ' ' COMMENT 'Tramo Asignacion Familiar - Se ingresa por empleado, [A/B/C/D]',
+	cFamilyAssignmentCount		INTEGER NOT NULL DEFAULT '0' COMMENT 'Cargas Familiares - tAgreement.CAMPO_NUEVO',
+	cFamilyAssignmentAmount 	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto Por Cargas - Calcular',
+	cFamilyRetroactive			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Retroactivo Familiar, esto se asigna mes a mes',
+
+	cSimpleLoads				INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Simples',
+	cDisabilityBurdens			INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Invalidez',
+	cMaternalLoads				INTEGER	NOT NULL DEFAULT '0'	COMMENT 'Cargas Maternales',
+
+	cFeeding					DOUBLE NOT NULL DEFAULT '0' COMMENT 'Colaci�n - Se ingresa por período',
+	cMobilization				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Movilización - Se ingresa por período',
+	cBounty               		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Viaticos - Se ingresa por período',
+	cMonthNotification			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Mes De Aviso - Se ingresa por período',
+	cIAS 						DOUBLE NOT NULL DEFAULT '0' COMMENT 'Indemnización años de servicio - Se ingresa por período',
+	cProportionalHoliday		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Feriado Proporcional - Se calcula',
+	cTotalIncomeNotTaxable		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Total haberes no imponibles',
+	cTotalIncome				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Total haberes',
+	
+/*
+	Formula: (Meses Trabajados/30) * 1.75 * Imponible - Horas Extras - Gratificacion
+	este valor se GUARDA y NO SE MUESTRA EN LA LIQUIDACION EMPRESA pero si
+	se contabilizará en una cuenta contable
+*/
+	cVoluntaryIndenmization		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Indemnisacion Voluntaira - Se ingresa por período',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+
+/*************************************
+Tabla de libro con descuentos.
+============================== 
+hay 2 seguros
+S.I.S. = es un % (1.87) lo entrega el previred es de costo del trabajador, se paga a la AFP (parametro del mes)
+Seguro de Invalidez de la Mutual
+Es un % que fija la mutual en base al indice de siniestralidad, lo paga el empleador a la mutual, (parametro mensual x cada mutual), 
+nota este parametro no cambia todos los meses. No se imprime en la liquidacion pero se contabiliza como parte del costo empresa.
+*/
+create table tBookDiscounts(
+	cId								BIGINT(20) NOT NULL auto_increment,
+	cBook							BIGINT(20) NOT NULL,
+	cPFMHistory						BIGINT(20) NOT NULL			COMMENT 'Código de AFP',
+	cExBoxSystem					BIGINT(20) NULL				COMMENT 'Id del ex-regimen de la época',
+	cObligatoryQuote				DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Cotizacion Obligatoria - Es un % multiplicado por el cLimitTaxableForecast',
+	cAPVAmount						DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Monto APV - Suma de todos los montos en APV, algunos traducir a pesos desde UF',
+	cAccount2						DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Cuenta 2, Ahorro AFP - Se saca de la tabla tAccount',
+	
+	cLimitTaxableForecast			DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Tope Imponible Previsional - Parámetro del mes, 60 UFs',
+	cLimitTaxableDismissInsurance	DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Tope Imponible Seguro Cesantia - Parámetro del mes, es un valor fijo',
+	
+	cHealthHistory					BIGINT(20) NOT NULL			COMMENT 'Codigo de sistema de salud - Es la Isapre o fonasa',
+	cHealthCurrency					BIGINT(20) NULL				COMMENT 'Moneda del plan de salud - UF o CLP',
+	cHealthAmount					DOUBLE NULL DEFAULT '0'		COMMENT 'Monto pactado de salud',
+	cHealthCLP						DOUBLE NULL DEFAULT '0'		COMMENT 'Monto de salud, siempre en pesos',
+	cAdditionalHealth				DOUBLE NULL DEFAULT '0'		COMMENT 'Monto de salud complementario, siempre en pesos',
+	cHealthLegalQuote				DOUBLE NULL DEFAULT '0'		COMMENT 'Cotizacion legal, corresponde al 7% y no mas',
+	cHealthQuote					DOUBLE NOT NULL DEFAULT '0' COMMENT 'Cotizacion de salud, corresponde al valor final que paga por salud',
+	
+	cAdditionalPFMCurrency			BIGINT(20) NULL				COMMENT 'Moneda de ahorro en afp',
+	cAdditionalPFMAmount			DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Monto de ahorro en afp',
+	cAdditionalPFMCLP				DOUBLE NOT NULL DEFAULT '0'	COMMENT 'Monto de ahorro en afp en pesos',
+	
+	
+	/*
+	cLimitExtraHealth				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Tope de la cotización de salud',
+	*/
+	
+	cEmployerDisabilityInsurance	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto en pesos Seguro de Invalidez y Sobrevivencia Empleador',
+/*
+Cotizacion Salud Rebaja
+Tope 4.2 UF (parametro puede variar)
+Sí, la cotización adicional de salud, superior al 7%, aplicada a una renta imponible de 67,4 UF a contar de enero 2012, es 
+tributable para los efectos del Impuesto Único, pues permite rebajar por concepto de cotización de salud hasta 4,72UF 
+(67,4 UF por 7%).
+Si alguien tiene un plan muy caro de salud debe tributar como impuesto unico a la renta el excedente.
+*/
+/*
+	cCotisacionSaludRebaja			COMMENT 'Preguntar que es',
+*/
+	
+/*
+ 	Este campo se reemplaza por el código del contrato.
+	cUnemploymentInsurance			BIGINT(20) NULL COMMENT 'Código de seguro de sesantia - Sin seguro, contrato indefinido o a plazo',
+*/	
+/*
+Seguro Cesantia
+Hay 3 tipos:
+ 1.Sin seguro
+ 2.Contrato a Plazo = el empleador cancela el 3% del imponible como seguro de sesantia
+ 3.Contrato indefinido = el empleador cubre un 2.4% y el 0.6% lo cancela el trabajador (descuento)
+La columna en el libro de remuneraciones se llama Aporte Patronal se contabiliza y no se imprime en la liquidacion, salvo el 0.6% cuando corresponde (es costo empresa).
+
+Ojo tiene tope en UF ese tope lo da el previred y puede cambiar en el año el 3% (2.4 + 0.6) es ley y tambien podria cambiar por tanto dejar como parametro del mes (obvio).
+ 
+*/
+	cUnemploymentInsuranceAmount	DOUBLE NOT NULL DEFAULT '0' COMMENT 'Monto Seguro Cesantia en pesos',
+	cUniqueTax						DOUBLE NOT NULL DEFAULT '0' COMMENT 'Impuesto Unico - es un valor que se calcula', 
+	cAdvance						DOUBLE NOT NULL DEFAULT '0' COMMENT 'Anticipo de Sueldo',
+/*	
+	cAnticipoViatico
+*/				
+	cLoanEnterprise					DOUBLE NOT NULL DEFAULT '0' COMMENT 'Prestamo de la Empresa',
+	cD01							DOUBLE NOT NULL DEFAULT '0' COMMENT 'Otro Descuento',
+	cD02							DOUBLE NOT NULL DEFAULT '0' COMMENT 'Otro Descuento',
+	cD03							DOUBLE NOT NULL DEFAULT '0' COMMENT 'Otro Descuento',
+	cD04							DOUBLE NOT NULL DEFAULT '0' COMMENT 'Otro Descuento',
+	cD05							DOUBLE NOT NULL DEFAULT '0' COMMENT 'Otro Descuento',
+	cLoanCompensationFund			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Prestamo Caja Compenzacion', 
+	cSavingCompensationFund			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Ahorro Caja Compenzacion', 
+	cJudicialRetention				DOUBLE NOT NULL DEFAULT '0' COMMENT 'Retenciones Judiciales',
+	cSubtotalLawfulDiscounts		DOUBLE NOT NULL DEFAULT '0' COMMENT 'Sub total de descuentos legales',
+	cSubtotalOtherDiscounts			DOUBLE NOT NULL DEFAULT '0' COMMENT 'Sub total de otros descuentos',
+	cTotalDiscounts					DOUBLE NOT NULL DEFAULT '0' COMMENT 'Total descuentos',
+	PRIMARY KEY (cId)
+) ENGINE=InnoDB;
+
+ /** V I S T A S **/
+DROP VIEW IF EXISTS vBook;
+
+CREATE VIEW vBook
+AS
+SELECT	a.cId AS cId,
+		a.cPeriod,
+		d.cDate,
+		f.cStartContract,
+		f.cEndContract,
+		a.cEmployee,
+		f.cId AS cAgreement,
+		e.cLastName1,
+		d.cUF,
+		d.cUTM,
+		a.cWorkedDays,
+		a.cPensionary,						/* indica si es pencionado */
+		d.cDaysForYear,
+		a.cContractType,
+		d.cMinSalary,
+		a.cSalaryRoot,
+		a.cSalaryReceived,					/* (cSalaryRoot / 30) * cWorkedDays */
+		b.cGratificationType,				/* From tAgreement */
+		d.cLimitGratification,				/* 4.75 Ingresos mínimos */
+		b.cGratificationAmount,				/* 25% Impo. (Tope 4,75imm/12) */
+		d.cGratificationFactor,				/* Se lee desde tParameter */
+		a.cOvertime,						/* Cantidad de horas extras */
+		b.cOvertimeAmount,					/* Se calcula (SalaryRoot * 0.0777) * cOvertime */
+		b.cParticipation,
+		b.cB01,
+		b.cB02,
+		b.cB03,
+		b.cB04,
+		b.cB05,
+		b.cB06,
+		b.cB07,
+		b.cB08,
+		b.cB09,
+		b.cB10,
+		b.cExtraPay,
+		b.cTotalIncomeTaxable,				/* Total Haberes Imponibles */
+		c.cLimitTaxableForecast,			/* Tope Imponible Previsional */
+		c.cLimitTaxableDismissInsurance,	/* Tope Imponible Seguro Cesantia - Parámetro del mes, es un valor fijo */
+		d.cLimitInsurance,					/* Tope de Seguro de cesantia */
+		d.cLimitIPS,						/* Tope imponible para afiliados al IPS (ex INP) en UFs */
+		b.cIncome,							/* Renta Afecta */
+		b.cFamilyAssignmentStretch,			/* Tramo asignacion familiar */
+		b.cFamilyAssignmentCount,			/* Cantidad de cargas familiares */
+		b.cFamilyAssignmentAmount,			/* Monto por cargas familiares */
+		b.cFamilyRetroactive,				/* Retroactivo familiar, esto se asigna mes a mes */
+		b.cFeeding,
+		b.cMobilization,
+		b.cBounty,
+		a.cHorary,
+		/*
+		b.cRewardAmount,
+		*/
+		b.cMonthNotification,
+		b.cIAS,
+		b.cProportionalHoliday,				/* Feriado proporcional */
+		b.cTotalIncomeNotTaxable,			/* Total haberes no imponibles */
+		b.cVoluntaryIndenmization,			/* Indemnisación voluntaria */
+		c.cId AS cDiscountsId,				
+		c.cPFMHistory,						/* Código de la AFP */
+		c.cExBoxSystem,						/* Código de ex-caja */
+		c.cObligatoryQuote,					/* Monto que se le paga a la AFP de manera obligatoria */
+		c.cAPVAmount,						/* Suma de todos los fondos en CLP */
+		c.cAccount2,
+		c.cHealthHistory,					/* Código de sistema de salud contratado */
+		c.cHealthCurrency,					/* Moneda del complementario de salud */
+		c.cHealthAmount,					/* Monto del complementario de salud */
+		c.cHealthCLP,						/* Monto de salud siempre en pesos */
+		c.cAdditionalHealth,				/* Monto de salud siempre en pesos */
+		c.cHealthLegalQuote,				/* Es el monto legal del 7 porciento, no más */
+		c.cAdditionalPFMCurrency,			/* Moneda Ahorro de AFP */
+		c.cAdditionalPFMAmount,				/* Monto Ahorro de AFP */
+		c.cAdditionalPFMCLP,				/* Monto Ahorro de AFP en pesos*/
+		d.cLimitHealth,						/* Límite de salud, expresado en UF, proviene de la tabla tPeriod */
+		c.cHealthQuote,						/* Cotizacion de salud, corresponde al valor filan que paga por salud */
+		a.cInsuranceFactorEmployee,			/* Factor para cálculo de seguro de cesantía de empleado*/
+		a.cInsuranceFactorEnterprise,		/* Factor para cálculo de seguro de cesantía de empresa*/		
+		c.cUnemploymentInsuranceAmount,		/* Monto Seguro Cesantia en pesos */
+		c.cUniqueTax,						/* Impuesto único */
+		c.cSubtotalLawfulDiscounts,		
+		c.cAdvance,							/* Anticipo de sueldo, se agrega por período */
+		c.cLoanEnterprise,					/* Prestamo de empresa */
+		c.cD01,
+		c.cD02,
+		c.cD03,
+		c.cD04,
+		c.cD05,
+		c.cLoanCompensationFund,			/* Prestamo de caja de compensación */
+		c.cSavingCompensationFund,			/* Ahorro en caja de compensación */
+		c.cJudicialRetention,				/* Retención judicial */
+		c.cSubtotalOtherDiscounts,			/* Subtotal de otros descuentos */
+		c.cTotalDiscounts,					/* Total descuentos */
+		a.cNetPaymentScope,					/* Alcance líquido */
+		b.cTotalIncome,						/* Total Haberes */
+		a.cToPayEmployee,					/* A Pagar, es el dinero que recibe la persona */
+		a.cInsuranceAmountEnterprise,		/* Monto que tiene que cancelar la empresa por consepto de seguro */
+		a.cMutualFactor,					/* El factor de lo que la empresa le paga a la Mutual */
+		a.cPayToMutulEnterprise,			/* El monto de lo que la empresa le paga a la mutual */
+		a.cFamilyAssignmentEnterprise,		/* Monto que paga la empresa por asignaciones familiares */		
+		a.cCostEnterprise,
+		b.cSimpleLoads, 
+		b.cDisabilityBurdens, 
+		b.cMaternalLoads,
+		a.cSimpleAdjustment					/* Ajuste de sencillo */
+		FROM	tBook AS a
+		LEFT JOIN tBookAssets		AS b ON b.cBook = a.cId
+		LEFT JOIN tBookDiscounts	AS c ON c.cBook = a.cId
+		LEFT JOIN tPeriod			AS d ON a.cPeriod = d.cId
+		LEFT JOIN tEmployee			AS e ON a.cEmployee = e.cId
+		LEFT JOIN tAgreement		AS f ON e.cId = f.cEmployee
+		ORDER BY a.cId;

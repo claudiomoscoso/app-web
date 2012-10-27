@@ -1,0 +1,82 @@
+DROP TABLE IF EXISTS tProgressive;
+DROP TABLE IF EXISTS tHolidayDetail;
+DROP TABLE IF EXISTS tHolidayDetailType;
+DROP TABLE IF EXISTS tHoliday;
+DROP TABLE IF EXISTS tLicense;
+DROP TABLE IF EXISTS tLicenseCause;
+
+
+DROP TABLE IF EXISTS tAssetDiscountValue;
+DROP TABLE IF EXISTS tAssetDiscount;
+DROP TABLE IF EXISTS tAssetDiscountType;
+DROP TABLE IF EXISTS tFiscalDate;
+DROP TABLE IF EXISTS tFile;
+DROP TABLE IF EXISTS tFileCategory;
+drop table if exists tR_AgreementAPV;
+drop table if exists tR_AgreementAPVHistory;
+
+drop table if exists tAgreement;
+DROP TABLE IF EXISTS tBookDiscounts;
+DROP TABLE IF EXISTS tBookAssets;
+DROP TABLE IF EXISTS tBook;
+DROP TABLE IF EXISTS tOvertime;
+DROP TABLE IF EXISTS tFamilyAssignmentStretch;
+DROP TABLE IF EXISTS tFamilyAssignmentStretchHistory;
+
+DROP TABLE IF EXISTS tUniqueTax;
+
+DROP TABLE IF EXISTS tPFMHistory;
+DROP TABLE IF EXISTS tHealthHistory;
+DROP TABLE IF EXISTS tUnemploymentInsurance;
+
+
+DROP TABLE IF EXISTS tPeriod;
+DROP TABLE IF EXISTS tPeriodStatus;
+
+drop table if exists tEmployee;
+
+drop table if exists tGenere;
+drop table if exists tMaritalStatus;
+drop table if exists tPaymentType;
+drop table if exists tBank;
+drop table if exists tAccountType;
+drop table if exists tHorary;
+drop table if exists tCountry;
+
+drop table if exists tContractType;
+drop table if exists tProfile;
+drop table if exists tPFM;
+drop table if exists tHealth;
+drop table if exists tGratificationType;
+
+drop table if exists tExBoxSystem;
+drop table if exists tCostCenter;
+DROP TABLE IF EXISTS tBusinessArea;
+drop table if exists tBranch;
+drop table if exists tEnterpriseConfig;
+drop table if exists tEnterprise;
+drop table if exists tComuna;
+drop table if exists tCompensationFund;
+
+/***************/
+drop table if exists tMutual;
+drop table if exists tAPV;
+drop table if exists tCurrency;
+
+drop table if exists tMutual;
+drop table if exists tCompensationFund;
+
+DROP TABLE IF EXISTS tParameter;
+
+drop table if exists tDataType;
+
+DROP TABLE IF EXISTS tR_UserRol;
+DROP TABLE IF EXISTS tR_RolOption;
+DROP TABLE IF EXISTS tOption;
+DROP TABLE IF EXISTS tRol;
+
+DROP TABLE IF EXISTS bsframework.tR_UserDomain;
+DROP TABLE IF EXISTS bsframework.tDomainAttribute;
+DROP TABLE IF EXISTS bsframework.tUser;
+DROP TABLE IF EXISTS bsframework.tDomain;
+

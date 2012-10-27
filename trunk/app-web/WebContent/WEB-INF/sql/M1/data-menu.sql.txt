@@ -1,0 +1,128 @@
+SELECT cId INTO @rolId FROM tRol WHERE cName = 'Administrador';
+
+/** Opciones para perfilar y crear usuarios */
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('SYSTEM', 'Sistema', NULL, NULL);
+SET @menuIdSystem = LAST_INSERT_ID(); 
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdSystem);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('USER', 'Usuarios', '/servlet/system/user/UserManager', @menuIdSystem, 1);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('ALLOW', 'Permisos de roles', '/servlet/system/roleDef/RoleDef', @menuIdSystem, 3);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('CH_PASS', 'Cambio de clave', '/servlet/system/changepassword/SearchPassword', @menuIdSystem, 4);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('ROL', 'Definición de Roles', '/servlet/system/role/RolManager', @menuIdSystem, 2);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CONFIG', 'Configuracion del Sistema', NULL, NULL);
+SET @menuIdConfig = LAST_INSERT_ID();
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PARAMS', 'Parámetros', '/servlet/config/systemparams/ParameterManager', @menuIdConfig);
+	SET @menuId = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('ADD_PARAMS', 'Botón Nuevo', null, @menuId, 2);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Botón Modificar', null, @menuId, 2);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Botón Borrar', null, @menuId, 2);
+	
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('BOARD', 'Períodos', '/servlet/admin/period/PeriodManager', @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COMUNA', 'Comunas', '/servlet/admin/comuna/ComunaManager', @menuIdConfig);
+
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ENTERPRISE', 'Empresas', '/servlet/config/enterprise/EnterpriseManager', @menuIdConfig);
+	SET @menuIdEnterprise = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('BRANCH', 'Sucursales', '/servlet/config/enterprise/branch/BranchManager', @menuIdEnterprise);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('COST_CENTER', 'Centro de costo', '/servlet/config/enterprise/costCenter/CostCenterManager', @menuIdEnterprise);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PROFILE', 'Perfiles', '/servlet/config/enterprise/profile/ProfileManager', @menuIdEnterprise);
+	
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('EMPLOYEE', 'Empleados', '/servlet/config/employee/EmployeeManager', @menuIdConfig);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LOG', 'Log', NULL, LAST_INSERT_ID());
+	
+	/*
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CC', 'Centros de Costo', NULL, @menuIdConfig);
+	*/
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('HyD_CRUD', 'Haberes y descuentos', '/servlet/config/assetDiscount/AssetDiscountManager', @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CHARGES', 'Cargos de Empleados', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CONTRACT_TYPES', 'Tipos de contratos', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('HOURS', 'Horarios', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('GRETIFICATIONS', 'Gratificacion', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('INDICATORS', 'Indicadores', NULL, @menuIdConfig);
+	SET @menuIdIndicators = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERIODS', 'Periodos', NULL, @menuIdIndicators);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FACTORS', 'Factores (UF, UTM, IPC, etc)', NULL, @menuIdIndicators);
+
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('HEALTH', 'Sistemas de salud', '/servlet/config/health/HealthManager', @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PFM', 'AFP', '/servlet/config/pfm/PFMManager', @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('INSURANCE', 'Seguro Cesantia', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('SINGLE_TAX', 'Impuesto único', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('ALLOWANCES', 'Asig. Familiar y Maternal', NULL, @menuIdConfig);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('SUPPORT', 'Soporte', NULL, @menuIdConfig);
+	
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMU', 'Remuneraciones', NULL, NULL);
+SET @menuIdRemu = LAST_INSERT_ID();
+
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('EVENTS', 'Eventos de Empleados', '/servlet/remuneration/events/EventsEmployeeServlet', @menuIdRemu);
+/*
+	SET @menuIdEvents = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('HYD', 'Haberes y Descuentos', NULL, @menuIdEvents);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('OVERTIME', 'Horas Extras', '/servlet/remuneration/events/EventsEmployeeServlet', @menuIdEvents);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('LICENSES', 'Licencias', NULL, @menuIdEvents);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('HOLIDAYS', 'Vacaciones', NULL, @menuIdEvents);
+*/
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PROCESS', 'Procesos', NULL, @menuIdRemu);
+	SET @menuIdProcess = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('SALARY', 'Cálculo de Sueldos', '/servlet/remuneration/process/salary/ProcessSalary', @menuIdProcess);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PAYROLL', 'Nóminas', NULL, @menuIdProcess);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PREVIRED', 'Previred', '/servlet/remuneration/process/previred/Previred', @menuIdProcess);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CENTRALIZATION', 'Centralización', NULL, @menuIdProcess);
+
+
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FILES', 'Archivos', NULL, @menuIdRemu);
+	SET @menuIdFiles = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('EMPLOYEE_FILES', 'Empleados', NULL, @menuIdFiles);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REMUNERATION_FILES', 'Remuneraciones', NULL, @menuIdFiles);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('OVERTIME_FILES', 'Horas extras', NULL, @menuIdFiles);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('DAYS_FILES', 'Días', NULL, @menuIdFiles);
+
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('REPORT', 'Reportes', NULL, NULL);
+SET @menuIdReport = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FAVORITES', 'Favoritos', NULL, @menuIdReport);
+		SET @menuIdFavorites = LAST_INSERT_ID();
+			INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('F01', 'Favoritos 01', NULL, @menuIdFavorites);
+			INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('F02', 'Favoritos 02', NULL, @menuIdFavorites);
+			INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('F03', 'Favoritos 03', NULL, @menuIdFavorites);
+			INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('F04', 'Favoritos 04 >', NULL, @menuIdFavorites);
+			SET @menuIdFavorites04 = LAST_INSERT_ID();
+				INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('I01', 'Informe 01', NULL, @menuIdFavorites04);
+				INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('I02', 'Informe 02', NULL, @menuIdFavorites04);
+		
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('CUSTOM_REPORT', 'Informe Personalizado', NULL, @menuIdReport);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('GRAPH', 'Gráfico', NULL, @menuIdReport);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('PERIODS_REPORT', 'Períodos', NULL, @menuIdReport);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('STATISTICS', 'Estadísticas', NULL, @menuIdReport);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent) VALUES('FINANCIAL_NEWS', 'Noticias financieras', NULL, @menuIdReport);
+
+/** Creacion de usuario contador del sistema, con las opciones desarrolladas 
+hasta ahora */
+
+
+SELECT	cId
+INTO	@domainId 
+FROM	bsframework.tDomain
+LIMIT 0,1;
+
+INSERT INTO bsframework.tUser(cMail, cName, cPassword) VALUES('conta', 'Contador Principal', md5('conta'));
+SET @userId = LAST_INSERT_ID();
+INSERT INTO bsframework.tR_UserDomain(cUser, cDomain) VALUES(@userId, @domainId);
+
+INSERT INTO tRol(cName) VALUES('Contador');
+SET @rolId = LAST_INSERT_ID();
+
+INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
+
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,6);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,7);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,11);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,13);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,16);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,33);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,34);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,35);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,36);
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId,38);
+

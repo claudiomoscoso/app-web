@@ -3,7 +3,7 @@
 
 <div align="right" width="100%" class="cLabel">
 
-Busqueda:<%=write_input_field_for_search(request)%>
+<!-- Busqueda:--><%=write_input_field_for_search(request)%>
 
 </div>
 <script type="text/javascript">
@@ -37,7 +37,7 @@ Busqueda:<%=write_input_field_for_search(request)%>
 
 		//	 BSPaging paging = (BSPaging) request.getAttribute("Paging");
 
-		String out = "<input name='Search' size='20' type='text' onkeypress='return keyPressSearch(this, \""
+		String out = "<input name='Search' size='30' maxlength='50' type='search' placeholder='busqueda...' onkeypress='return keyPressSearch(this, \""
 				+ path + "\");' value='" + request.getAttribute("Search") + "'>";
 		return out;
 	}%>

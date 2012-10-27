@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,18 +34,30 @@ public class BSTableConfig {
 	private String pk = null;
 	private String key = null;
 
+	private String viewName = null;
+	private String saveSP = null;
+	private String deleteSP = null;
+
+	public BSTableConfig(String database) {
+		this.database = database;
+	}
+
 	public BSTableConfig(String database, String tableName) {
+		this(database, tableName, null);
+	}
+
+	public BSTableConfig(String database, String tableName, String viewName) {
 		this.database = database;
 		this.fields = new String[0];
 		this.fieldsMap = new HashMap<String, BSField>();
 		this.actions = new BSAction[0];
 		this.tableName = tableName;
+		this.viewName = viewName;
 		this.title = tableName;
 
 		createInsert();
 		createEdit();
 		createDelete();
-
 	}
 
 	public String getDatabase() {
@@ -79,21 +92,21 @@ public class BSTableConfig {
 	private void createInsert() {
 		BSAction insert = new BSAction("INSERT", BSActionType.Table);
 		insert.setLabel("Nuevo");
-		insert.setUrl("/servlet/table/NewRecord");
+		insert.setUrl("/servlet/common/NewRecord");
 		this.addAction(insert);
 	}
 
 	private void createEdit() {
 		BSAction edit = new BSAction("EDIT", BSActionType.Record);
 		edit.setLabel("Modificar");
-		edit.setUrl("/servlet/table/SearchRecord");
+		edit.setUrl("/servlet/common/SearchRecord");
 		this.addAction(edit);
 	}
 
 	private void createDelete() {
 		BSAction delete = new BSAction("DELETE", BSActionType.MultiRecord);
 		delete.setLabel("Borrar");
-		delete.setUrl("/servlet/table/DeleteRecords");
+		delete.setUrl("/servlet/common/DeleteRecords");
 		this.addAction(delete);
 	}
 
@@ -112,12 +125,19 @@ public class BSTableConfig {
 
 	public void configFields(Connection conn, BSmySQL mysql) {
 		configBasic(conn, mysql);
-		configFKFields(conn, mysql);
+		if (this.viewName == null) {
+			configFKFields(conn, mysql);
+		}
+
 	}
 
 	private void configBasic(Connection conn, BSmySQL mysql) {
 		String sql = getSQL();
 		ResultSet resultSet = mysql.queryResultSet(conn, sql, null);
+		configBasic(conn, mysql, resultSet);
+	}
+
+	protected void configBasic(Connection conn, BSmySQL mysql, ResultSet resultSet) {
 		BSField[] fields = getFields();
 
 		ResultSetMetaData metaData;
@@ -178,7 +198,7 @@ public class BSTableConfig {
 			out += unSplitFieldNames(",");
 		}
 
-		out += " FROM " + getDatabase() + "." + getTableName();
+		out += " FROM " + getDatabase() + "." + getTableOrViewName();
 		out += " LIMIT 0,1";
 		return out;
 	}
@@ -206,40 +226,6 @@ public class BSTableConfig {
 	}
 
 	private void configFKFields(Connection conn, BSmySQL mySQL) {
-		/**
-		 * <code>
-			IMPORTED KEYS:
-			--------------------
-			PKTABLE_CAT=bscommon
-			PKTABLE_SCHEM=null
-			PKTABLE_NAME=tboard
-			PKCOLUMN_NAME=cId
-			FKTABLE_CAT=remu
-			FKTABLE_SCHEM=null
-			FKTABLE_NAME=tPerson
-			FKCOLUMN_NAME=cSexo
-			KEY_SEQ=1
-			UPDATE_RULE=3
-			DELETE_RULE=3
-			FK_NAME=withSexo
-			PK_NAME=null
-			--------------------
-			PKTABLE_CAT=bscommon
-			PKTABLE_SCHEM=null
-			PKTABLE_NAME=tcomuna
-			PKCOLUMN_NAME=cId
-			FKTABLE_CAT=remu
-			FKTABLE_SCHEM=null
-			FKTABLE_NAME=tPerson
-			FKCOLUMN_NAME=cComuna
-			KEY_SEQ=1
-			UPDATE_RULE=3
-			DELETE_RULE=3
-			FK_NAME=withComuna
-			PK_NAME=null
-		</code>
-		 */
-
 		BSField[] fields = getFields();
 
 		String databaseFK = null;
@@ -262,8 +248,7 @@ public class BSTableConfig {
 					sql += field2Table(conn, field.getName());
 					sql += " ORDER BY cName";
 
-					field.setFkData(mySQL.resultSet2Matrix(mySQL
-							.queryResultSet(conn, sql, null)));
+					field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(conn, sql, null)));
 				}
 			}
 		}
@@ -284,8 +269,7 @@ public class BSTableConfig {
 			out = table;
 		}
 		if (!isExist) {
-			throw new BSProgrammerException("", "No existe la tabla '" + table
-					+ "' o vista '" + view + "'");
+			throw new BSProgrammerException("", "No existe la tabla '" + table + "' o vista '" + view + "'");
 		}
 
 		return out;
@@ -338,16 +322,24 @@ public class BSTableConfig {
 		// Boolean out = Boolean.FALSE;
 		if (this.tablesCommon == null) {
 			this.tablesCommon = new HashSet<String>();
-			try {
-				DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
-				ResultSet tables = dbmd.getTables("bscommon", null, null, null);
 
-				while (tables.next()) {
-					// ResultSetMetaData md = tables.getMetaData();
-					this.tablesCommon.add(tables.getString("TABLE_NAME")
-							.toLowerCase());
+			Set<String> databases = databasesList(conn);
+
+			try {
+				Iterator<String> dataBasesIter = databases.iterator();
+
+				while (dataBasesIter.hasNext()) {
+					String database = (String) dataBasesIter.next();
+
+					DatabaseMetaData dbmd = (DatabaseMetaData) conn.getMetaData();
+					ResultSet tables = dbmd.getTables(database, null, null, null);
+
+					while (tables.next()) {
+						// ResultSetMetaData md = tables.getMetaData();
+						this.tablesCommon.add(tables.getString("TABLE_NAME").toLowerCase());
+					}
+					tables.close();
 				}
-				tables.close();
 			} catch (SQLException e) {
 				throw new BSDataBaseException("", e.getMessage());
 			}
@@ -356,15 +348,31 @@ public class BSTableConfig {
 		return this.tablesCommon.contains(table.toLowerCase());
 	}
 
-	private void configField(Connection conn, ResultSetMetaData metaData,
-			String name, Integer i, BSField field) {
+	private Set<String> databasesList(Connection conn) {
+		Set<String> databases = new HashSet<String>();
+		Iterator iterator = this.fkInfo.entrySet().iterator();
+		String[] info = null;
+		Map.Entry entry = null;
+		while (iterator.hasNext()) {
+			entry = (Map.Entry) iterator.next();
+			info = (String[]) entry.getValue();
+			databases.add(info[0]);
+		}
+		return databases;
+	}
+
+	protected void configField(Connection conn, ResultSetMetaData metaData, String name, Integer i, BSField field) {
 		try {
 			if (field.getType() == null) {
 				setRealType(metaData, i, field);
 			}
 			if (field.isPK() == null) {
 				BSField pk = getPKField(conn);
-				field.setPK(pk.getName().equals(name));
+				if (pk != null) {
+					field.setPK(pk.getName().equals(name));
+				} else {
+					field.setPK(Boolean.FALSE);
+				}
 			}
 			if (field.getLength() == null) {
 				field.setLength(metaData.getColumnDisplaySize(i));
@@ -375,8 +383,7 @@ public class BSTableConfig {
 
 	}
 
-	private void setRealType(ResultSetMetaData metaData, Integer i,
-			BSField field) {
+	private void setRealType(ResultSetMetaData metaData, Integer i, BSField field) {
 		/**
 		 * <code>
 		System.out.println( name + " "+ metaData.getColumnTypeName(i));
@@ -409,10 +416,19 @@ public class BSTableConfig {
 		} else if (typeName.equals("INT")) {
 			field.setType(BSFieldType.Integer);
 		} else {
-			throw new BSProgrammerException("0110",
-					"No est· catalogado el tipo " + typeName
-							+ ", verifique mÈtodo BSTableConfig.setRealType()");
+			throw new BSProgrammerException("0110", "No est√° catalogado el tipo " + typeName
+					+ ", verifique m√©todo BSTableConfig.setRealType()");
 		}
+	}
+
+	public String getTableOrViewName() {
+		String out = null;
+		if (this.viewName != null) {
+			out = this.viewName;
+		} else {
+			out = this.tableName;
+		}
+		return out;
 	}
 
 	public String getTableName() {
@@ -455,9 +471,7 @@ public class BSTableConfig {
 	public void renameAction(String source, String target) {
 		BSAction action = getAction(source);
 		if (action == null) {
-			throw new BSProgrammerException("0105",
-					"Accion no encontrada, posibles: ["
-							+ unSplitActionCodes(",") + "]");
+			throw new BSProgrammerException("0105", "Accion no encontrada, posibles: [" + unSplitActionCodes(",") + "]");
 		}
 		action.setCode(target);
 	}
@@ -487,6 +501,19 @@ public class BSTableConfig {
 		System.arraycopy(this.actions, 0, target, 0, this.actions.length);
 		target[target.length - 1] = action;
 		this.actions = target;
+	}
+
+	public void removeField(String code) {
+		String[] target = new String[this.fields.length - 1];
+		Integer i = 0;
+		for (String field : this.fields) {
+			if (!code.equals(field)) {
+				target[i++] = field;
+			} else {
+				this.fieldsMap.remove(code);
+			}
+		}
+		this.fields = target;
 	}
 
 	public void removeAction(String code) {
@@ -525,8 +552,7 @@ public class BSTableConfig {
 			try {
 				dbmd = (DatabaseMetaData) conn.getMetaData();
 
-				ResultSet rs = dbmd.getIndexInfo(getDatabase(), null,
-						getTableName(), true, false);
+				ResultSet rs = dbmd.getIndexInfo(getDatabase(), null, getTableName(), true, false);
 				while (rs.next()) {
 					fieldName = rs.getString("COLUMN_NAME");
 					if (!pk.equals(fieldName)) {
@@ -544,13 +570,13 @@ public class BSTableConfig {
 
 	public BSField getPKField(Connection conn) {
 		String fieldName = null;
-		if (this.pk == null) {
+		BSField out = null;
+		if (this.pk == null && this.viewName == null) {
 			DatabaseMetaData dbmd;
 			try {
 				dbmd = (DatabaseMetaData) conn.getMetaData();
 
-				ResultSet rs = dbmd.getPrimaryKeys(getDatabase(), null,
-						getTableName());
+				ResultSet rs = dbmd.getPrimaryKeys(getDatabase(), null, getTableOrViewName());
 				while (rs.next()) {
 					fieldName = rs.getString("COLUMN_NAME");
 				}
@@ -559,23 +585,24 @@ public class BSTableConfig {
 				throw new BSDataBaseException("", e.getMessage());
 			}
 			this.pk = fieldName;
+			out = getField(this.pk);
 		}
-		return getField(this.pk);
+		return out;
 	}
 
 	public BSField getField(String name) {
 		return this.fieldsMap.get(name);
 	}
 
-	@Deprecated
+	/**
+	 * @deprecated Use getPKField()
+	 */
 	public BSField getIdField() {
 		BSField[] fields = getFields();
 		BSField out = null;
 
 		if (fields.length == 0) {
-			throw new BSProgrammerException("",
-					"No se ha definido BSFields[] para la tabla "
-							+ getTableName());
+			throw new BSProgrammerException("", "No se ha definido BSFields[] para la tabla " + getTableName());
 		} else {
 			for (BSField s : fields) {
 				if (s.isId()) {
@@ -587,7 +614,9 @@ public class BSTableConfig {
 		return out;
 	}
 
-	@Deprecated
+	/**
+	 * @deprecated Use deleteIdMap
+	 */
 	public BSField[] deleteId() {
 		BSField[] out = new BSField[this.fields.length - 1];
 		int i = 0;
@@ -609,4 +638,25 @@ public class BSTableConfig {
 		}
 		return mapField;
 	}
+
+	public Boolean usingView() {
+		return viewName != null;
+	}
+
+	public String getSaveSP() {
+		return saveSP;
+	}
+
+	public void setSaveSP(String saveSP) {
+		this.saveSP = saveSP;
+	}
+
+	public String getDeleteSP() {
+		return deleteSP;
+	}
+
+	public void setDeleteSP(String deleteSP) {
+		this.deleteSP = deleteSP;
+	}
+
 }

@@ -21,17 +21,41 @@ public class ShowParameters extends HttpServlet {
 		super();
 	}
 
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("/WEB-INF/jsp/common/head.jsp").include(
-				request, response);
-		request.getRequestDispatcher("/WEB-INF/jsp/common/menu.jsp").include(
-				request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/common/head.jsp").include(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/common/menu.jsp").include(request, response);
 
 		PrintWriter out = response.getWriter();
+		showParameters(request, out);
+		out.println("<hr>");
+		showAttributes(request, out);
+
+		request.getRequestDispatcher("/WEB-INF/jsp/common/footer.jsp").include(request, response);
+
+		out.flush();
+	}
+
+	private void showAttributes(HttpServletRequest request, PrintWriter out) {
+		out.print("<h2 class='cTitle2'>Atributos</h2>");
+
+		Enumeration<String> names = request.getAttributeNames();
+		out.print("<ul>");
+		while (names.hasMoreElements()) {
+			String name = (String) names.nextElement();
+
+			out.println("<li class='cLabel'>" + name);
+			Object value = request.getAttribute(name);
+			out.println("(" + value.getClass().getName() + ") = <span class='cData'>" + value.toString() + "</span>");
+			out.println("</li>");
+		}
+		out.println("</ul>");
+	}
+
+	private void showParameters(HttpServletRequest request, PrintWriter out) {
 		Enumeration<String> names = request.getParameterNames();
 
+		out.print("<h2 class='cTitle2'>Parámetros</h2>");
 		out.print("<ul class='cLabel'>");
 		while (names.hasMoreElements()) {
 			String name = (String) names.nextElement();
@@ -48,10 +72,20 @@ public class ShowParameters extends HttpServlet {
 		}
 		out.print("</ul>");
 
-		request.getRequestDispatcher("/WEB-INF/jsp/common/footer.jsp").include(
-				request, response);
-
-		out.flush();
+//		names = request.getAttributeNames();
+//
+//		out.print("<ul class='cLabel'>");
+//		while (names.hasMoreElements()) {
+//			String name = (String) names.nextElement();
+//
+//			out.println("<li>" + name);
+//			Object value = request.getAttribute(name);
+//
+//			out.print("<ul>");
+//			out.println("<li class='cData'>" + value.toString() + "</li>");
+//			out.print("</ul></li>");
+//		}
+//		out.print("</ul>");
 	}
 
 }

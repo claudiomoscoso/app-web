@@ -23,23 +23,20 @@ public class PersonFK extends HttpServlet {
 		super();
 	}
 
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BSmySQL mysql = new BSmySQL();
 
-		Connection conn = mysql.getConnection(request.getServletContext(),
-				"remu");
+		Connection conn = mysql.getConnection(request);
 
 		List<Object> prms = new ArrayList<Object>();
 		prms.add("hola po");
 
 		ResultSet rss = mysql.callSingleSP(conn, "getAllFK", prms);
-		Map<Long, Map<String, Object>> data = mysql.resultSet2Map(rss);		
-		
+		Map<Long, Map<String, Object>> data = mysql.resultSet2Map(rss);
+
 		request.setAttribute("Data", data);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/admin/person-fk.jsp")
-				.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/admin/person-fk.jsp").forward(request, response);
 
 	}
 }

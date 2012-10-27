@@ -15,8 +15,7 @@
 
 <%
 	ServletContext ctx = request.getServletContext();
-	InputStream in = ctx
-			.getResourceAsStream("/WEB-INF/errors.properties");
+	InputStream in = ctx.getResourceAsStream("/WEB-INF/errors.properties");
 	Properties properties = new Properties();
 	properties.load(in);
 
@@ -28,14 +27,14 @@
 		title = "Error de usuario";
 		desc = properties.getProperty(e.getCode());
 		if (desc == null) {
-			desc = e.getMessage();
+	desc = e.getMessage();
 		}
 	} else if (exception instanceof BSConfigurationException) {
 		BSConfigurationException e = (BSConfigurationException) exception;
 		title = "Error de Configuración";
 		desc = properties.getProperty(e.getCode());
 		if (desc == null) {
-			desc = e.getMessage();
+	desc = e.getMessage();
 		}
 
 	} else if (exception instanceof BSDataBaseException) {
@@ -43,7 +42,7 @@
 		title = "Error en Base de Datos";
 		desc = properties.getProperty(e.getCode());
 		if (desc == null) {
-			desc = e.getMessage();
+	desc = e.getMessage();
 		}
 
 	} else if (exception instanceof BSProgrammerException) {
@@ -51,7 +50,7 @@
 		title = "Error de programación";
 		desc = properties.getProperty(e.getCode());
 		if (desc == null) {
-			desc = e.getMessage();
+	desc = e.getMessage();
 		}
 
 	} else if (exception instanceof BSSystemException) {
@@ -59,19 +58,51 @@
 		title = "Error de sistema";
 		desc = properties.getProperty(e.getCode());
 		if (desc == null) {
-			desc = e.getMessage();
+	desc = e.getMessage();
 		}
 
+	} else if (exception instanceof RuntimeException) {
+		RuntimeException e = (RuntimeException) exception;
+		title = "Error";
+		desc = e.getMessage();
 	} else {
 		Throwable root = exception.getCause();
-		title = "Error desconocido";
-		desc = root.getMessage();
+		title = "Ha ocurrido un error desconocido";
+		if(root!=null){
+		desc = root.getMessage();}
 	}
 %>
-<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 
-</td>
-<td>
-	<h1 class="cTitle" style="color: red"><%=title%></h1> <pre>
+<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
+<script>
+	var showed = false;
+	function showHideInfo(o) {
+		if (showed) {
+			$(document.getElementById('detail')).fadeOut(speed);
+			o.innerHTML = 'Detalles >>';
+		} else {
+			$(document.getElementById('detail')).fadeIn(speed);
+			o.innerHTML = 'Ocultar <<';
+		}
+		showed = !showed;
+	}
+</script>
+<h1 class="cTitle" style="color: red"><%=title%></h1>
+<pre>
   <%=desc%>
-  </pre> <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
+  </pre>
+
+<a href="#" onclick='javascript:showHideInfo(this)' style='cursor:pointer' class="cError">Detalles
+	>></a>
+<div style="display: none" id="detail">
+	<br> <span class="cError"> <%
+ 	for (StackTraceElement se : exception.getStackTrace()) {
+ %> <%=se.toString()%><br> <%
+ 	}
+ %>
+	</span>
+</div>
+
+
+<%@ include file="/WEB-INF/jsp/common/footer.jsp"%>

@@ -25,7 +25,7 @@ public class BSPaging {
 
 	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig table,
 			HttpServletRequest request) {
-		ServletContext context = request.getServletContext();
+		// ServletContext context = request.getServletContext();
 		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);
 		this.recordCount = recordCount(conn, mysql, table);
@@ -89,7 +89,7 @@ public class BSPaging {
 		}
 
 		String out = "SELECT COUNT(" + fieldName + ") AS cCount ";
-		out += "FROM " + table.getTableName();
+		out += "FROM " + table.getDatabase() + "." + table.getTableOrViewName();
 		out += getWhere(table);
 
 		return out;
@@ -97,7 +97,8 @@ public class BSPaging {
 
 	public String getSQL(BSTableConfig table) {
 		String sql = "SELECT " + unSplit(table, ",", false);
-		sql += " FROM " + table.getTableName();
+		sql += " FROM " + table.getDatabase() + "."
+				+ table.getTableOrViewName();
 		sql += getWhere(table);
 		sql += getOrder(table);
 

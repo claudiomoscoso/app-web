@@ -5,14 +5,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.exception.BSDataBaseException;
@@ -34,14 +32,12 @@ public class BSmySQL extends BSDataUtils {
 		super.closeSQL();
 	}
 
-	public ResultSet queryResultSet(Connection conn, BSTableConfig table,
-			BSPaging paging) {
+	public ResultSet queryResultSet(Connection conn, BSTableConfig table, BSPaging paging) {
 		String sql = paging.getSQL(table);
 		List<Object> prms = paging.getParams();
 
 		if (paging.getRequiresPaging()) {
-			sql += " LIMIT " + paging.getFirstRecord() + ","
-					+ paging.getRecordPerPage();
+			sql += " LIMIT " + paging.getFirstRecord() + "," + paging.getRecordPerPage();
 		}
 
 		ResultSet rs = queryResultSet(conn, sql, prms);
@@ -49,25 +45,7 @@ public class BSmySQL extends BSDataUtils {
 		return rs;
 	}
 
-	@Deprecated
-	public String cloneTable(Connection conn, HttpServletRequest request,
-			String table) {
-		String out = request.getSession().getId() + "_" + table;
-		String sql = "CREATE TABLE " + out + " LIKE " + table + ";";
-
-		Statement statement;
-		try {
-			statement = conn.createStatement();
-			statement.execute(sql);
-			statement.close();
-		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
-		}
-		return out;
-	}
-
-	public List<Object> callComplexSP(Connection conn, String name,
-			List<Object> parameter) {
+	public List<Object> callComplexSP(Connection conn, String name, List<Object> parameter) {
 
 		String sqlStatement = getSQL4SP(name, parameter);
 
@@ -94,8 +72,7 @@ public class BSmySQL extends BSDataUtils {
 					out.add(resultSet2Map(rs));
 					rs.close();
 				} else {
-					Integer rowsAffected = this.callableStatement
-							.getUpdateCount();
+					Integer rowsAffected = this.callableStatement.getUpdateCount();
 					if (rowsAffected == -1) {
 						moreResults = Boolean.FALSE;
 					}
@@ -111,8 +88,51 @@ public class BSmySQL extends BSDataUtils {
 
 	}
 
-	public ResultSet callSingleSP(Connection conn, String name,
-			List<Object> parameter) {
+	public ResultSet callSingleSP(Connection conn, String name, Object oneParameter) {
+		List<Object> prms = new ArrayList<Object>();
+		prms.add(oneParameter);
+		return callSingleSP(conn, name, prms);
+	}
+
+	public String callFunction(Connection conn, String name, Object oneParameter) {
+		List<Object> prms = new ArrayList<Object>();
+		prms.add(oneParameter);
+		return callFunction(conn, name, prms);
+
+	}
+
+	public String callFunction(Connection conn, String name, List<Object> parameter) {
+		String sql = "{ ? = call " + name + " (" + getQuestionMarks(parameter) + ")}";
+		String out = null;
+		try {
+			this.callableStatement = conn.prepareCall(sql);
+			this.callableStatement.registerOutParameter(1, Types.OTHER);
+			parametersToStatement(parameter, this.callableStatement, 1);
+
+			this.callableStatement.execute();
+
+			out = this.callableStatement.getString(1);
+
+		} catch (SQLException e) {
+			throw new BSDataBaseException("0300", e.getMessage());
+		}
+
+		/*
+		 * or even "{? = function_1 (?, ?, ?, ?, ?)}"
+		 * 
+		 * and I have the following code:
+		 * 
+		 * CallableStatement cs = conn.prepareCall(sql);
+		 * cs.registerOutParameter(1, Types.BIGINT);
+		 * 
+		 * cs.setLong(2,long1); cs.setString(3,string1);
+		 * cs.setString(4,string2); cs.setString(5,string3); cs.setInt(6,int1);
+		 */
+
+		return out;
+	}
+
+	public ResultSet callSingleSP(Connection conn, String name, List<Object> parameter) {
 		String sqlStatement = getSQL4SP(name, parameter);
 
 		ResultSet out = null;
@@ -129,8 +149,7 @@ public class BSmySQL extends BSDataUtils {
 					out = this.callableStatement.getResultSet();
 					moreResults = Boolean.FALSE;
 				} else {
-					Integer rowsAffected = this.callableStatement
-							.getUpdateCount();
+					Integer rowsAffected = this.callableStatement.getUpdateCount();
 					if (rowsAffected == -1) {
 						moreResults = Boolean.FALSE;
 					}
@@ -157,7 +176,7 @@ public class BSmySQL extends BSDataUtils {
 	}
 
 	private String getQuestionMarks(List<Object> prms) {
-		String out = null;
+		String out = "";
 
 		if (prms != null && prms.size() > 0) {
 			out = "";
@@ -191,9 +210,7 @@ public class BSmySQL extends BSDataUtils {
 				// }
 			}
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300",
-					"Error al trabajar con la definicion de una tabla "
-							+ e.getMessage());
+			throw new BSDataBaseException("0300", "Error al trabajar con la definicion de una tabla " + e.getMessage());
 		}
 
 		Map<String, Object> innerData = null;
@@ -207,12 +224,21 @@ public class BSmySQL extends BSDataUtils {
 				}
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300",
-					"Error al recorrer un ResultSet " + e.getMessage() + " "
-							+ e.getLocalizedMessage());
+			throw new BSDataBaseException("0300", "Error al recorrer un ResultSet " + e.getMessage() + " "
+					+ e.getLocalizedMessage());
 		}
 		this.closeSQL(rs);
 
 		return out;
+	}
+
+	public void closeConnection(Connection conn) {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new BSDataBaseException(e);
+			}
+		}
 	}
 }
