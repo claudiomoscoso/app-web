@@ -9,29 +9,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cl.buildersoft.framework.beans.User;
+import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
 
-@WebServlet("/servlet/system/user/DeleteUser")
-public class DeleteUser extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+/**
+ * Servlet implementation class UserEdit
+ */
 
-	public DeleteUser() {
+@WebServlet("/servlet/system/user/UserEdit_")
+public class UserEdit_ extends HttpServlet {
+
+	private static final long serialVersionUID = -6306199091852899234L;
+
+	public UserEdit_() {
 		super();
 
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String[] ids = request.getParameterValues("cId");
+		Long id = Long.parseLong(request.getParameter("cId"));
 
 		BSmySQL mysql = new BSmySQL();
 		Connection conn = mysql.getConnection(request.getServletContext(), "bsframework");
 
-		for (String id : ids) {
-			mysql.callSingleSP(conn, "pDelUser", id);
-		}
-		mysql.closeSQL();
+		BSBeanUtils bu = new BSBeanUtils();
+		User user = new User();
+		user.setId(id);
+		bu.search(conn, user);
 		mysql.closeConnection(conn);
-		request.getRequestDispatcher("/servlet/system/user/UserManager").forward(request, response);
+
+		request.setAttribute("User", user);
+
+		request.getRequestDispatcher("/WEB-INF/jsp/system/user/user-form.jsp").forward(request, response);
+
 	}
 
 }

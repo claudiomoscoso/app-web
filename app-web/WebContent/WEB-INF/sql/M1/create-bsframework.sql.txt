@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS bsframework.tDomainAttribute (
 ) ENGINE=innoDB;
 
  /** V I S T A S **/
- 
 DROP VIEW IF EXISTS bsframework.vUserAdmin;
 CREATE VIEW bsframework.vUserAdmin
 AS

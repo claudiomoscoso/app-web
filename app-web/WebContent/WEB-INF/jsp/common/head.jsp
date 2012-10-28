@@ -84,17 +84,6 @@ loadFormat();
 					- <%=getUserMail(session)%></span></td>
 		<tr>
 			<td valign="top">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 	<%!private String getDomainName(HttpSession session) {
 		return ((Domain) session.getAttribute("Domain")).getAlias();
 	}

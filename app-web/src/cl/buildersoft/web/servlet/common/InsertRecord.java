@@ -2,6 +2,8 @@ package cl.buildersoft.web.servlet.common;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.util.BSWeb;
 
 @WebServlet("/servlet/common/InsertRecord")
@@ -43,17 +46,24 @@ public class InsertRecord extends AbstractServletUtil {
 		if (saveSP == null) {
 			BSField[] fields = table.deleteId();
 			String sql = getSQL(table, fields, request);
-			// BSmySQL mySQL = new BSmySQL();
-			// Connection conn = mySQL.getConnection(request);
 			List<Object> params = getValues4Insert(conn, request, fields);
 			Long id = mysql.insert(conn, sql, params);
 			request.setAttribute("cId", id);
 		} else {
-			// String sql = getSQLsp(saveSP, table);
-			// BSmySQL mySQL = new BSmySQL();
-			// Connection conn = mySQL.getConnection(request);
 			List<Object> params = getValues4Insert(conn, request, table.getFields());
-			mysql.callSingleSP(conn, saveSP, params);
+			ResultSet rs = mysql.callSingleSP(conn, saveSP, params);
+			if(rs != null){
+				try {
+					if(rs.next()){
+						request.setAttribute("cId", rs.getLong(1));
+					}
+				} catch (SQLException e) {
+					throw new BSDataBaseException(e);
+				}
+				mysql.closeSQL(rs);
+			}
+			
+
 		}
 		mysql.closeConnection(conn);
 
