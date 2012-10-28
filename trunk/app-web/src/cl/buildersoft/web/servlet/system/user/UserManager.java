@@ -10,11 +10,9 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.beans.Domain;
 import cl.buildersoft.framework.beans.User;
 import cl.buildersoft.framework.type.BSActionType;
+import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
-/**
- * Servlet implementation class UserManager
- */
 @WebServlet("/servlet/system/user/UserManager")
 public class UserManager extends BSHttpServlet {
 	private static final long serialVersionUID = -3497399350893131897L;
@@ -37,6 +35,7 @@ public class UserManager extends BSHttpServlet {
 			table.setSaveSP("bsframework.pSaveUserAdmin");
 		} else {
 			table = new BSTableConfig("bsframework", "tUser", "vUser");
+			table.setSaveSP("bsframework.pSaveUser");
 		}
 		table.setTitle("Usuarios del sistema");
 		table.setDeleteSP("bsframework.pDelUser");
@@ -46,6 +45,7 @@ public class UserManager extends BSHttpServlet {
 		table.addField(field);
 
 		field = new BSField("cMail", "Mail");
+		field.setTypeHtml("email");
 		table.addField(field);
 
 		field = new BSField("cName", "Nombre");

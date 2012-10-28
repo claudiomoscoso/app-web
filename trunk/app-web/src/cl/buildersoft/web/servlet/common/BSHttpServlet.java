@@ -24,7 +24,6 @@ public abstract class BSHttpServlet extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		// BSHeadConfig head = getBSHeadConfig();
 		BSTableConfig table = getBSTableConfig(request);
 

@@ -39,7 +39,7 @@ function ajaxForValidate(url, value) {
 
 	$.ajax({
 		type : "GET",
-		cache:false,
+		cache : false,
 		url : urlPath,
 		data : {
 			Value : out
@@ -67,6 +67,11 @@ function formatIfValid(obj, value) {
 function dateBlur(obj) {
 	var thereIsDate = isDate(obj.value);
 	formatIfValid(obj, thereIsDate ? obj.value : null);
+}
+
+function emailBlur(obj) {
+	var thereIsEmail = isEmail(obj.value);
+	formatIfValid(obj, thereIsEmail ? obj.value : null);
 }
 
 function doubleBlur(obj) {
@@ -117,6 +122,9 @@ function isDate(value) {
 	return ajaxForValidate('/servlet/ajax/IsDate', value) == 'true';
 }
 
+function isEmail(value) {
+	return ajaxForValidate('/servlet/ajax/IsEmail', value) == 'true';
+}
 
 function severalValidationsAndSubmit(elements, formId) {
 	/**
@@ -161,21 +169,21 @@ function severalValidationsAndSubmit(elements, formId) {
 	return isValid;
 }
 
-function sendForm(formId, url){
+function sendForm(formId, url) {
 	var formObject = document.getElementById(formId);
 	formObject.action = url;
 	formObject.submit();
 }
 
-function clearSelect(selectName){
+function clearSelect(selectName) {
 	var selectObject = document.getElementById(selectName);
-	
-	while(selectObject.options.length > 0) {
-		selectObject.remove(0);		
+
+	while (selectObject.options.length > 0) {
+		selectObject.remove(0);
 	}
-	
+
 }
-function appendToSelect(selectName, key, value){
+function appendToSelect(selectName, key, value) {
 	var selectObject = document.getElementById(selectName);
 	var option = document.createElement("option");
 	option.value = key;
@@ -187,8 +195,6 @@ function appendToSelect(selectName, key, value){
 		selectObject.add(option, null);
 	}
 }
-
-
 
 /** ***************************** */
 function setClass(element, focus) {
@@ -205,7 +211,7 @@ function setClass(element, focus) {
 function loadFormat(theDocument) {
 	var elements = $('input:text,input:password,textarea,select');
 	// alert(elements.get(0).tagName);
-//	$(elements.get(0)).focus();
+	// $(elements.get(0)).focus();
 	return;
 
 	var formatElement = function() {

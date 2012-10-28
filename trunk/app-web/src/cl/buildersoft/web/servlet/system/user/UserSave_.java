@@ -19,24 +19,22 @@ import cl.buildersoft.framework.database.BSmySQL;
 /**
  * Servlet implementation class UserSave
  */
-@WebServlet("/servlet/system/user/UserSave")
-public class UserSave extends HttpServlet {
+@WebServlet("/servlet/system/user/UserSave_")
+public class UserSave_ extends HttpServlet {
 	private static final long serialVersionUID = 2626535852650186256L;
 
-	public UserSave() {
+	public UserSave_() {
 		super();
 	}
 
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idString = request.getParameter("cId");
 		Long id = null;
 		if (idString.trim().length() > 0) {
 			id = Long.parseLong(idString);
 		}
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request.getServletContext(),
-				"bsframework");
+		Connection conn = mysql.getConnection(request.getServletContext(), "bsframework");
 
 		BSBeanUtils bu = new BSBeanUtils();
 		User user = new User();
@@ -65,8 +63,7 @@ public class UserSave extends HttpServlet {
 		mysql.callSingleSP(conn, "pSetUserSave", prms);
 </code>
 		 */
-		request.getRequestDispatcher("/servlet/system/user/UserManager")
-				.forward(request, response);
+		request.getRequestDispatcher("/servlet/system/user/UserManager").forward(request, response);
 
 	}
 

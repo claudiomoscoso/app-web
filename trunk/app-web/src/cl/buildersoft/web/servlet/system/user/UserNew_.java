@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/servlet/system/user/UserNew")
-public class UserNew extends HttpServlet {
+@WebServlet("/servlet/system/user/UserNew_")
+public class UserNew_ extends HttpServlet {
 	private static final long serialVersionUID = 1073693533198008317L;
 
 	@Override

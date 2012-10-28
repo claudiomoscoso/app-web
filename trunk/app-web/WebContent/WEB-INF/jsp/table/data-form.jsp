@@ -22,28 +22,28 @@ BSField[] fields = table.getFields();
 		BSScript script = head.getScript();
 		BSCss css = head.getCss();
 		for (String oneScript : script.getListScriptNames()) {
-			out.print("<script src='" + request.getContextPath() + script.getPath() + oneScript + ".js'></script>");
+	out.print("<script src='" + request.getContextPath() + script.getPath() + oneScript + ".js'></script>");
 		}
 
 		for (String oneCss : css.getListCssNames()) {
-			out.print("<LINK rel='stylesheet' type='text/css' src='" + request.getContextPath() + css.getPath() + oneCss
-					+ ".css'/>");
+	out.print("<LINK rel='stylesheet' type='text/css' src='" + request.getContextPath() + css.getPath() + oneCss
+	+ ".css'/>");
 		}
 	}
 %>
 <script type="text/javascript">
-<!--
-function sendForm(){
-	var msg = null;
-	<%
-	String fieldName=null;
+	function sendForm() {
+		var msg = null;
+<%String fieldName=null;
 	String html = "";
 	BSFieldType type=null;
+	String typeHtml = null;
 	for (BSField field : fields) {
 		type = field.getType();
 		fieldName = field.getName();
+		typeHtml = field.getTypeHtml();
 		
-		if(type.equals(BSFieldType.Double)|| type.equals(BSFieldType.Integer)|| type.equals(BSFieldType.Date)){		
+		if(type.equals(BSFieldType.Double)|| type.equals(BSFieldType.Integer)|| type.equals(BSFieldType.Date)|| "email".equalsIgnoreCase(typeHtml)) {		
 			if(type.equals(BSFieldType.Double)){
 				html = "var " + fieldName + " = formated2double(document.getElementById('"+fieldName+"').value);\n";
 			}
@@ -54,31 +54,36 @@ function sendForm(){
 				html = "var " + fieldName + " = isDate(document.getElementById('"+fieldName+"').value);\n";
 				html += fieldName + " = " + fieldName +"?"+fieldName +":null;\n";
 			}
+			if(field.getTypeHtml().equalsIgnoreCase("email")){
+				html = "var " + fieldName + " = isEmail(document.getElementById('"+fieldName+"').value);\n";
+				html += fieldName + " = " + fieldName +"?"+fieldName +":null;\n";
+			}
 
 			html += "if (" + fieldName + " == null) {\n";
 			html += "   msg = 'El campo "+ field.getLabel() + " no es valido';\n";
 			html += "}\n";
-}
-%>
-	<%=html%>
-	<%}%>
-if (msg != null) {
-	alert(msg);
-} else {
-<%
-html = "";
+}%>
+	
+<%=html%>
+	
+<%}%>
+	if (msg != null) {
+			alert(msg);
+		} else {
+<%html = "";
 for (BSField field : fields) {
 		type = field.getType();
 		fieldName = field.getName();
 		if(type.equals(BSFieldType.Double)|| type.equals(BSFieldType.Integer)){
 			html += "document.getElementById('"+fieldName+"').value = "+fieldName+";\n";
+		}%>
+	
+<%}%>
+	
+<%=html%>
+	document.getElementById("editForm").submit();
 		}
-		%>	
-	<%}%>
-	<%=html%>
-		document.getElementById("editForm").submit();
 	}
-}
 </script>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <h1 class="cTitle">Detalle de información</h1>
@@ -109,7 +114,8 @@ for (BSField field : fields) {
 </form>
 <button type="button" onclick="javascript:sendForm()">Aceptar</button>
 &nbsp;&nbsp;&nbsp;
-<a class="cCancel" href="${pageContext.request.contextPath}/servlet/common/LoadTable">Cancelar</a>
+<a class="cCancel"
+	href="${pageContext.request.contextPath}/servlet/common/LoadTable">Cancelar</a>
 
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
@@ -165,28 +171,29 @@ for (BSField field : fields) {
 					afterInput = "(formato: " + format + ")";
 				} else if (type.equals(BSFieldType.Double)) {
 					maxlength = 15;
-//					format = BSWeb.getFormatDecimal(request);
-					value = BSWeb.formatDouble(request, (Double)value); // number2String(value, format);
+					//					format = BSWeb.getFormatDecimal(request);
+					value = BSWeb.formatDouble(request, (Double) value); // number2String(value, format);
 					size = maxlength;
 				} else if (type.equals(BSFieldType.Integer)) {
 					maxlength = 8;
-//					format = BSWeb.getFormatInteger(request);
-//					value = BSWeb.number2String(value, format);
-					value = BSWeb.formatInteger(request,(Integer) value);
+					//					format = BSWeb.getFormatInteger(request);
+					//					value = BSWeb.number2String(value, format);
+					value = BSWeb.formatInteger(request, (Integer) value);
 					size = maxlength;
 				} else if (type.equals(BSFieldType.Long)) {
 					maxlength = 10;
-//					format = BSWeb.getFormatInteger(request);
+					//					format = BSWeb.getFormatInteger(request);
 					if (isPk && value == null) {
 						value = NEW;
 						//isNew = Boolean.TRUE;
 					} else {
-						value = value == null ? "" : BSWeb.formatLong(request, (Long)value);  // BSWeb.number2String(value, format);
+						value = value == null ? "" : BSWeb.formatLong(request, (Long) value); // BSWeb.number2String(value, format);
 					}
 					size = maxlength;
 				}
 
-				out += drawInputText("text", name, maxlength, isReadOnly, value, size, afterInput, validationOnBlur, isPk, type);
+				out += drawInputText(field.getTypeHtml(), name, maxlength, isReadOnly, value, size, afterInput, validationOnBlur,
+						isPk, type);
 			}
 		}
 		return out;
@@ -223,19 +230,19 @@ for (BSField field : fields) {
 		out += isReadonly ? "READONLY " : "";
 		out += "value='" + (value.equals(NEW) ? "0" : value) + "' ";
 		out += "size='" + size + "px' ";
-		
-		out+=addScript(dataType);
-		
+
+		out += addScript(dataType, type);
+
 		if (!"".equals(validationOnBlur)) {
 			out += "onBlur='javascript:" + validationOnBlur + "(this)'";
 		}
-		
-		
-		out += ">&nbsp;<span class='cLabel'>" + afterInput+"</span>";
 
-		return out;}
+		out += ">&nbsp;<span class='cLabel'>" + afterInput + "</span>";
 
-	private String addScript(BSFieldType dataType) {
+		return out;
+	}
+
+	private String addScript(BSFieldType dataType, String type) {
 		String out = "";
 		if (dataType.equals(BSFieldType.Double)) {
 			out = "onfocus='javascript:doubleFocus(this);' ";
@@ -243,8 +250,12 @@ for (BSField field : fields) {
 		} else if (dataType.equals(BSFieldType.Integer)) {
 			out = "onfocus='javascript:integerFocus(this);' ";
 			out += "onblur='javascript:integerBlur(this);' ";
-		}else if (dataType.equals(BSFieldType.Date)) {
+		} else if (dataType.equals(BSFieldType.Date)) {
 			out += "onblur='javascript:dateBlur(this);' ";
+		} else {
+			if (type.equalsIgnoreCase("email")) {
+				out += "onblur='javascript:emailBlur(this);' ";
+			}
 		}
 		return out;
 	}
