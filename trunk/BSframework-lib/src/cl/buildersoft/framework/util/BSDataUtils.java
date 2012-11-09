@@ -1,5 +1,6 @@
 package cl.buildersoft.framework.util;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -147,6 +148,10 @@ public class BSDataUtils {
 						preparedStatement.setInt(initIndex + 1, ((Integer) param).intValue());
 					} else if (param instanceof Double) {
 						preparedStatement.setDouble(initIndex + 1, ((Double) param).doubleValue());
+						
+					} else if (param instanceof BigDecimal) {
+						preparedStatement.setBigDecimal(initIndex + 1, (BigDecimal) param);
+						
 					} else if (param instanceof Long) {
 						preparedStatement.setLong(initIndex + 1, ((Long) param).longValue());
 					} else if (param instanceof Boolean) {
@@ -160,7 +165,7 @@ public class BSDataUtils {
 					} else if (param == null) {
 						preparedStatement.setNull(initIndex + 1, java.sql.Types.NULL);
 					} else {
-						String message = "Object type not cataloged, please insert code in \"AbstractProcess\" for class \""
+						String message = "Object type not cataloged, please insert code in \"cl.buildersoft.framework.util.BSDataUtils\" for class \""
 								+ param.getClass().getName() + "\"";
 
 						throw new BSProgrammerException("0103", message);
