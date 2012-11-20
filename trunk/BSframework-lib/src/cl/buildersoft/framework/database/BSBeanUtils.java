@@ -157,13 +157,16 @@ public class BSBeanUtils extends BSDataUtils {
 		String[] tableFields = getTableFields(theClass);
 		String[] objectFields = getObjectFields(theClass);
 		String[] tableFieldsWithOutId = deleteId(tableFields);
+		String[] fields = null;
 		String tableName = getTableName(theClass, bean);
 
 		String sql = null;
 		if (where == null) {
 			sql = buildSelectSQLString(tableName, tableFields, tableFieldsWithOutId);
+			fields = tableFieldsWithOutId;
 		} else {
-			sql = buildSelectSQLString(tableName, tableFields, tableFieldsWithOutId, where);
+			sql = buildSelectSQLString(tableName, tableFields, tableFields, where);
+			fields = tableFields;
 		}
 
 		ResultSet rs;
@@ -177,7 +180,7 @@ public class BSBeanUtils extends BSDataUtils {
 
 		try {
 			if (rs.next()) {
-				for (String f : tableFieldsWithOutId) {
+				for (String f : fields) {
 					value = rs.getObject(f);
 					// value = convertToCalendar(value);
 					fillField(theClass, f.substring(1, f.length()), value, bean);
