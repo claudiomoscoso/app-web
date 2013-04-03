@@ -69,11 +69,13 @@ public class BSDateTimeUtil {
 		} catch (ParseException e) {
 			out = Boolean.FALSE;
 		}
-
-		if (!sdf.format(testDate).equals(date)) {
+		if (testDate != null) {
+			if (!sdf.format(testDate).equals(date)) {
+				out = Boolean.FALSE;
+			}
+		} else {
 			out = Boolean.FALSE;
 		}
-
 		return out;
 	}
 
@@ -162,7 +164,7 @@ public class BSDateTimeUtil {
 		String format = getFormatDate(request);
 		return string2Calendar(date, format);
 	}
-	                       
+
 	public static Calendar timestamp2Calendar(Timestamp timestamp) {
 		Calendar out = Calendar.getInstance();
 		out.setTimeInMillis(timestamp.getTime());
