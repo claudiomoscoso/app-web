@@ -40,6 +40,24 @@ public class BSSecurity {
 		}
 	}
 
+	public static void main(String args[]) {
+		if (args.length != 2) {
+			System.out.println("Use la clase con 2 parámetros:\n" + "1.- ENC=Encriptar|DEC=Desencriptar\n"
+					+ "2.- Cadena a encriptrar/desencriptar\n" + "Ejemplo: BSSecurity END Hola\\ Mundo");
+		}
+
+		String method = args[0];
+		String string = args[1];
+		BSSecurity security = new BSSecurity();
+
+		if (method.equals("ENC")) {
+			System.out.println(security.encript3des(string));
+		} else if (method.equals("DEC")) {
+			System.out.println(security.decript3des(string));
+		}
+
+	}
+
 	public String encript3des(String clearString) {
 		String encryptedString = null;
 		try {
