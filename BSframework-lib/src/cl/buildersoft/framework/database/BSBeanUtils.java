@@ -267,7 +267,7 @@ public class BSBeanUtils extends BSDataUtils {
 		} else if (typeString.indexOf("Date") > -1) {
 			out = Date.class;
 		} else {
-			throw new BSProgrammerException("0110", "El tipo de dato '" + type + "' que retorna el método '" + methodName
+			throw new BSProgrammerException("0110", "El tipo de dato '" + type + "' que retorna el mï¿½todo '" + methodName
 					+ "()', no fue encontrado");
 		}
 
@@ -459,10 +459,14 @@ public class BSBeanUtils extends BSDataUtils {
 
 		if (!c.equals(Object.class)) {
 
-			List<Method> parentMethods = array2List(c.getSuperclass().getDeclaredMethods());
+			// List<Method> parentMethods =
+			// array2List(c.getSuperclass().getDeclaredMethods());
+			List<Method> parentMethods = array2List(getMethods(c.getSuperclass()));
 
-			for (Method o : parentMethods) {
-				out.add(o);
+			for (Method m : parentMethods) {
+				if (!m.getName().equals("getClass")) {
+					out.add(m);
+				}
 			}
 		}
 
