@@ -80,8 +80,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		Class<? extends BSTableManager> c = this.getClass();
 
 		String[] objectFields = getObjectFields(c);
-		Integer idValue = (Integer) getMethodValue(c, "get"
-				+ getIdField(objectFields));
+		Integer idValue = (Integer) getMethodValue(c, "get" + getIdField(objectFields));
 
 		String[] tableFields = getTableFields(c);
 		String sql = buildDeleteSQLString(c, tableFields);
@@ -103,8 +102,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		String sql = buildSelectSQLString(tableFields, tableFieldsWithOutId);
 
 		try {
-			Long idValue = getIdValue(this.theClass, "get"
-					+ getIdField(objectFields));
+			Long idValue = getIdValue(this.theClass, "get" + getIdField(objectFields));
 			ResultSet rs;
 			rs = this.queryResultSet(this.connection, sql, idValue);
 			Object value = null;
@@ -123,8 +121,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		return out;
 	}
 
-	private void fillObject(Class<? extends BSTableManager> c,
-			String[] objectFields, Object[] params) {
+	private void fillObject(Class<? extends BSTableManager> c, String[] objectFields, Object[] params) {
 
 		Class objectClass = null;
 		String fieldName = null;
@@ -140,8 +137,7 @@ public abstract class BSTableManager extends BSDataUtils {
 
 	}
 
-	private void fillField(Class<? extends BSTableManager> c, String fieldName,
-			Object value) {
+	private void fillField(Class<? extends BSTableManager> c, String fieldName, Object value) {
 		Class<?> type = getTypeMethod(c, fieldName);
 		Class[] paramTypes = new Class[] { type };
 		Method method;
@@ -154,8 +150,7 @@ public abstract class BSTableManager extends BSDataUtils {
 
 	}
 
-	private Class<?> getTypeMethod(Class<? extends BSTableManager> c,
-			String methodName) {
+	private Class<?> getTypeMethod(Class<? extends BSTableManager> c, String methodName) {
 
 		Method m;
 		try {
@@ -182,15 +177,13 @@ public abstract class BSTableManager extends BSDataUtils {
 		} else if (type.toString().equals("java.util.Date")) {
 			out = Date.class;
 		} else {
-			throw new BSProgrammerException("0110", "El tipo de dato "
-					+ type.toString() + " no est� soportado");
+			throw new BSProgrammerException("0110", "El tipo de dato " + type.toString() + " no está soportado");
 		}
 
 		return out;
 	}
 
-	private String buildInsertSQLString(Class<? extends BSTableManager> c,
-			String[] tableFields) {
+	private String buildInsertSQLString(Class<? extends BSTableManager> c, String[] tableFields) {
 		String sql = "INSERT INTO " + getTableName(c) + "(";
 
 		sql += unSplit(tableFields, ",") + ") VALUES(";
@@ -198,8 +191,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		return sql;
 	}
 
-	private String buildUpdateSQLString(Class<? extends BSTableManager> c,
-			String[] tableFields) {
+	private String buildUpdateSQLString(Class<? extends BSTableManager> c, String[] tableFields) {
 
 		String id = getIdField(tableFields);
 		tableFields = deleteId(tableFields);
@@ -210,20 +202,16 @@ public abstract class BSTableManager extends BSDataUtils {
 		return sql;
 	}
 
-	private String buildDeleteSQLString(Class<? extends BSTableManager> c,
-			String[] tableFields) {
+	private String buildDeleteSQLString(Class<? extends BSTableManager> c, String[] tableFields) {
 
-		String sql = "DELETE FROM " + getTableName(c) + " WHERE "
-				+ getIdField(tableFields) + "=?";
+		String sql = "DELETE FROM " + getTableName(c) + " WHERE " + getIdField(tableFields) + "=?";
 
 		return sql;
 	}
 
-	private String buildSelectSQLString(String[] tableFields,
-			String[] tableFieldsWithOutId) {
+	private String buildSelectSQLString(String[] tableFields, String[] tableFieldsWithOutId) {
 
-		String sql = "SELECT " + unSplit(tableFieldsWithOutId, ",") + " FROM "
-				+ getTableName(this.theClass) + " WHERE "
+		String sql = "SELECT " + unSplit(tableFieldsWithOutId, ",") + " FROM " + getTableName(this.theClass) + " WHERE "
 				+ getIdField(tableFields) + "=?";
 
 		return sql;
@@ -240,14 +228,12 @@ public abstract class BSTableManager extends BSDataUtils {
 		return out;
 	}
 
-	private Long getIdValue(Class<? extends BSTableManager> c,
-			String idFieldName) {
+	private Long getIdValue(Class<? extends BSTableManager> c, String idFieldName) {
 		return (Long) getMethodValue(c, idFieldName);
 
 	}
 
-	private Object[] getValues4Insert(Class<? extends BSTableManager> c,
-			String[] tableFields) {
+	private Object[] getValues4Insert(Class<? extends BSTableManager> c, String[] tableFields) {
 
 		Object[] out = new Object[tableFields.length];
 		Method method = null;
@@ -265,8 +251,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		return out;
 	}
 
-	private Object[] getValues4Update(Class<? extends BSTableManager> c,
-			String[] objectFields) {
+	private Object[] getValues4Update(Class<? extends BSTableManager> c, String[] objectFields) {
 
 		Object[] out = new Object[objectFields.length];
 		Object aux = null;
@@ -289,8 +274,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		return out;
 	}
 
-	private Object getMethodValue(Class<? extends BSTableManager> c,
-			String methodName) {
+	private Object getMethodValue(Class<? extends BSTableManager> c, String methodName) {
 		Object value;
 		Method method;
 		try {
@@ -344,8 +328,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		return getFields(c, false);
 	}
 
-	private String[] getFields(Class<? extends BSTableManager> c,
-			boolean asFields) {
+	private String[] getFields(Class<? extends BSTableManager> c, boolean asFields) {
 		String[] out = null;
 		List<String> list = new ArrayList<String>();
 

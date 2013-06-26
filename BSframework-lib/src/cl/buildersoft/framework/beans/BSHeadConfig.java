@@ -1,6 +1,6 @@
 package cl.buildersoft.framework.beans;
 
-
+@Deprecated
 public class BSHeadConfig {
 	private BSScript script = null;
 	private BSCss css = null;

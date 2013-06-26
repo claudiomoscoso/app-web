@@ -6,6 +6,7 @@ public class Domain extends BSBean implements Serializable {
 	private static final long serialVersionUID = 372116778968735407L;
 	private String name = null;
 	private String alias = null;
+	@SuppressWarnings("unused")
 	private String TABLE = "tDomain";
 
 	public String getName() {

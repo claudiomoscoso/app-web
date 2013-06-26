@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import cl.buildersoft.framework.dataType.BSDataType;
-import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSField {
 	private String name = null;
@@ -46,6 +45,7 @@ public class BSField {
 	}
 
 	
+	/**<code>
 	public Boolean isNumber() {
 		return getType().equals(BSFieldType.Double) || getType().equals(BSFieldType.Integer)
 				|| getType().equals(BSFieldType.Long);
@@ -54,7 +54,7 @@ public class BSField {
 	public Boolean isTime() {
 		return getType().equals(BSFieldType.Date) || getType().equals(BSFieldType.Timestamp);
 	}
-
+</code>*/
 	public String getName() {
 		return name;
 	}

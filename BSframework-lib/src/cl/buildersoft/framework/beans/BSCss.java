@@ -1,7 +1,7 @@
 package cl.buildersoft.framework.beans;
 
 import java.util.List;
-
+@Deprecated
 public class BSCss {
 	private String path = null;
 	private List<String> listCssNames = null;

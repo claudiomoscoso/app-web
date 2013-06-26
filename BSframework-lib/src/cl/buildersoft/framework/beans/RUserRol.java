@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.beans;
 
-public class RUserRol extends BSBean{
+public class RUserRol extends BSBean {
+	private static final long serialVersionUID = -2596360240483281028L;
+	@SuppressWarnings("unused")
 	private String TABLE = "tR_UserRol";
 	private Long user = null;
 	private Long rol = null;

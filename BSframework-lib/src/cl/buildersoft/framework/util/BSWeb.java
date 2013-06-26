@@ -5,15 +5,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,7 +27,6 @@ import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
-import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSWeb {
@@ -54,7 +49,7 @@ public class BSWeb {
 
 		return out;
 	}
-
+/**<code>
 	private static Object evaluateType(Connection conn, HttpServletRequest request, Object out, String value, BSFieldType type,
 			BSField field) {
 
@@ -97,7 +92,7 @@ public class BSWeb {
 		}
 		return out;
 	}
-
+</code>*/
 	/********************/
 
 	private static Connection requestToConnection(HttpServletRequest request) {
@@ -397,7 +392,8 @@ public class BSWeb {
 
 		return out;
 	}
-	static public String randomString(){
+
+	static public String randomString() {
 		long l = System.currentTimeMillis();
 		String out = String.valueOf(l);
 		out = Base64.encode(out.getBytes());

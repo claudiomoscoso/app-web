@@ -1,6 +1,7 @@
 package cl.buildersoft.framework.beans;
 
 public class DomainAttribute extends BSBean {
+	private static final long serialVersionUID = -1348815045687895170L;
 	/**
 	 * <code>
 CREATE TABLE IF NOT EXISTS tDomainAttribute (
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS tDomainAttribute (
 	private String key = null;
 	private String name = null;
 	private String value = null;
+	@SuppressWarnings("unused")
 	private String TABLE = "tDomainAttribute";
 
 	public Long getDomain() {

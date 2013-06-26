@@ -2,7 +2,9 @@ package cl.buildersoft.framework.beans;
 
 import java.io.Serializable;
 
-public class Rol extends BSBean implements Serializable{
+public class Rol extends BSBean implements Serializable {
+	private static final long serialVersionUID = -1654175168914146612L;
+	@SuppressWarnings("unused")
 	private String TABLE = "tRol";
 
 	private String name = null;
@@ -26,8 +28,7 @@ public class Rol extends BSBean implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Rol [id=" + getId() + ", name=" + name + ", deleted=" + deleted
-				+ "]";
+		return "Rol [id=" + getId() + ", name=" + name + ", deleted=" + deleted + "]";
 	}
 
 }
