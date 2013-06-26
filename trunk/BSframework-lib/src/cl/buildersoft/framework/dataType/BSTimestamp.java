@@ -1,19 +1,20 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-//import java.util.Date;
+import java.util.Date;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSConfig;
-@Deprecated
-public class BSCalendar implements BSFieldDataType {
+
+public class BSTimestamp implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {
-		throw new BSProgrammerException("", "Hay que llamar al metodo validData(Connection, String); para el tipo BSCalendar");
+		throw new BSProgrammerException(
+				"",
+				"Hay que llamar al metodo validData(Connection, String); para el tipo BSTimestamp");
 	}
 
 	@Override
@@ -28,9 +29,10 @@ public class BSCalendar implements BSFieldDataType {
 		String out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {
-			out = formatter.format((Calendar) data);
+			out = formatter.format((Date) data);
 		} catch (Exception e) {
-			throw new BSProgrammerException("", "No se puede formatear el dato " + data);
+			throw new BSProgrammerException("",
+					"No se puede formatear el dato " + data);
 		}
 		return out;
 	}
@@ -52,14 +54,12 @@ public class BSCalendar implements BSFieldDataType {
 	public Object parse(Connection conn, String data) {
 		BSConfig config = new BSConfig();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
-		Calendar out = null;
+		Date out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {
-			java.util.Date temp = formatter.parse(data);
-			out.setTime(temp);
-			temp = null;
+			out = formatter.parse(data);
 		} catch (Exception e) {
-			throw new BSProgrammerException(e);
+			throw new BSProgrammerException("", e.getMessage());
 		}
 		return out;
 	}

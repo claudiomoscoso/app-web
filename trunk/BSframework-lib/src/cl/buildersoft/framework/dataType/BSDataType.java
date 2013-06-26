@@ -1,8 +1,8 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
-@Deprecated
-public interface BSFieldDataType {
+
+public interface BSDataType {
 	public Boolean validData(Connection conn, String data);
 	public String format(Connection conn, Object data);
 	public Object parse(Connection conn, String data);

@@ -1,8 +1,8 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
-@Deprecated
-public class BSBoolean implements BSFieldDataType {
+
+public class BSBoolean implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {

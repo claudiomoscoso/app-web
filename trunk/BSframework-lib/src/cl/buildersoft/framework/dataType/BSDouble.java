@@ -1,19 +1,17 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
-@Deprecated
-public class BSBoolean implements BSFieldDataType {
+
+public class BSDouble implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {
-		Boolean out = true;
 		try {
-			out = Boolean.parseBoolean(data);
+			Double.parseDouble(data);
+			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		
-		return out;
 	}
 
 	@Override
@@ -28,12 +26,13 @@ public class BSBoolean implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
-		return validData(data);
+		return null;
 	}
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		return Boolean.parseBoolean(data);
+		data= data.replaceAll(",", ".");
+		Double out = Double.parseDouble(data);
+		return out;
 	}
-
 }

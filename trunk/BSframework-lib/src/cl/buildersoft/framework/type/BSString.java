@@ -1,7 +1,7 @@
 package cl.buildersoft.framework.type;
 
 import java.sql.Connection;
-
+@Deprecated
 public class BSString implements BSFieldDataType {
 
 	@Override

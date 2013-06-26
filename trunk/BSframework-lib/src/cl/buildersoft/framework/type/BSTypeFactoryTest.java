@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSTypeFactoryTest{
 

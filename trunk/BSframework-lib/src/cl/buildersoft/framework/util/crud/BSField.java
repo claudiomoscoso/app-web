@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.util.crud;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,5 @@
 package cl.buildersoft.framework.beans;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class BSHeadConfig {
 	private BSScript script = null;

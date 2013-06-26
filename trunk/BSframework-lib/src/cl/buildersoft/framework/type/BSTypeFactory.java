@@ -1,7 +1,7 @@
 package cl.buildersoft.framework.type;
 
-import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSTypeFactory {
 	private static final String BS = ".BS";
