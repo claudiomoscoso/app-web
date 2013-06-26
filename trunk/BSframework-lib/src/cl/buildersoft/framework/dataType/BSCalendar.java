@@ -52,7 +52,7 @@ public class BSCalendar implements BSDataType {
 	public Object parse(Connection conn, String data) {
 		BSConfig config = new BSConfig();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
-		Calendar out = null;
+		Calendar out = Calendar.getInstance();
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {
 			java.util.Date temp = formatter.parse(data);

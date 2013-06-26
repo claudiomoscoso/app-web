@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.beans;
 
 public class Option extends BSBean {
+	private static final long serialVersionUID = -1126831609688823765L;
+	@SuppressWarnings("unused")
 	private String TABLE = "tOption";
 	private String key = null;
 	private String label = null;
@@ -41,7 +43,7 @@ public class Option extends BSBean {
 
 	@Override
 	public String toString() {
-		return "\n\tOption [id=" + super.getId() + ", key=" + key + ", label=" + label
-				+ ", url=" + url + ", parent=" + parent + "]";
+		return "\n\tOption [id=" + super.getId() + ", key=" + key + ", label=" + label + ", url=" + url + ", parent=" + parent
+				+ "]";
 	}
 }

@@ -57,4 +57,8 @@ public class BSDataTypeUtil {
 	public static Boolean isTime(BSDataType dataType) {
 		return dataType instanceof BSDate || dataType instanceof BSTimestamp;
 	}
+	
+	public static Boolean isBoolean(BSDataType dataType) {
+		return dataType instanceof BSBoolean;
+	}
 }

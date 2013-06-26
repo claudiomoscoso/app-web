@@ -232,7 +232,7 @@ public class BSBeanUtils extends BSDataUtils {
 			method = c.getMethod("set" + fieldName, paramTypes);
 			method.invoke(bean, value);
 		} catch (Exception e) {
-			throw new BSProgrammerException("0110", e.getMessage());
+			throw new BSProgrammerException(e);
 		}
 
 	}
@@ -242,9 +242,9 @@ public class BSBeanUtils extends BSDataUtils {
 		try {
 			m = c.getMethod("get" + methodName, null);
 		} catch (SecurityException e) {
-			throw new BSSystemException("0210", e.getMessage());
+			throw new BSSystemException(e);
 		} catch (NoSuchMethodException e) {
-			throw new BSProgrammerException("0110", e.getMessage());
+			throw new BSProgrammerException(e);
 		}
 		Type type = m.getGenericReturnType();
 		String typeString = type.toString();

@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.framework.util.BSConfig;
 
 public class BSPaging {
@@ -66,18 +65,19 @@ public class BSPaging {
 	}
 
 	private Integer recordCount(Connection conn, BSmySQL mysql, BSTableConfig table) {
-		String sql = getSQLCount(table);
+		String sql = getSQLCount(conn, table);
 		Integer out = Integer.parseInt(mysql.queryField(conn, sql, getParams()));
 		mysql.closeSQL();
 		return out;
 	}
 
-	private String getSQLCount(BSTableConfig table) {
+	private String getSQLCount(Connection conn, BSTableConfig table) {
 		BSField[] fields = table.getFields();
 
 		String fieldName = "1";
 		if (fields.length > 0) {
-			BSField idField = table.getIdField();
+			BSField idField = table.getPKField(conn);
+			// BSField idField = table.getIdField();
 			fieldName = idField.getName();
 		}
 
@@ -116,7 +116,8 @@ public class BSPaging {
 		String out = "";
 		for (BSField field : table.getFields()) {
 			if (excludeBoolean) {
-				if (!field.getType().equals(BSFieldType.Boolean)) {
+				// if (!field.getType().equals(BSFieldType.Boolean)) {
+				if (!BSDataTypeUtil.isBoolean(field.getType())) {
 					out += field.getName() + s;
 				}
 			} else {
@@ -131,17 +132,17 @@ public class BSPaging {
 		return this.recordCount > this.recordPerPage;
 	}
 
-	@Deprecated
-	private Integer getRecordsPerPage(ServletContext context) {
-		String recordPerPageString = context.getInitParameter("bsframework.recordPerPage");
-		Integer recordPerPageInteger;
-		try {
-			recordPerPageInteger = Integer.parseInt(recordPerPageString);
-		} catch (Exception e) {
-			recordPerPageInteger = new Integer(20);
-		}
-		return recordPerPageInteger;
-	}
+	/**
+	 * <code>
+	 * 
+	 * @Deprecated private Integer getRecordsPerPage(ServletContext context) {
+	 *             String recordPerPageString =
+	 *             context.getInitParameter("bsframework.recordPerPage");
+	 *             Integer recordPerPageInteger; try { recordPerPageInteger =
+	 *             Integer.parseInt(recordPerPageString); } catch (Exception e)
+	 *             { recordPerPageInteger = new Integer(20); } return
+	 *             recordPerPageInteger; } </code>
+	 */
 
 	private Integer getRecordsPerPage(Connection conn) {
 		BSConfig config = new BSConfig();
