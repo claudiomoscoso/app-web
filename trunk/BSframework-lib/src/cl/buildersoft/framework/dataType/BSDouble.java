@@ -31,8 +31,13 @@ public class BSDouble implements BSDataType {
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		data= data.replaceAll(",", ".");
+		data = data.replaceAll(",", ".");
 		Double out = Double.parseDouble(data);
 		return out;
+	}
+
+	@Override
+	public String toString() {
+		return BSDataType.DOUBLE;
 	}
 }

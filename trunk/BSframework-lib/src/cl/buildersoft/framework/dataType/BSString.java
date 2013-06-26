@@ -34,4 +34,8 @@ public class BSString implements BSDataType {
 		return data.toString();
 	}
 
+	@Override
+	public String toString() {
+		return BSDataType.STRING;
+	}
 }

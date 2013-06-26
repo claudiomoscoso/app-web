@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cl.buildersoft.framework.dataType.BSDataType;
+import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSTableConfig {
 	private String database = null;
@@ -91,7 +92,7 @@ public class BSTableConfig {
 	private void createInsert() {
 		BSAction insert = new BSAction("INSERT", BSActionType.Table);
 		insert.setLabel("Nuevo");
- 		insert.setUrl("/servlet/common/crud/NewRecord");
+		insert.setUrl("/servlet/common/crud/NewRecord");
 
 		this.addAction(insert);
 	}
@@ -398,23 +399,23 @@ public class BSTableConfig {
 		try {
 			typeName = metaData.getColumnTypeName(i);
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		if (typeName.equals("BIGINT")) {
-			field.setType(BSFieldType.Long);
+			field.setType(BSDataTypeUtil.create(BSDataType.LONG));
 		} else if (typeName.equals("VARCHAR") || typeName.equals("CHAR")) {
-			field.setType(BSFieldType.String);
+			field.setType(BSDataTypeUtil.create(BSDataType.STRING));
 		} else if (typeName.equals("DATE")) {
-			field.setType(BSFieldType.Date);
+			field.setType(BSDataTypeUtil.create(BSDataType.DATE));
 		} else if (typeName.equals("TIMESTAMP")) {
-			field.setType(BSFieldType.Timestamp);
+			field.setType(BSDataTypeUtil.create(BSDataType.TIMESTAMP));
 		} else if (typeName.equals("DOUBLE")) {
-			field.setType(BSFieldType.Double);
+			field.setType(BSDataTypeUtil.create(BSDataType.DOUBLE));
 		} else if (typeName.equals("BIT")) {
-			field.setType(BSFieldType.Boolean);
+			field.setType(BSDataTypeUtil.create(BSDataType.BOOLEAN));
 		} else if (typeName.equals("INT")) {
-			field.setType(BSFieldType.Integer);
+			field.setType(BSDataTypeUtil.create(BSDataType.INTEGER));
 		} else {
 			throw new BSProgrammerException("0110", "No está catalogado el tipo " + typeName
 					+ ", verifique método BSTableConfig.setRealType()");

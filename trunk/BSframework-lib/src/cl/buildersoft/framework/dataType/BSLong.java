@@ -35,4 +35,8 @@ public class BSLong implements BSDataType {
 		return Long.parseLong(data);
 	}
 
+	@Override
+	public String toString() {
+		return BSDataType.LONG;
+	}
 }

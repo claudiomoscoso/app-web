@@ -12,7 +12,7 @@ public class BSBoolean implements BSDataType {
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 		return out;
 	}
 
@@ -36,4 +36,8 @@ public class BSBoolean implements BSDataType {
 		return Boolean.parseBoolean(data);
 	}
 
+	@Override
+	public String toString() {
+		return BSDataType.BOOLEAN;
+	}
 }

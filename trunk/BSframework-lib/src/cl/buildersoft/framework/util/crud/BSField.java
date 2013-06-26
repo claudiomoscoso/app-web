@@ -3,6 +3,7 @@ package cl.buildersoft.framework.util.crud;
 import java.util.Arrays;
 import java.util.List;
 
+import cl.buildersoft.framework.dataType.BSDataType;
 import cl.buildersoft.framework.type.BSFieldType;
 
 public class BSField {
@@ -12,7 +13,7 @@ public class BSField {
 	private Boolean unique = Boolean.TRUE;
 	private Boolean readonly = Boolean.FALSE;
 	private Integer length = null;
-	private BSFieldType type = null;
+	private BSDataType type = null;
 	private Object value = null;
 	private String validationOnBlur = null;
 	private Boolean visible = Boolean.TRUE;
@@ -44,14 +45,14 @@ public class BSField {
 		return out;
 	}
 
+	
 	public Boolean isNumber() {
 		return getType().equals(BSFieldType.Double) || getType().equals(BSFieldType.Integer)
 				|| getType().equals(BSFieldType.Long);
 	}
 
 	public Boolean isTime() {
-		return getType().equals(BSFieldType.Date)
-				|| getType().equals(BSFieldType.Timestamp);
+		return getType().equals(BSFieldType.Date) || getType().equals(BSFieldType.Timestamp);
 	}
 
 	public String getName() {
@@ -86,11 +87,11 @@ public class BSField {
 		this.length = length;
 	}
 
-	public BSFieldType getType() {
+	public BSDataType getType() {
 		return type;
 	}
 
-	public void setType(BSFieldType type) {
+	public void setType(BSDataType type) {
 		this.type = type;
 	}
 
@@ -177,5 +178,4 @@ public class BSField {
 				+ ", visible=" + visible + ", fk=" + Arrays.toString(fk) + ", fkData=" + fkData + "]";
 	}
 
-	/***/
 }

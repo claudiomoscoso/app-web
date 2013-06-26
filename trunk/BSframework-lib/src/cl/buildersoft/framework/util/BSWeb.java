@@ -24,14 +24,14 @@ import org.apache.catalina.util.Base64;
 
 import cl.buildersoft.framework.beans.Option;
 import cl.buildersoft.framework.beans.Rol;
+import cl.buildersoft.framework.dataType.BSDataType;
+import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.services.BSMenuService;
 import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
-import cl.buildersoft.framework.type.BSFieldDataType;
 import cl.buildersoft.framework.type.BSFieldType;
-import cl.buildersoft.framework.type.BSTypeFactory;
 import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSWeb {
@@ -49,7 +49,7 @@ public class BSWeb {
 	}
 
 	private static Object evaluateType(Connection conn, String value, BSField field) {
-		BSFieldDataType fieldDataType = BSTypeFactory.create(field);
+		BSDataType fieldDataType = BSDataTypeUtil.create(field.getType().toString());
 		Object out = fieldDataType.parse(conn, value);
 
 		return out;
