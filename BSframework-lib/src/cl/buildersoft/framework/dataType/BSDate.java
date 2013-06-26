@@ -12,8 +12,7 @@ public class BSDate implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {
-		throw new BSProgrammerException("",
-				"Hay que llamar al metodo validData(Connection, String); para el tipo BSDate");
+		throw new BSProgrammerException("", "Hay que llamar al metodo validData(Connection, String); para el tipo BSDate");
 	}
 
 	@Override
@@ -30,8 +29,7 @@ public class BSDate implements BSDataType {
 		try {
 			out = formatter.format((Date) data);
 		} catch (Exception e) {
-			throw new BSProgrammerException("",
-					"No se puede formatear el dato " + data);
+			throw new BSProgrammerException("", "No se puede formatear el dato " + data);
 		}
 		return out;
 	}
@@ -61,5 +59,10 @@ public class BSDate implements BSDataType {
 			throw new BSProgrammerException("", e.getMessage());
 		}
 		return out;
+	}
+
+	@Override
+	public String toString() {
+		return BSDataType.DATE;
 	}
 }

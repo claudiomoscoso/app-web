@@ -64,4 +64,8 @@ public class BSCalendar implements BSDataType {
 		return out;
 	}
 
+	@Override
+	public String toString() {
+		return BSDataType.CALENDAR;
+	}
 }

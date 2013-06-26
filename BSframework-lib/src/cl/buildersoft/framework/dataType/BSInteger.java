@@ -36,4 +36,8 @@ public class BSInteger implements BSDataType {
 		return Integer.parseInt(data);
 	}
 
+	@Override
+	public String toString() {
+		return BSDataType.INTEGER;
+	}
 }

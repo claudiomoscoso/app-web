@@ -1,13 +1,14 @@
 package cl.buildersoft.framework.type;
 
+import cl.buildersoft.framework.dataType.BSDataType;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSTypeFactory {
 	private static final String BS = ".BS";
 
-	public static BSFieldDataType create(BSField field) {
-		return create(field.getType());
+	public static BSFieldDataType create(BSDataType bsDataType) {
+		return create(bsDataType);
 	}
 
 	public static BSFieldDataType create(BSFieldType type) {

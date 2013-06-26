@@ -1,33 +1,34 @@
 package cl.buildersoft.framework.dataType;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.type.BSFieldDataType;
-import cl.buildersoft.framework.type.BSFieldType;
-import cl.buildersoft.framework.type.BSTypeFactory;
-import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSDataTypeUtil {
-	private static final String BS = ".BS";
+	// private static final String BS = ".BS";
 
-	/**<code>
+	/**
+	 * <code>
 	public static BSFieldDataType create(BSField field) {
 		return create(field.getType());
-	}</code>*/
+	}</code>
+	 */
 
-	public static BSFieldDataType create(BSDataType type) {
-		String classInstance = BSTypeFactory.class.getPackage().getName() + BS + type.toString();
-		BSFieldDataType out = null;
+	@SuppressWarnings("rawtypes")
+	public static BSDataType create(String bsDataType) {
+		String classInstance = bsDataType;
+		BSDataType out = null;
 		try {
 			Class newClass = Class.forName(classInstance);
-			out = (BSFieldDataType) newClass.newInstance();
+			out = (BSDataType) newClass.newInstance();
 		} catch (Exception e) {
-			throw new BSProgrammerException("", e.getMessage());
+			throw new BSProgrammerException(e);
 		}
 		return out;
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Deprecated
+	/**
+	 * <code>
+	@ SuppressWarnings("rawtypes")
+	@ Deprecated
 	public boolean evaluate(String evaluateData, BSField field) {
 		Boolean response = null;
 		try {
@@ -45,5 +46,15 @@ public class BSDataTypeUtil {
 			throw new BSProgrammerException("0000", "Error al procesar el tipo " + field.getType().toString());
 		}
 		return response;
+	}
+	</code>
+	 */
+
+	public static Boolean isNumber(BSDataType dataType) {
+		return dataType instanceof BSDouble || dataType instanceof BSInteger || dataType instanceof BSLong;
+	}
+
+	public static Boolean isTime(BSDataType dataType) {
+		return dataType instanceof BSDate || dataType instanceof BSTimestamp;
 	}
 }
