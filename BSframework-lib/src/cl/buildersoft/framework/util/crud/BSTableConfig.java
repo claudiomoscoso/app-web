@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.util.crud;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -16,9 +16,7 @@ import java.util.Set;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.type.BSActionType;
 import cl.buildersoft.framework.type.BSFieldType;
-
 
 public class BSTableConfig {
 	private String database = null;
@@ -38,6 +36,7 @@ public class BSTableConfig {
 	private String saveSP = null;
 	private String deleteSP = null;
 
+	@Deprecated
 	public BSTableConfig(String database) {
 		this.database = database;
 	}
@@ -92,7 +91,8 @@ public class BSTableConfig {
 	private void createInsert() {
 		BSAction insert = new BSAction("INSERT", BSActionType.Table);
 		insert.setLabel("Nuevo");
-		insert.setUrl("/servlet/common/crud/NewRecord");
+ 		insert.setUrl("/servlet/common/crud/NewRecord");
+
 		this.addAction(insert);
 	}
 

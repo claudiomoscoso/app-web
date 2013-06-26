@@ -7,7 +7,7 @@ import java.util.Date;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSConfig;
-
+@Deprecated
 public class BSTimestamp implements BSFieldDataType {
 
 	@Override

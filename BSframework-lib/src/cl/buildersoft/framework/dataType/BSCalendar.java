@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -8,8 +8,8 @@ import java.util.Calendar;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.BSConfig;
-@Deprecated
-public class BSCalendar implements BSFieldDataType {
+
+public class BSCalendar implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {

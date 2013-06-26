@@ -1,23 +1,22 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.framework.dataType;
 
 import java.sql.Connection;
-@Deprecated
-public class BSBoolean implements BSFieldDataType {
+
+public class BSLong implements BSDataType {
 
 	@Override
 	public Boolean validData(String data) {
-		Boolean out = true;
 		try {
-			out = Boolean.parseBoolean(data);
+			Long.parseLong(data);
+			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		
-		return out;
 	}
 
 	@Override
 	public Object convert(String data) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -33,7 +32,7 @@ public class BSBoolean implements BSFieldDataType {
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		return Boolean.parseBoolean(data);
+		return Long.parseLong(data);
 	}
 
 }

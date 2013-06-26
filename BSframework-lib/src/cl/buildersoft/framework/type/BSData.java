@@ -1,7 +1,7 @@
 package cl.buildersoft.framework.type;
 
 import java.io.Serializable;
-
+@Deprecated
 public class BSData implements Serializable{
 
 	private static final long serialVersionUID = 6783147765454853907L;

@@ -22,7 +22,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.util.Base64;
 
-import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.Option;
 import cl.buildersoft.framework.beans.Rol;
 import cl.buildersoft.framework.database.BSmySQL;
@@ -33,6 +32,7 @@ import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.framework.type.BSFieldDataType;
 import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.framework.type.BSTypeFactory;
+import cl.buildersoft.framework.util.crud.BSField;
 
 public class BSWeb {
 	private static final String LOCALE = "LOCALE";

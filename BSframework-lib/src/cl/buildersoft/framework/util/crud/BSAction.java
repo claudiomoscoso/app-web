@@ -1,6 +1,5 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.util.crud;
 
-import cl.buildersoft.framework.type.BSActionType;
 
 public class BSAction {
 	private String code = null;

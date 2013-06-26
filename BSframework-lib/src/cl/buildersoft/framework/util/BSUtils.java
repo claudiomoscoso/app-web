@@ -25,6 +25,13 @@ public class BSUtils {
 		return out;
 	}
 
-	
+	public static String unSplitString(String[] names, String c) {
+		String out = "";
+		for (String s : names) {
+			out += s + c;
+		}
+		out = out.substring(0, out.length() - c.length());
+		return out;
+	}
 
 }
