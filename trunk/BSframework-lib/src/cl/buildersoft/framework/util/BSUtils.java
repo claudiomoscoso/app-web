@@ -3,6 +3,8 @@ package cl.buildersoft.framework.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.buildersoft.framework.util.crud.BSField;
+
 public class BSUtils {
 	public static List<Object> array2List(Object... prms) {
 		List<Object> out = new ArrayList<Object>();
@@ -34,4 +36,14 @@ public class BSUtils {
 		return out;
 	}
 
+	public static String unSplitField(BSField[] fields, String c) {
+		String out = "";
+		for (BSField f : fields) {
+			out += f.getName() + c;
+		}
+		out = out.substring(0, out.length() - c.length());
+		return out;
+	}
+	
+	
 }
