@@ -74,14 +74,14 @@ public class BSPaging {
 	private String getSQLCount(Connection conn, BSTableConfig table) {
 		BSField[] fields = table.getFields();
 
-		String fieldName = "1";
+		String firstFieldName = "1";
 		if (fields.length > 0) {
-			BSField idField = table.getPKField(conn);
+			BSField firstField = table.getFields()[0];
 			// BSField idField = table.getIdField();
-			fieldName = idField.getName();
+			firstFieldName = firstField.getName();
 		}
 
-		String out = "SELECT COUNT(" + fieldName + ") AS cCount ";
+		String out = "SELECT COUNT(" + firstFieldName + ") AS cCount ";
 		out += "FROM " + table.getDatabase() + "." + table.getTableOrViewName();
 		out += getWhere(table);
 
