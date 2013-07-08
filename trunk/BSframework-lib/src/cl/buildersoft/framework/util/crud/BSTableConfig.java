@@ -145,7 +145,7 @@ public class BSTableConfig {
 		try {
 			metaData = resultSet.getMetaData();
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		String name = null;
@@ -155,7 +155,7 @@ public class BSTableConfig {
 			try {
 				n = metaData.getColumnCount();
 			} catch (SQLException e) {
-				throw new BSDataBaseException("300", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 
 			BSField field = null;
@@ -165,7 +165,7 @@ public class BSTableConfig {
 				try {
 					name = metaData.getColumnName(i);
 				} catch (SQLException e) {
-					throw new BSDataBaseException("300", e.getMessage());
+					throw new BSDataBaseException(e);
 				}
 				field = new BSField(name, name.substring(1));
 				addField(field);
@@ -310,7 +310,7 @@ public class BSTableConfig {
 				}
 
 			} catch (SQLException e) {
-				throw new BSDataBaseException("", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 		}
 
@@ -342,7 +342,7 @@ public class BSTableConfig {
 					tables.close();
 				}
 			} catch (SQLException e) {
-				throw new BSDataBaseException("", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 		}
 
@@ -379,7 +379,7 @@ public class BSTableConfig {
 				field.setLength(metaData.getColumnDisplaySize(i));
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException("300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 	}
@@ -562,7 +562,7 @@ public class BSTableConfig {
 				}
 				rs.close();
 			} catch (SQLException e) {
-				throw new BSDataBaseException("", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 			this.key = fieldName;
 		}
@@ -572,7 +572,7 @@ public class BSTableConfig {
 	public BSField getPKField(Connection conn) {
 		String fieldName = null;
 		BSField out = null;
-		if (this.pk == null && this.viewName == null) {
+		if (this.pk == null) {
 			DatabaseMetaData dbmd;
 			try {
 				dbmd = (DatabaseMetaData) conn.getMetaData();
@@ -583,7 +583,7 @@ public class BSTableConfig {
 				}
 				rs.close();
 			} catch (SQLException e) {
-				throw new BSDataBaseException("", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 			this.pk = fieldName;
 			out = getField(this.pk);
