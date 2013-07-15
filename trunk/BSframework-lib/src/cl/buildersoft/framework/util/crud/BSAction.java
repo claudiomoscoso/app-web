@@ -9,6 +9,7 @@ public class BSAction {
 	private String url = null;
 	private String[] natTable = null;
 	private String method = null;
+	private String function = null;
 	private Boolean disabled = Boolean.FALSE;
 
 	public String getMethod() {
@@ -88,6 +89,14 @@ public class BSAction {
 
 	public void setDisabled(Boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	public String getFunction() {
+		return function;
+	}
+
+	public void setFunction(String function) {
+		this.function = function;
 	}
 
 }
