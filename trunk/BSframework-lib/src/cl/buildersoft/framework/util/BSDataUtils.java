@@ -29,7 +29,7 @@ public class BSDataUtils {
 			try {
 				rs.close();
 			} catch (Exception e) {
-				throw new BSDataBaseException("0300", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ public class BSDataUtils {
 			try {
 				this.preparedStatement.close();
 			} catch (Exception e) {
-				throw new BSDataBaseException("0300", e.getMessage());
+				throw new BSDataBaseException(e);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ public class BSDataUtils {
 			parametersToStatement(parameter, preparedStatement);
 			rowsAffected = preparedStatement.executeUpdate();
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		return rowsAffected;
@@ -80,7 +80,7 @@ public class BSDataUtils {
 			closeSQL(rs);
 			// rs.close();
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		return newKey;
@@ -101,7 +101,7 @@ public class BSDataUtils {
 			}
 			rs.close();
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 		return out;
 	}
@@ -121,7 +121,7 @@ public class BSDataUtils {
 			parametersToStatement(parameters, preparedStatement);
 			out = preparedStatement.executeQuery();
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		return out;
@@ -175,7 +175,7 @@ public class BSDataUtils {
 				}
 			}
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 	}
 
@@ -219,14 +219,14 @@ public class BSDataUtils {
 		try {
 			Class.forName(driverName);
 		} catch (ClassNotFoundException e) {
-			throw new BSConfigurationException("0400", e.getMessage());
+			throw new BSConfigurationException(e);
 		}
 		String url = "jdbc:mysql://" + serverName + "/" + database;
 
 		try {
 			connection = DriverManager.getConnection(url, username, password);
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		return connection;
@@ -246,7 +246,7 @@ public class BSDataUtils {
 				colNames[i - 1] = metaData.getColumnName(i);
 			}
 		} catch (Exception e) {
-			throw new BSDataBaseException("0300", "Error al trabajar con la definicion de una tabla " + e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		Object[] innerArray = null;
@@ -261,8 +261,7 @@ public class BSDataUtils {
 				out.add(innerArray);
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", "Error al recorrer un ResultSet " + e.getMessage() + " "
-					+ e.getLocalizedMessage());
+			throw new BSDataBaseException(e);
 		}
 		this.closeSQL(rs);
 
@@ -273,7 +272,7 @@ public class BSDataUtils {
 		try {
 			conn.setAutoCommit(status);
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 	}
 
@@ -281,7 +280,7 @@ public class BSDataUtils {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 	}
 
@@ -289,7 +288,7 @@ public class BSDataUtils {
 		try {
 			conn.rollback();
 		} catch (SQLException e) {
-			throw new BSDataBaseException("0300", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class BSField {
 	private Object value = null;
 	private String validationOnBlur = null;
 	private Boolean visible = Boolean.TRUE;
-	private String[] fk = null;
+	private String[] fkInfo = null;
 	private List<Object[]> fkData = null;
 
 	public BSField(String name, String label) {
@@ -25,9 +25,7 @@ public class BSField {
 		this.label = label;
 	}
 
-	/**
-	 * @deprecated Use isPK()
-	 * */
+	@Deprecated
 	public Boolean isId() {
 		return "id".equalsIgnoreCase(this.name) || "cid".equalsIgnoreCase(this.name);
 	}
@@ -44,8 +42,8 @@ public class BSField {
 		return out;
 	}
 
-	
-	/**<code>
+	/**
+	 * <code>
 	public Boolean isNumber() {
 		return getType().equals(BSFieldType.Double) || getType().equals(BSFieldType.Integer)
 				|| getType().equals(BSFieldType.Long);
@@ -54,7 +52,8 @@ public class BSField {
 	public Boolean isTime() {
 		return getType().equals(BSFieldType.Date) || getType().equals(BSFieldType.Timestamp);
 	}
-</code>*/
+</code>
+	 */
 	public String getName() {
 		return name;
 	}
@@ -143,24 +142,27 @@ public class BSField {
 		this.visible = visible;
 	}
 
-	/***/
+	@Deprecated
 	public String getFKDatabase() {
-		return fk != null ? fk[0] : null;
+		return fkInfo != null ? fkInfo[0] : null;
 	}
 
+	@Deprecated
 	public String getFKTable() {
-		return fk != null ? fk[1] : null;
+		return fkInfo != null ? fkInfo[1] : null;
 	}
 
+	@Deprecated
 	public String getFKField() {
-		return fk != null ? fk[2] : null;
+		return fkInfo != null ? fkInfo[2] : null;
 	}
 
+	@Deprecated
 	public void setFK(String fkDatabase, String fkTable, String fkField) {
-		this.fk = new String[3];
-		this.fk[0] = fkDatabase;
-		this.fk[1] = fkTable;
-		this.fk[2] = fkField;
+		this.fkInfo = new String[3];
+		this.fkInfo[0] = fkDatabase;
+		this.fkInfo[1] = fkTable;
+		this.fkInfo[2] = fkField;
 	}
 
 	public List<Object[]> getFKData() {
@@ -171,11 +173,18 @@ public class BSField {
 		this.fkData = fkData;
 	}
 
+	public void setFKInfo(String[] fkInfo) {
+		this.fkInfo = fkInfo;
+	}
+
+	public String[] getFKInfo() {
+		return this.fkInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk + ", unique=" + unique + ", readonly=" + readonly
 				+ ", length=" + length + ", type=" + type + ", value=" + value + ", validationOnBlur=" + validationOnBlur
-				+ ", visible=" + visible + ", fk=" + Arrays.toString(fk) + ", fkData=" + fkData + "]";
+				+ ", visible=" + visible + ", fk=" + Arrays.toString(fkInfo) + ", fkData=" + fkData + "]";
 	}
-
 }
