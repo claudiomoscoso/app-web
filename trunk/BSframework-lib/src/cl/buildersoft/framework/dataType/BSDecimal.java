@@ -49,4 +49,9 @@ public class BSDecimal extends Object implements BSDataType {
 	public Object convert(String data) {
 		return null;
 	}
+	
+	@Override
+	public String toString(){
+		return BSDataType.DECIMAL;
+	}
 }
