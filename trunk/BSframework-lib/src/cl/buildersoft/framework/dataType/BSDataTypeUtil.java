@@ -5,6 +5,8 @@ import cl.buildersoft.framework.exception.BSProgrammerException;
 public class BSDataTypeUtil {
 	// private static final String BS = ".BS";
 
+	private static final String BS = ".BS";
+
 	/**
 	 * <code>
 	public static BSFieldDataType create(BSField field) {
@@ -57,8 +59,15 @@ public class BSDataTypeUtil {
 	public static Boolean isTime(BSDataType dataType) {
 		return dataType instanceof BSDate || dataType instanceof BSTimestamp;
 	}
-	
+
 	public static Boolean isBoolean(BSDataType dataType) {
 		return dataType instanceof BSBoolean;
+	}
+
+	public static String toNormalString(BSDataType dataType) {
+		String out = dataType.toString();
+		Integer index = out.indexOf(BS);
+		out = out.substring(index + BS.length());
+		return out;
 	}
 }
