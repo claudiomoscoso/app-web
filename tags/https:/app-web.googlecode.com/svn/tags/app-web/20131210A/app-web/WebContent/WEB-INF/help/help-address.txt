@@ -1,0 +1,8 @@
+WebServices
+http://www.adictosaltrabajo.com/tutoriales/tutoriales.php?pagina=WebServicesAxis2
+
+Encriptacion
+http://sanjaal.com/java/189/java-encryption/tutorial-encryption-and-decryption-using-desede-triple-des-in-java/
+
+Json server
+http://flexjson.sourceforge.net/

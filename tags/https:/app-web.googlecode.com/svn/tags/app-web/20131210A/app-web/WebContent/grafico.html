@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head><title>TORTA. </title>
+<script language="javascript"> 
+var p, g, t, mar, sW;
+var acum = 0;
+var cadaPorcion = "";
+
+var diametro = 300; //TAMAÑO EN PX
+
+var porciones=new Array()
+
+//[PORCENTAJES DE TORTA, "COLOR FONDO", "COLOR TEXTO"]
+porciones[0] = [10, "red", "white"];
+porciones[1] = [20, "lime", "black"];
+porciones[2] = [30, "blue", "white"];
+porciones[3] = [15, "fuchsia", "white"];
+porciones[4] = [25, "yellow", "black"];
+
+var totalPorciones = porciones.length;
+
+function sumaPorciones(){
+var suma = 0;
+var cadaGrado;
+grados = new Array(totalPorciones);
+
+for(p=0; p<totalPorciones; p++){
+cadaGrado = porciones[p][0]*3.6; 
+grados[p] = [cadaGrado]; 
+suma += cadaGrado*1;
+}
+
+if(suma == 360)escribeTorta();
+else alert("La suma de porcentajes no da 100%.")
+}
+
+
+function escribeTorta(){
+var Contenedor = document.getElementById("contenedor");
+Contenedor.style.width = diametro + "px";
+Contenedor.style.height = diametro + "px";
+
+for(g=0; g<totalPorciones; g++){
+var sA = (acum*1); 
+var eA = (grados[g][0] + acum*1); 
+var sC = porciones[g][1];
+sW = diametro*0.35;
+mar = diametro*0.25;
+
+cadaPorcion += '<v:arc id="arco'+g+'" arcsize="1" strokeweight="'+sW+'px" startangle="'+acum+'" endangle="'+(eA*1+2)+'" strokecolor="'+sC+'" class="porcion" style="width:'+diametro/2+'; height:'+diametro/2+'; margin:'+mar+'px; z-index:-1; " />\r\n'
+
+cadaPorcion += '<span title="'+porciones[g][0]+'%" id="texto'+g+'" class="textos" style="color:'+porciones[g][2]+'">'+porciones[g][0]+'%</span>';
+
+acum = eA; 
+}
+
+Contenedor.innerHTML = cadaPorcion;
+setTimeout("ubicaTexto()" , 2000);
+}
+
+function ubicaTexto(){
+for(t=0; t<totalPorciones; t++){
+
+var elArco = document.getElementById("arco"+t);
+var elTexto = document.getElementById("texto"+t);
+
+var tTop = Math.floor( elArco.offsetTop - mar*0.25 + elArco.offsetHeight/2); 
+var tLeft = Math.floor(elArco.offsetLeft - mar*0.25 + elArco.offsetWidth/2); 
+var tSize = Math.floor((elArco.offsetHeight*elArco.offsetWidth)/diametro/4); 
+
+elTexto.style.top = tTop + "px";
+elTexto.style.left = tLeft + "px";
+elTexto.style.fontSize = tSize + "px";
+}
+}
+
+</script> 
+
+<style>
+v\:* { behavior: url(#default#VML); }
+body{background-color:#808080; }
+#contenedor{background:transparent; overflow:auto; position:relative;}
+.porcion{position:absolute; top:0; left:0; background:transparent; antialias:true; }
+.textos{position:absolute; top:-100px; background:transparent; z-index:100; font-weight:bold; }
+</style>
+</head>
+
+<body onload="sumaPorciones()">
+<h2>Crea gr&aacute;fico de torta.</h2>
+
+<div id="contenedor"></div>
+
+<br />
+Muestra un gr&aacute;fico de porcentajes. Los valores tienen <tt>title</tt> y se les puede agregar <tt>mouseover</tt>.
+
+</body>
+</html>
