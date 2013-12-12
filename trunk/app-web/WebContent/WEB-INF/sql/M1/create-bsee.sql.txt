@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS tR_RolOption (
 	PRIMARY KEY(cRol, cOption)
 ) ENGINE=innoDB;
 
+/*
 CREATE TABLE tComuna (
 	cId			BIGINT UNIQUE AUTO_INCREMENT,
 	cName		VARCHAR(50) NOT NULL,
@@ -82,7 +83,7 @@ CREATE TABLE tComuna (
 	PRIMARY KEY(cId)  
 ) ENGINE=InnoDB;
 
-/* Crea tabla Empleados */
+ Crea tabla Empleados 
 create table tEmployee (
 	cId					BIGINT(20)  NOT NULL auto_increment, 
 	cRut				VARCHAR(11) NOT NULL unique,
@@ -122,4 +123,4 @@ CREATE TABLE tCountry (
 	PRIMARY KEY(cId)
 ) ENGINE=InnoDB;
 
-
+*/

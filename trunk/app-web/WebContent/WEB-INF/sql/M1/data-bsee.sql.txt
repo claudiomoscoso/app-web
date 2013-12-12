@@ -29,15 +29,16 @@ SELECT cId INTO @userId FROM bsframework.tUser WHERE cMail = 'admin';
 
 INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
 
-/* Genero */
+/* Genero 
 INSERT INTO tGenere(cKey, cName) VALUES('F', 'Femenino');
 INSERT INTO tGenere(cKey, cName) VALUES('M', 'Masculino');
+*/
 
-/* Estado civil */
+/* Estado civil 
 INSERT INTO tMaritalStatus(cKey, cName) VALUES('MARRIED', 'Casado');
 INSERT INTO tMaritalStatus(cKey, cName) VALUES('SINGLE', 'Soltero');
 SET @single = LAST_INSERT_ID();
-
+*/
 
 
 /** DATOS DE PRUEBA */
