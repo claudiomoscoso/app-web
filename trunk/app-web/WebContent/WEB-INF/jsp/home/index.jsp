@@ -9,6 +9,8 @@ function onLoadPage(){
 	//alert($('#time'));
 //	$('#time').load(contextPath+'/servlet/ajax/GetTime');
 
+return;
+
 	$.ajax({
 	    url: contextPath+'/servlet/ajax/GetTime',
 	    type: 'POST',
@@ -25,6 +27,7 @@ function onLoadPage(){
 </script>
 
 <h1 class="cTitle">Bienvenidos...</h1>
+<!-- 
 <div id='time' class='cLabel'>hora:</div>
-
+ -->
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
