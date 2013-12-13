@@ -16,14 +16,14 @@ import cl.buildersoft.framework.exception.BSSystemException;
 
 public class BSSecurity {
 	private static final String UNICODE_FORMAT = "UTF8";
-	public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
+	private static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
 	private KeySpec myKeySpec;
 	private SecretKeyFactory mySecretKeyFactory;
 	private Cipher cipher;
-	byte[] keyAsBytes;
+	private byte[] keyAsBytes;
 	private String myEncryptionKey;
 	private String myEncryptionScheme;
-	SecretKey key;
+	private SecretKey key;
 
 	public BSSecurity() {
 		myEncryptionKey = "BuilderSoftEncryptionKey_";
