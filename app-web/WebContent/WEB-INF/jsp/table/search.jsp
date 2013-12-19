@@ -23,7 +23,7 @@
 */
 		if (key == '13') {
 			var url = path + "?Search=" + o.value + "&Page=" + $("#CurrentPage").val();
-			alert(url);
+//			alert(url);
 			self.location.href = url;
 			out = false;
 		}
