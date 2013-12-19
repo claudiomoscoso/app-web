@@ -7,18 +7,23 @@
 
 </div>
 <script type="text/javascript">
-	function keyPressSearch(o, path) {
+	function keyPressSearch(o, path, e) {
 		var out = true;
-
-		var key = window.event.keyCode;
+//		var key = null;
+		
+		var evt = (e) ? e : window.event;
+		var key = evt.keyCode;
+		
 		/**
+		var key = window.event.keyCode;
+		
 		if (key >= 48 && key <= 57) {
 			out = true;
 		}
 */
 		if (key == '13') {
 			var url = path + "?Search=" + o.value + "&Page=" + $("#CurrentPage").val();
-//			alert(url);
+			alert(url);
 			self.location.href = url;
 			out = false;
 		}
@@ -38,6 +43,6 @@
 		//	 BSPaging paging = (BSPaging) request.getAttribute("Paging");
 
 		String out = "<input name='Search' size='30' maxlength='50' type='search' placeholder='busqueda...' onkeypress='return keyPressSearch(this, \""
-				+ path + "\");' value='" + request.getAttribute("Search") + "'>";
+				+ path + "\", (arguments[0]));' value='" + request.getAttribute("Search") + "'>";
 		return out;
 	}%>
