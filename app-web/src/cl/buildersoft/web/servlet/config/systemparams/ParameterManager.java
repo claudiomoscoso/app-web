@@ -9,7 +9,7 @@ import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/config/systemparams/ParameterManager")
 public class ParameterManager extends BSHttpServlet implements Servlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5621476235297476355L;
 
 	public ParameterManager() {
 		super();
@@ -20,6 +20,11 @@ public class ParameterManager extends BSHttpServlet implements Servlet {
 		BSTableConfig table =  initTable(request, "tParameter");
 
 		table.setTitle("Parámetros del sistema");
+		
+		table.getField("cKey").setLabel("Llave");
+		table.getField("cLabel").setLabel("Descripción");
+		table.getField("cValue").setLabel("Valor");
+		table.getField("cDataType").setLabel("Tipo de dato");
 		
 		table.renameAction("INSERT", "ADD_PARAMS");
 		table.renameAction("EDIT", "MOD_PARAMS");
