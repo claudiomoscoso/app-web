@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.beans.BSTableConfig;
-import cl.buildersoft.web.servlet.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 /**
  * Servlet implementation class RolManager

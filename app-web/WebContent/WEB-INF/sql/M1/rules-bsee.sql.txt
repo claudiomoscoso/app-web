@@ -1,17 +1,5 @@
 /** L L A V E S   F O R A N E A S **/
 
-/** EMPLOYEE 
-ALTER TABLE tEmployee
-ADD INDEX Employee_index_MaritalStatus (cMaritalStatus ASC),
-ADD INDEX Employee_index_Country (cCountry ASC),
-ADD INDEX Employee_index_Genere (cGenere ASC),
-ADD INDEX comuna_index (cComuna ASC),
-ADD CONSTRAINT withMaritalStatus FOREIGN KEY (cMaritalStatus) REFERENCES tMaritalStatus(cId),
-ADD CONSTRAINT withCountry       FOREIGN KEY (cCountry) REFERENCES tCountry(cId),
-ADD CONSTRAINT EmployeeToGenere FOREIGN KEY (cGenere) REFERENCES tGenere(cId),
-ADD CONSTRAINT employeeToComuna FOREIGN KEY (cComuna) REFERENCES tComuna(cId);
-*/
-
 /** PARAMETER */
 ALTER TABLE tParameter
 ADD INDEX Parameter_index (cDataType ASC),
@@ -31,10 +19,17 @@ ADD INDEX index_user (cUser ASC),
 ADD CONSTRAINT r_UserRolToRol FOREIGN KEY (cRol) REFERENCES tRol(cId);/*,
 ADD CONSTRAINT r_RolOptionToOption FOREIGN KEY (cOption) REFERENCES tOption(cId);*/
 
-/* FILE */
+ALTER TABLE tFlowElement
+ADD INDEX FlowElementType_index (cType ASC),
+ADD INDEX FlowDef_index (cFlowDef ASC),
+ADD CONSTRAINT FlowElementToFlowElementType FOREIGN KEY (cType) REFERENCES tFlowElementType(cId),
+ADD CONSTRAINT FlowElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlowDef(cId);
+
+
+
+/* FILE 
 ALTER TABLE tFile
 ADD INDEX File_index_FileCategory (cFileCategory ASC),
-/*ADD INDEX File_index_Employee (cEmployee ASC),*/
-ADD CONSTRAINT FileToFileCategory FOREIGN KEY (cFileCategory) REFERENCES tFileCategory(cId) /*,
-ADD CONSTRAINT FileToEmployee FOREIGN KEY (cEmployee) REFERENCES tEmployee(cId);*/
-
+ADD CONSTRAINT FileToFileCategory FOREIGN KEY (cFileCategory) REFERENCES tFileCategory(cId),
+ADD CONSTRAINT FileToEmployee FOREIGN KEY (cEmployee) REFERENCES tEmployee(cId);
+*/

@@ -1,50 +1,4 @@
-/**
-Ejemplo de archivo a cargar
-RUT       FechaHora como Long
-128706682-12345678901234567890.docx
-
-C:\archivos\	-> Configuracion
-           \1	-> (id de categoria) Categoria Curriculums
-           \2	-> Fotos
-           	 \128706682-12345678901234567890.png -> Foto carnet del empleado 12870668-2
-
-*/
-CREATE TABLE IF NOT EXISTS tFile (
-	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cEmployee		BIGINT NOT NULL,
-	cDesc			VARCHAR(100) COMMENT 'Descripcion que ingresa el usuario',
-    cFileName		VARCHAR(255) NOT NULL COMMENT 'Nombre del archivo que se subio, ej. foto-01.jpg',
-    cFileRealName	VARCHAR(50) NOT NULL COMMENT 'Archivo en el disco 128706682-12345678901234567890.png',
-    cSize			BIGINT NOT NULL COMMENT 'Tamaño del archivo',
-    cFileCategory	BIGINT NOT NULL COMMENT 'Tipo del archivo',
-    cDateTime		DATETIME NOT NULL COMMENT 'Fecha de creacion',
-    cContentType	VARCHAR(100) COMMENT 'Tipo de archivo'
-) ENGINE=innoDB;
-
-/*
-Categoria de archivo.
-*/
-CREATE TABLE IF NOT EXISTS tFileCategory (
-	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cName			VARCHAR(30) NOT NULL
-) ENGINE=innoDB;
-
-CREATE TABLE tParameter (
-  cId			BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-  cKey 			VARCHAR(20) NOT NULL,
-  cLabel		VARCHAR(100) NOT NULL,
-  cValue		Varchar(100) NOT NULL,
-  cDataType		BIGINT NOT NULL
-) ENGINE=InnoDB;
-
-CREATE TABLE tDataType (
-	cId		BIGINT UNIQUE AUTO_INCREMENT,
-	cKey	VARCHAR(10) NOT NULL, 
-	cName	VARCHAR(20) NOT NULL,
-	PRIMARY KEY(cId)
-) ENGINE=InnoDB;
-
-
+/** Tablas específicas para la relacion de roles, opciones y usuarios */
 CREATE TABLE IF NOT EXISTS tRol (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cName		VARCHAR(50) NULL ,
@@ -74,53 +28,70 @@ CREATE TABLE IF NOT EXISTS tR_RolOption (
 	PRIMARY KEY(cRol, cOption)
 ) ENGINE=innoDB;
 
+
+
+/** Tablas con los parámetros del sistema */
+CREATE TABLE tParameter (
+  cId			BIGINT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  cKey 			VARCHAR(20) NOT NULL,
+  cLabel		VARCHAR(100) NOT NULL,
+  cValue		Varchar(100) NOT NULL,
+  cDataType		BIGINT NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE tDataType (
+	cId		BIGINT UNIQUE AUTO_INCREMENT,
+	cKey	VARCHAR(10) NOT NULL, 
+	cName	VARCHAR(20) NOT NULL,
+	PRIMARY KEY(cId)
+) ENGINE=InnoDB;
+
+
+/** Tablas para el trabajo del Workflow */
+CREATE TABLE tFlowDef (
+	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName	VARCHAR(20) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE tFlowElement (
+	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName	VARCHAR(20) NOT NULL,
+	cFlowDef	BIGINT NOT NULL,
+	cType	BIGINT NOT NULL	
+) ENGINE=InnoDB;
+
+CREATE TABLE tFlowElementType (
+	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName	VARCHAR(20) NOT NULL,
+	cClass	VARCHAR(250)	
+) ENGINE=InnoDB;
+
+
+/**
+Ejemplo de archivo a cargar
+RUT       FechaHora como Long
+128706682-12345678901234567890.docx
+
+C:\archivos\	-> Configuracion
+           \1	-> (id de categoria) Categoria Curriculums
+           \2	-> Fotos
+           	 \128706682-12345678901234567890.png -> (fileid + fecha hora + .png) 
+*/
+
 /*
-CREATE TABLE tComuna (
-	cId			BIGINT UNIQUE AUTO_INCREMENT,
-	cName		VARCHAR(50) NOT NULL,
-	cRegion		INTEGER NOT NULL,
-	cPriority	INTEGER NOT NULL DEFAULT '0',
-	PRIMARY KEY(cId)  
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS tFile (
+	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cDesc			VARCHAR(100) COMMENT 'Descripcion que ingresa el usuario',
+    cFileName		VARCHAR(255) NOT NULL COMMENT 'Nombre del archivo que se subio, ej. foto-01.jpg',
+    cFileRealName	VARCHAR(50) NOT NULL COMMENT 'Archivo en el disco 128706682-12345678901234567890.png',
+    cSize			BIGINT NOT NULL COMMENT 'Tamaño del archivo',
+    cFileCategory	BIGINT NOT NULL COMMENT 'Tipo del archivo',
+    cDateTime		DATETIME NOT NULL COMMENT 'Fecha de creacion',
+    cContentType	VARCHAR(100) COMMENT 'Tipo de archivo'
+) ENGINE=innoDB;
 
- Crea tabla Empleados 
-create table tEmployee (
-	cId					BIGINT(20)  NOT NULL auto_increment, 
-	cRut				VARCHAR(11) NOT NULL unique,
-	cName				VARCHAR(20) NOT NULL,
-	cLastName1			VARCHAR(20) NOT NULL,
-	cLastName2			VARCHAR(20) NOT NULL,
-	cBirthDate			DATE COMMENT 'Fecha de nacimiento',
-	cAddress			VARCHAR(100) COMMENT 'Direccion particular',
-	cGenere				BIGINT(20) NOT NULL COMMENT 'Genero Femenino o Masculino',
-	cComuna				BIGINT(20) NOT NULL,
-	cCountry			BIGINT(20) NOT NULL COMMENT 'Nacionalidad',
-	cPhone				VARCHAR(10),
-	cMaritalStatus		BIGINT(20) NOT NULL COMMENT 'Estado Civil',
-	cMovil				VARCHAR(10),
-	cEmail				VARCHAR(50),
-	PRIMARY KEY (cId)
-) ENGINE=InnoDB;
-
-create table tGenere(
-	cId 				BIGINT(20) NOT NULL auto_increment,
-	cKey				CHAR(1) NOT NULL DEFAULT ' ',
-	cName				VARCHAR(20) NOT NULL,
-	PRIMARY KEY (cId)
-) ENGINE=InnoDB;
-
-CREATE TABLE tMaritalStatus (
-	cId BIGINT UNIQUE AUTO_INCREMENT,
-	cKey	VARCHAR(10) NOT NULL,
-	cName	VARCHAR(15) NOT NULL,
-	PRIMARY KEY(cId)
-) ENGINE=InnoDB;
-
-CREATE TABLE tCountry (
- 	cId			BIGINT UNIQUE AUTO_INCREMENT,
- 	cKey		CHAR(3) NOT NULL DEFAULT '' UNIQUE,
- 	cName		VARCHAR(60) NOT NULL DEFAULT '',
-	PRIMARY KEY(cId)
-) ENGINE=InnoDB;
-
+CREATE TABLE IF NOT EXISTS tFileCategory (
+	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cName			VARCHAR(30) NOT NULL
+) ENGINE=innoDB;
 */
