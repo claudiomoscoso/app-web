@@ -10,7 +10,6 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.beans.Domain;
 import cl.buildersoft.framework.beans.User;
 import cl.buildersoft.framework.type.BSActionType;
-import cl.buildersoft.framework.type.BSFieldType;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/system/user/UserManager")

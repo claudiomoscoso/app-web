@@ -4,7 +4,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.beans.BSTableConfig;
-import cl.buildersoft.web.servlet.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/admin/BoardManager")
 public class BoardManager extends BSHttpServlet {
@@ -14,7 +14,7 @@ public class BoardManager extends BSHttpServlet {
 	@Override
 	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table = new BSTableConfig("bscommon", "tBoard");
-		table.setTitle("Tablón (tBoard)");
+		table.setTitle("Tablï¿½n (tBoard)");
 
 		table.setSortField("cType, cKey");
 		return table;
