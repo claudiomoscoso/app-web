@@ -66,6 +66,14 @@ CREATE TABLE tFlowElementType (
 	cClass	VARCHAR(250)	
 ) ENGINE=InnoDB;
 
+CREATE TABLE tPreviousElement (
+	cFlowDef	BIGINT NOT NULL,
+	cElement	BIGINT NOT NULL,
+	cPrevious	BIGINT NOT NULL,
+	PRIMARY KEY(cFlowDef, cElement, cPrevious)	
+) ENGINE=InnoDB;
+
+
 
 /**
 Ejemplo de archivo a cargar
