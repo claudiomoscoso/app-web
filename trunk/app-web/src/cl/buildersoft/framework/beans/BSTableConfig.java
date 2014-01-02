@@ -245,7 +245,8 @@ public class BSTableConfig {
 				if (tableFK != null && fieldFK != null) {
 					String sql = "SELECT cId,cName ";
 					sql += "FROM " + databaseFK + ".";
-					sql += field2Table(conn, field.getName());
+					sql += tableFK;
+//					sql += field2Table(conn, field.getName());
 					sql += " ORDER BY cName";
 
 					field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(conn, sql, null)));
