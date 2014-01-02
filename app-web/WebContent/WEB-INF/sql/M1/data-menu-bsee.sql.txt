@@ -8,4 +8,6 @@ SET @menuIdWorkflow = LAST_INSERT_ID();
 	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('FLOW_DEF', 'Definición de Flujo', '/servlet/workflow/FlowDefManager', @menuIdWorkflow, 1);
 /*	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());*/
 
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('FLOW_ELEMENT', 'Elementos de Flujo', '/servlet/workflow/FlowElementManager', @menuIdWorkflow, 2);
+
 /*********************************************/
