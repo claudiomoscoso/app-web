@@ -13,7 +13,9 @@ public class FlowDefManager extends BSHttpServlet {
 	@Override
 	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
 		BSTableConfig table =  initTable(request, "tFlowDef");
+		table.setTitle("Definición de Flujos");
 		
+		table.getField("cName").setLabel("Nombre");
 		return table;
 	}
 }
