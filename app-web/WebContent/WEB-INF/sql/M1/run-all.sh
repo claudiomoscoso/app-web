@@ -30,9 +30,12 @@ echo 'Creando datos básicos de plataforma...(data-bsframework.sql.sh)'
 echo 'Creando datos básicos del sistema...(data-bsee.sql.txt)'
 	mysql -D$1 -t -u root -padmin --default-character-set=utf8 < data-bsee.sql.txt
 	
-echo 'Creando opciones de menú...(data-menu.sql.txt)'
-	mysql -D$1 -t -u root -padmin --default-character-set=utf8 < data-menu.sql.txt
+echo 'Creando opciones de menú...(data-menu-bsee.sql.txt)'
+	mysql -D$1 -t -u root -padmin --default-character-set=utf8 < data-menu-bsee.sql.txt
 	
+echo 'Creando opciones de menú...(data-menu-bsframework.sql.txt)'
+	mysql -D$1 -t -u root -padmin --default-character-set=utf8 < data-menu-bsframework.sql.txt
+
 #	mysql -D$1 -t -u root -padmin --default-character-set=utf8 -t < testSP.sql.txt
 	
 else
