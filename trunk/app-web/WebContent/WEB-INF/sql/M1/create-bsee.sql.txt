@@ -47,7 +47,7 @@ CREATE TABLE tDataType (
 ) ENGINE=InnoDB;
 
 
-/** Tablas para el trabajo del Workflow */
+/*********** Tablas para el trabajo del Workflow *********/
 CREATE TABLE tFlowDef (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cName	VARCHAR(20) NOT NULL
@@ -75,7 +75,7 @@ CREATE TABLE tPreviousElement (
 
 
 
-/**
+/********
 Ejemplo de archivo a cargar
 RUT       FechaHora como Long
 128706682-12345678901234567890.docx
@@ -86,7 +86,7 @@ C:\archivos\	-> Configuracion
            	 \128706682-12345678901234567890.png -> (fileid + fecha hora + .png) 
 */
 
-/*
+/********
 CREATE TABLE IF NOT EXISTS tFile (
 	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cDesc			VARCHAR(100) COMMENT 'Descripcion que ingresa el usuario',
