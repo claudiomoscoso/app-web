@@ -11,4 +11,36 @@ public class FieldFlow extends BSBean {
 	private BSDataType type = null;
 	private Integer order = null;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public BSDataType getType() {
+		return type;
+	}
+
+	public void setType(BSDataType type) {
+		this.type = type;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
 }
