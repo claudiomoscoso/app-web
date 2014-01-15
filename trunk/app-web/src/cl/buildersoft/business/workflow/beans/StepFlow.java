@@ -7,9 +7,41 @@ import cl.buildersoft.framework.dataType.BSDataType;
 
 public class StepFlow extends BSBean {
 	private static final long serialVersionUID = 6066212423899455423L;
-	
-	private String name=null;
-	private BSDataType type =null;
-	private Integer order=null;
-	private List<Long> next=null;
+
+	private String name = null;
+	private BSDataType type = null;
+	private Integer order = null;
+	private List<Long> next = null;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public BSDataType getType() {
+		return type;
+	}
+
+	public void setType(BSDataType type) {
+		this.type = type;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
+	public List<Long> getNext() {
+		return next;
+	}
+
+	public void setNext(List<Long> next) {
+		this.next = next;
+	}
 }
