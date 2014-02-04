@@ -3,10 +3,6 @@ package cl.buildersoft.business.beans;
 import cl.buildersoft.framework.beans.BSBean;
 
 public class Genere extends BSBean {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2358888210299092688L;
 	private String TABLE="tGenere";
 	private String key = null;
