@@ -1,11 +1,11 @@
-package cl.buildersoft.business.service.impl;
+package cl.buildersoft.business.enterprise.service.impl;
 
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.business.beans.Employee;
-import cl.buildersoft.business.service.EmployeeService;
+import cl.buildersoft.business.enterprise.beans.Employee;
+import cl.buildersoft.business.enterprise.service.EmployeeService;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 
