@@ -18,14 +18,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import cl.buildersoft.business.beans.DatabaseFile;
+import cl.buildersoft.business.enterprise.beans.DatabaseFile;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSSystemException;
 
 @WebServlet("/servlet/file/Upload")
 public class Upload extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2079784430584398750L;
 
 	public Upload() {
 		super();
