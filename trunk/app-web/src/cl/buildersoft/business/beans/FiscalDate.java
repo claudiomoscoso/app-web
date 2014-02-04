@@ -3,10 +3,6 @@ package cl.buildersoft.business.beans;
 import cl.buildersoft.framework.beans.BSBean;
 
 public class FiscalDate extends BSBean {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5758421276681861269L;
 	private String TABLE="tFiscalDate";
 	private String date = null;

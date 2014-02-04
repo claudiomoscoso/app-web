@@ -3,10 +3,6 @@ package cl.buildersoft.business.beans;
 import cl.buildersoft.framework.beans.BSBean;
 
 public class File extends BSBean {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8534647655605197606L;
 	private String TABLE="tFile";
 	private String employee = null;

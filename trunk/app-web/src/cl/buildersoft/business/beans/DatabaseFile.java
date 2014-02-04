@@ -3,6 +3,7 @@ package cl.buildersoft.business.beans;
 import cl.buildersoft.framework.beans.BSBean;
 
 public class DatabaseFile extends BSBean {
+	private static final long serialVersionUID = 2656056612085733228L;
 	private String desc = null;
 	private String content = null;
 	private String fileName = null;
