@@ -6,7 +6,6 @@ import cl.buildersoft.framework.beans.BSBean;
 
 public class Flow extends BSBean {
 	private static final long serialVersionUID = -2550466801996973243L;
-
 	private String key = null;
 	private String name = null;
 	private List<StepFlow> steps = null;
@@ -43,5 +42,4 @@ public class Flow extends BSBean {
 	public void setFields(List<FieldFlow> fields) {
 		this.fields = fields;
 	}
-
 }
