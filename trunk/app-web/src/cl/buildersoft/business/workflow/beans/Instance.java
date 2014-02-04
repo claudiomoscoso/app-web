@@ -9,6 +9,7 @@ public class Instance extends BSBean {
 	private Long idFlow = null;
 	private Long assigned = null;
 	private List<FieldFlow> fields = null;
+	
 	public Long getIdFlow() {
 		return idFlow;
 	}
