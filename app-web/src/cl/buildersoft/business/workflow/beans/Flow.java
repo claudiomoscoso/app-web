@@ -3,13 +3,16 @@ package cl.buildersoft.business.workflow.beans;
 import java.util.List;
 
 import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.framework.beans.Rol;
 
 public class Flow extends BSBean {
 	private static final long serialVersionUID = -2550466801996973243L;
+	private String TABLE = "tFlow";
 	private String key = null;
 	private String name = null;
 	private List<StepFlow> steps = null;
 	private List<FieldFlow> fields = null;
+	private List <Rol> allowed = null;
 
 	public String getKey() {
 		return key;
@@ -41,5 +44,13 @@ public class Flow extends BSBean {
 
 	public void setFields(List<FieldFlow> fields) {
 		this.fields = fields;
+	}
+
+	public List <Rol> getAllowed() {
+		return allowed;
+	}
+
+	public void setAllowed(List <Rol> allowed) {
+		this.allowed = allowed;
 	}
 }
