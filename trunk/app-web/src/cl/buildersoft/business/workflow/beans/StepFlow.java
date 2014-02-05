@@ -10,7 +10,7 @@ public class StepFlow extends BSBean {
 	private String name = null;
 	private BSDataType type = null;
 	private Integer order = null;
-	private List<Long> next = null;
+	private List<Long> nextStepFlow = null;
 
 	public String getName() {
 		return name;
@@ -37,10 +37,10 @@ public class StepFlow extends BSBean {
 	}
 
 	public List<Long> getNext() {
-		return next;
+		return nextStepFlow;
 	}
 
 	public void setNext(List<Long> next) {
-		this.next = next;
+		this.nextStepFlow = next;
 	}
 }

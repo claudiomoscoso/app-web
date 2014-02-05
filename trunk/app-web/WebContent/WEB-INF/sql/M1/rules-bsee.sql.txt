@@ -23,8 +23,9 @@ ALTER TABLE tFlowElement
 ADD INDEX FlowElementType_index (cType ASC),
 ADD INDEX FlowDef_index (cFlowDef ASC),
 ADD CONSTRAINT FlowElementToFlowElementType FOREIGN KEY (cType) REFERENCES tFlowElementType(cId),
-ADD CONSTRAINT FlowElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlowDef(cId);
+ADD CONSTRAINT FlowElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlow(cId);
 
+/**
 ALTER TABLE tPreviousElement
 ADD INDEX PreviousElement_index_FlowDef (cFlowDef ASC),
 ADD CONSTRAINT PreviousElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlowDef(cId),
@@ -32,7 +33,7 @@ ADD INDEX PreviousElement_index_FlowElement (cElement ASC),
 ADD CONSTRAINT PreviousElementToElement FOREIGN KEY (cElement) REFERENCES tFlowElement(cId),
 ADD INDEX PreviousElement_index_FlowElement2 (cPrevious ASC),
 ADD CONSTRAINT PreviousElementToElement2 FOREIGN KEY (cPrevious) REFERENCES tFlowElement(cId);
-
+*/
 
 /* FILE 
 ALTER TABLE tFile

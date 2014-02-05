@@ -48,9 +48,10 @@ CREATE TABLE tDataType (
 
 
 /*********** Tablas para el trabajo del Workflow *********/
-CREATE TABLE tFlowDef (
+CREATE TABLE tFlow (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cName	VARCHAR(20) NOT NULL
+	cKey	VARCHAR(20) UNIQUE NOT NULL,
+	cName	VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE tFlowElement (
