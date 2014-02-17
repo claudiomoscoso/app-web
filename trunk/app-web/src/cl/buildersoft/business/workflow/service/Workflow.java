@@ -31,6 +31,6 @@ public interface Workflow {
 
 	public void updateFieldsInstance(Instance instance);
 
-	// public void loadFlowFromXML(String xml);
+	public void loadFlowFromXPDL(String xml);
 
 }

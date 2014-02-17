@@ -77,4 +77,10 @@ public class WorkflowImpl implements Workflow {
 		
 	}
 
+	@Override
+	public void loadFlowFromXPDL(String xml) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
