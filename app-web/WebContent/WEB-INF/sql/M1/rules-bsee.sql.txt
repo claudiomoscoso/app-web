@@ -19,13 +19,13 @@ ADD INDEX index_user (cUser ASC),
 ADD CONSTRAINT r_UserRolToRol FOREIGN KEY (cRol) REFERENCES tRol(cId);/*,
 ADD CONSTRAINT r_RolOptionToOption FOREIGN KEY (cOption) REFERENCES tOption(cId);*/
 
+/**
 ALTER TABLE tFlowElement
 ADD INDEX FlowElementType_index (cType ASC),
 ADD INDEX FlowDef_index (cFlowDef ASC),
 ADD CONSTRAINT FlowElementToFlowElementType FOREIGN KEY (cType) REFERENCES tFlowElementType(cId),
 ADD CONSTRAINT FlowElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlow(cId);
 
-/**
 ALTER TABLE tPreviousElement
 ADD INDEX PreviousElement_index_FlowDef (cFlowDef ASC),
 ADD CONSTRAINT PreviousElementToFlowDef FOREIGN KEY (cFlowDef) REFERENCES tFlowDef(cId),

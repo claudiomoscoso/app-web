@@ -29,7 +29,7 @@ SELECT cId INTO @userId FROM bsframework.tUser WHERE cMail = 'admin';
 
 INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
 
-INSERT INTO tFlowElementType(cName, cClass) VALUES('Paso', 'cl.buildersoft.business.workflow.service.impl.Step');
+INSERT INTO tStep(cName, cClass) VALUES('Paso', 'cl.buildersoft.business.workflow.service.impl.Step');
 
 
 /* Genero 
