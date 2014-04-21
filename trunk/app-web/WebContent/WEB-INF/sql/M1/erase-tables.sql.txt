@@ -1,9 +1,3 @@
-DROP TABLE IF EXISTS tPreviousElement;
-drop table if exists tFlowElement;
-drop table if exists tFlowDef;
-drop table if exists tFlow;
-drop table if exists tFlowElementType;
-
 DROP TABLE IF EXISTS tParameter;
 drop table if exists tDataType;
 

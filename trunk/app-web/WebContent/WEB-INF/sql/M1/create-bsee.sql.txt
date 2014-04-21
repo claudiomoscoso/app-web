@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS tFlow;
+DROP TABLE IF EXISTS tR_RolFlow;
+DROP TABLE IF EXISTS tInstance;
+DROP TABLE IF EXISTS tStep;
+DROP TABLE IF EXISTS tNextStep;
+
+
 /** Tablas específicas para la relacion de roles, opciones y usuarios */
 CREATE TABLE IF NOT EXISTS tRol (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -54,27 +61,30 @@ CREATE TABLE tFlow (
 	cName	VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE tFlowElement (
+CREATE TABLE tR_RolFlow (
+	cRol		BIGINT NOT NULL,
+	cFlow		BIGINT NOT NULL,
+	PRIMARY KEY(cRol, cFlow)
+) ENGINE=innoDB;
+
+CREATE TABLE tInstance (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cName	VARCHAR(50) NOT NULL,
-	cFlowDef	BIGINT NOT NULL,
-	cType	BIGINT NOT NULL	
+	cFlow	BIGINT NOT NULL,	
+	cName	VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE tFlowElementType (
+CREATE TABLE tStep (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cName	VARCHAR(20) NOT NULL,
 	cClass	VARCHAR(250)	
 ) ENGINE=InnoDB;
 
-CREATE TABLE tPreviousElement (
-	cFlowDef	BIGINT NOT NULL,
-	cElement	BIGINT NOT NULL,
-	cPrevious	BIGINT NOT NULL,
-	PRIMARY KEY(cFlowDef, cElement, cPrevious)	
+CREATE TABLE tNextStep (
+	cFlow		BIGINT NOT NULL,
+	cCurrent	BIGINT NOT NULL,
+	cNext		BIGINT NOT NULL,
+	PRIMARY KEY(cFlow, cCurrent, cNext)	
 ) ENGINE=InnoDB;
-
-
 
 /********
 Ejemplo de archivo a cargar
