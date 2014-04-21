@@ -10,7 +10,7 @@ public class Flow extends BSBean {
 	private String TABLE = "tFlow";
 	private String key = null;
 	private String name = null;
-	private List<StepFlow> steps = null;
+	private List<Step> steps = null;
 	private List<FieldFlow> fields = null;
 	private List <Rol> allowed = null;
 
@@ -30,11 +30,11 @@ public class Flow extends BSBean {
 		this.name = name;
 	}
 
-	public List<StepFlow> getSteps() {
+	public List<Step> getSteps() {
 		return steps;
 	}
 
-	public void setSteps(List<StepFlow> steps) {
+	public void setSteps(List<Step> steps) {
 		this.steps = steps;
 	}
 
