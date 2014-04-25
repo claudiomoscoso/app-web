@@ -1,10 +1,3 @@
-DROP TABLE IF EXISTS tFlow;
-DROP TABLE IF EXISTS tR_RolFlow;
-DROP TABLE IF EXISTS tInstance;
-DROP TABLE IF EXISTS tStep;
-DROP TABLE IF EXISTS tNextStep;
-
-
 /** Tablas específicas para la relacion de roles, opciones y usuarios */
 CREATE TABLE IF NOT EXISTS tRol (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -74,6 +67,15 @@ CREATE TABLE tInstance (
 	cAssigned	BIGINT NOT NULL,
 	cStep		BIGINT NOT NULL
 ) ENGINE=InnoDB;
+
+ALTER TABLE tInstance
+ADD INDEX Instance_Flow_index (cFlow ASC),
+ADD INDEX Instance_Creator_index (cCreator ASC),
+ADD INDEX Instance_Assigned_index (cAssigned ASC),
+ADD CONSTRAINT InstanceToFlow FOREIGN KEY (cFlow) REFERENCES tFlow(cId),
+ADD CONSTRAINT InstanceToCreator FOREIGN KEY (cCreator) REFERENCES bsframework.tUser(cId),
+ADD CONSTRAINT InstanceToAssigned FOREIGN KEY (cAssigned) REFERENCES bsframework.tUser(cId);
+
 
 CREATE TABLE tStep (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
