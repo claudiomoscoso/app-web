@@ -1,5 +1,11 @@
+DROP TABLE IF EXISTS tR_RolFlow;
+DROP TABLE IF EXISTS tStep;
+DROP TABLE IF EXISTS tNextStep;
+DROP TABLE IF EXISTS tInstance;
+DROP TABLE IF EXISTS tFlow;
+
 DROP TABLE IF EXISTS tParameter;
-drop table if exists tDataType;
+DROP TABLE if exists tDataType;
 
 DROP TABLE IF EXISTS tR_UserRol;
 DROP TABLE IF EXISTS tR_RolOption;
