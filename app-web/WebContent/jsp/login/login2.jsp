@@ -95,6 +95,7 @@
 		</form>
 
 	</div>
+	<!-- 
 	<script src="${pageContext.request.contextPath}/bootstrap/js/jquery.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-transition.js"></script>
@@ -120,6 +121,7 @@
 		src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-carousel.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-typeahead.js"></script>
+		 -->
 </body>
 
 </html>
