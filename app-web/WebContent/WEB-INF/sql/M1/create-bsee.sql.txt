@@ -68,14 +68,6 @@ CREATE TABLE tInstance (
 	cStep		BIGINT NOT NULL
 ) ENGINE=InnoDB;
 
-ALTER TABLE tInstance
-ADD INDEX Instance_Flow_index (cFlow ASC),
-ADD INDEX Instance_Creator_index (cCreator ASC),
-ADD INDEX Instance_Assigned_index (cAssigned ASC),
-ADD CONSTRAINT InstanceToFlow FOREIGN KEY (cFlow) REFERENCES tFlow(cId),
-ADD CONSTRAINT InstanceToCreator FOREIGN KEY (cCreator) REFERENCES bsframework.tUser(cId),
-ADD CONSTRAINT InstanceToAssigned FOREIGN KEY (cAssigned) REFERENCES bsframework.tUser(cId);
-
 
 CREATE TABLE tStep (
 	cId		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -89,6 +81,17 @@ CREATE TABLE tNextStep (
 	cNext		BIGINT NOT NULL,
 	PRIMARY KEY(cFlow, cCurrent, cNext)	
 ) ENGINE=InnoDB;
+
+ALTER TABLE tInstance
+ADD INDEX Instance_Flow_index (cFlow ASC),
+ADD INDEX Instance_Creator_index (cCreator ASC),
+ADD INDEX Instance_Assigned_index (cAssigned ASC),
+ADD INDEX Instance_Step_index (cStep ASC),
+ADD CONSTRAINT InstanceToFlow FOREIGN KEY (cFlow) REFERENCES tFlow(cId),
+ADD CONSTRAINT InstanceToCreator FOREIGN KEY (cCreator) REFERENCES bsframework.tUser(cId),
+ADD CONSTRAINT InstanceToAssigned FOREIGN KEY (cAssigned) REFERENCES bsframework.tUser(cId),
+ADD CONSTRAINT InstanceToStep FOREIGN KEY (cStep) REFERENCES tStep(cId);
+
 
 /********
 Ejemplo de archivo a cargar

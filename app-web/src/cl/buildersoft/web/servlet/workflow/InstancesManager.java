@@ -7,7 +7,6 @@ import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/workflow/InstancesManager")
-             
 public class InstancesManager extends BSHttpServlet {
 	private static final long serialVersionUID = 583201704776707035L;
 
@@ -17,8 +16,8 @@ public class InstancesManager extends BSHttpServlet {
 
 		table.removeAction("DELETE");
 		table.removeAction("INSERT");
-				table.removeAction("EDIT");
-		
+		table.removeAction("EDIT");
+
 		return table;
 	}
 
