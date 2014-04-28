@@ -16,6 +16,8 @@ public class FlowManager extends BSHttpServlet {
 		BSTableConfig table = initTable(request, "tFlow");
 		table.setTitle("Definición de Flujos");
 
+//		System.out.println("Flow Manager Executed");
+		
 		table.getField("cName").setLabel("Nombre");
 		return table;
 	}

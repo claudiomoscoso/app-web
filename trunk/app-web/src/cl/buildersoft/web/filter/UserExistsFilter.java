@@ -39,6 +39,7 @@ public class UserExistsFilter implements Filter {
 
 		if (session == null) {
 			goHome = Boolean.TRUE;
+			
 		} else {
 			Object user = session.getAttribute("User");
 			Object rol = session.getAttribute("Rol");
@@ -49,8 +50,10 @@ public class UserExistsFilter implements Filter {
 		}
 
 		if (goHome) {
+//			System.out.println("No Session");
 			response.sendRedirect(request.getContextPath());
 		} else {
+//			System.out.println("Session Right");
 			chain.doFilter(servletRequest, servletResponse);
 		}
 	}
