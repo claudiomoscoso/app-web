@@ -17,7 +17,7 @@ import cl.buildersoft.framework.util.BSSecurity;
 
 @WebServlet("/servlet/system/changepassword/ChangePassword")
 public class ChangePassword extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7579742240257360732L;
 
 	public ChangePassword() {
 		super();

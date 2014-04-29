@@ -19,9 +19,7 @@ import cl.buildersoft.framework.util.BSPaging;
  */
 @WebServlet("/servlet/common/LoadTable")
 public class LoadTable extends AbstractServletUtil {
-	private static final long serialVersionUID = 1L;
-
-	// private static final String BSFRAMEWORK = "bsframework";
+	private static final long serialVersionUID = -2257837165074641521L;
 
 	public LoadTable() {
 		super();
