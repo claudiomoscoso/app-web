@@ -2,7 +2,7 @@ package cl.buildersoft.framework.util;
 
 import java.sql.Connection;
 
-public class BSConfig extends BSDataUtils {
+public class BSParameter extends BSDataUtils {
 	public String getString(Connection conn, String key) {
 		return getValue(conn, key);
 	}
@@ -17,7 +17,6 @@ public class BSConfig extends BSDataUtils {
 
 	public Boolean getBoolean(Connection conn, String key) {
 		return Boolean.parseBoolean(getValue(conn, key));
-
 	}
 
 	private String getValue(Connection conn, String key) {
@@ -44,7 +43,7 @@ public class BSConfig extends BSDataUtils {
 	}
 
 	public String fixPath(String path) {
-		String fileSeparator = BSConfig.getFileSeparator();
+		String fileSeparator = BSParameter.getFileSeparator();
 		if (path.lastIndexOf(fileSeparator) < path.length()) {
 			path += fileSeparator;
 		}

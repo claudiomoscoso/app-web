@@ -21,7 +21,7 @@ public class BSFileUtil {
 		BSmySQL mysql = new BSmySQL();
 		Connection conn = mysql.getConnection(request);
 
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String tempPath = fixPath(config.getString(conn, "EMPLOYEE_FILES"));
 		mysql.closeConnection(conn);
 		
@@ -36,7 +36,7 @@ public class BSFileUtil {
 
 	@Deprecated
 	public String fixPath(String path) {
-		String fileSeparator = BSConfig.getFileSeparator();
+		String fileSeparator = BSParameter.getFileSeparator();
 		if (path.lastIndexOf(fileSeparator) < path.length()) {
 			path += fileSeparator;
 		}

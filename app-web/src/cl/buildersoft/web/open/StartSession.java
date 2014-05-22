@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.framework.util.BSParameter;
+import cl.buildersoft.framework.util.BSDataUtils;
 
 @WebServlet("/open/StartSession")
 public class StartSession extends HttpServlet {
@@ -19,14 +20,16 @@ public class StartSession extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = null;
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		BSmySQL mysql = new BSmySQL();
-		// Connection conn = mysql.getConnection(request);
+		
+//		BSDataUtils dau = new BSDataUtils();
+		Connection conn = mysql.getConnection(getServletContext(), "bsframework");
 
-		// String url = "/jsp/login/login.jsp";
-		// if (config.getBoolean(conn, "USE_BOOTSTRAP")) {
+		 url = "/jsp/login/login.jsp";
+		 if (config.getBoolean(conn, "USE_BOOTSTRAP")) {
 		url = "jsp/login/login2.jsp";
-		// }
+		 }
 		response.sendRedirect(url);
 
 	}

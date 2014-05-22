@@ -7,7 +7,7 @@ import java.util.Calendar;
 //import java.util.Date;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.framework.util.BSParameter;
 
 public class BSCalendar implements BSFieldDataType {
 
@@ -23,7 +23,7 @@ public class BSCalendar implements BSFieldDataType {
 
 	@Override
 	public String format(Connection conn, Object data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		String out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);
@@ -37,7 +37,7 @@ public class BSCalendar implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {
@@ -50,7 +50,7 @@ public class BSCalendar implements BSFieldDataType {
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		Calendar out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);
