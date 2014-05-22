@@ -24,6 +24,7 @@ import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSUserException;
+import cl.buildersoft.framework.services.BSUserService;
 import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
 import cl.buildersoft.framework.util.BSDataUtils;
 
@@ -47,7 +48,7 @@ public class ValidateLoginServlet extends HttpServlet {
 		mail = "".equals(mail) ? null : mail;
 		password = "".equals(password) ? null : password;
 		if (mail != null && password != null) {
-			BSUserServiceImpl userService = new BSUserServiceImpl();
+			BSUserService userService = new BSUserServiceImpl();
 			BSDataUtils dau = new BSDataUtils();
 
 			User user = null;

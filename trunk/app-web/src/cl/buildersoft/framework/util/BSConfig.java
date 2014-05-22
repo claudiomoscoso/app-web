@@ -15,6 +15,11 @@ public class BSConfig extends BSDataUtils {
 		return Double.parseDouble(getValue(conn, key));
 	}
 
+	public Boolean getBoolean(Connection conn, String key) {
+		return Boolean.parseBoolean(getValue(conn, key));
+
+	}
+
 	private String getValue(Connection conn, String key) {
 		String sql = "SELECT cValue FROM tParameter WHERE cKey=?";
 		return super.queryField(conn, sql, key);
@@ -29,6 +34,7 @@ public class BSConfig extends BSDataUtils {
 		return getInteger(conn, "RECORDS_PER_PAGE");
 	}
 
+	@Deprecated
 	public static String getFileSeparator() {
 		return System.getProperty("file.separator");
 	}

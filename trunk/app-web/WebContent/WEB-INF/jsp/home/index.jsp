@@ -30,4 +30,5 @@ return;
 <!-- 
 <div id='time' class='cLabel'>hora:</div>
  -->
+ 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
