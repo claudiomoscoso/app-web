@@ -21,6 +21,8 @@ INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_DECIMAL'
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('CSV_SEPARATOR', 'Separador de archivos csv', ';', @stringId);
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', @integerId);
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('EMPLOYEE_FILES', 'Ubicación de archivos de empleados (en server)', 'D:\\temp\\remcon', @stringId);
+INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('USE_BOOTSTRAP', 'Indica el uso de Bootrsrat en el sitio', 'true', @booleanId);
+
 
 INSERT INTO tRol(cName) VALUES('Administrador');
 SET @rolId = LAST_INSERT_ID();
