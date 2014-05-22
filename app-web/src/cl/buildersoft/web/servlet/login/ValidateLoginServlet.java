@@ -26,6 +26,7 @@ import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSUserException;
 import cl.buildersoft.framework.services.BSUserService;
 import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
+import cl.buildersoft.framework.util.BSConfig;
 import cl.buildersoft.framework.util.BSDataUtils;
 
 /**
@@ -78,6 +79,9 @@ public class ValidateLoginServlet extends HttpServlet {
 
 			if (user != null) {
 				HttpSession session = request.getSession(true);
+				BSConfig config = new BSConfig();
+				Boolean useBootstrap = config.getBoolean(connBSframework, "USE_BOOTSTRAP");
+
 				synchronized (session) {
 					session.setAttribute("User", user);
 					session.setAttribute("Rol", rols);
@@ -85,6 +89,7 @@ public class ValidateLoginServlet extends HttpServlet {
 					session.setAttribute("Domains", domains);
 					session.setAttribute("Domain", defaultDomain);
 					session.setAttribute("DomainAttribute", domainAttribute);
+					session.setAttribute("UseBootrstap", useBootstrap);
 				}
 				page = "/servlet/login/GetMenuServlet";
 			} else {
