@@ -44,9 +44,8 @@
 loadFormat();
  -->
 	<div id="TOOLTIP_CONTAINER"
-		style="display:none;position:absolute;top:0;left:0;height:0;width:0;background-color:#C3C3C2;opacity:0.5;z-index:1;"
-		align="center">
-	</div>
+		style="display: none; position: absolute; top: 0; left: 0; height: 0; width: 0; background-color: #C3C3C2; opacity: 0.5; z-index: 1;"
+		align="center"></div>
 
 	<div id="TOOLTIP_CONTENT"
 		style="display: none; z-index: 2; position: absolute;" align="center">
@@ -57,8 +56,8 @@ loadFormat();
 			<tr>
 				<td align="center" width="10">&nbsp;</td>
 				<td>&nbsp;</td>
-				<td align="center" width="10"><a class="cLabel" style="cursor:pointer"
-					href="javascript:closeTooltip()"
+				<td align="center" width="10"><a class="cLabel"
+					style="cursor: pointer" href="javascript:closeTooltip()"
 					onmousemove="javascript:window.status='Cerrar'"> (X) </a></td>
 			</tr>
 			<tr>
@@ -83,16 +82,27 @@ loadFormat();
 				<span class="cLabel">Usuario:</span><span class="cData">&nbsp;<%=getUserName(session)%>
 					- <%=getUserMail(session)%></span></td>
 		<tr>
-			<td valign="top">
-	<%!private String getDomainName(HttpSession session) {
-		return ((Domain) session.getAttribute("Domain")).getAlias();
+			<td valign="top"><%!private String getDomainName(HttpSession session) {
+		Object o = session.getAttribute("Domain");
+		String out = "";
+
+		if (o != null) {
+			out = ((Domain) o).getAlias();
+		}
+
+		return out;
 	}
 
 	private String getUserName(HttpSession session) {
-		return ((User) session.getAttribute("User")).getName();
+		Object o = session.getAttribute("User");
+		String out = "";
+		
+		
+		return "";
+		//		return ((User) session.getAttribute("User")).getName();
 	}
 
 	private String getUserMail(HttpSession session) {
-		return ((User) session.getAttribute("User")).getMail();
-	}
-%>
+		return "";
+		//		return ((User) session.getAttribute("User")).getMail();
+	}%>
