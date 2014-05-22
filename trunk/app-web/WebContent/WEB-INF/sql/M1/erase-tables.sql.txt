@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS tStep;
 DROP TABLE IF EXISTS tFlow;
 
 DROP TABLE IF EXISTS tParameter;
-DROP TABLE if exists tDataType;
+/** DROP TABLE if exists tDataType; */
 
 DROP TABLE IF EXISTS tR_UserRol;
 DROP TABLE IF EXISTS tR_RolOption;
@@ -16,4 +16,5 @@ DROP TABLE IF EXISTS bsframework.tR_UserDomain;
 DROP TABLE IF EXISTS bsframework.tDomainAttribute;
 DROP TABLE IF EXISTS bsframework.tUser;
 DROP TABLE IF EXISTS bsframework.tDomain;
-
+DROP TABLE IF EXISTS bsframework.tConfig;
+DROP TABLE IF EXISTS bsframework.tDataType;

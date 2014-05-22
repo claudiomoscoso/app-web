@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.framework.util.BSParameter;
 
 public class BSTimestamp implements BSFieldDataType {
 
@@ -24,7 +24,7 @@ public class BSTimestamp implements BSFieldDataType {
 
 	@Override
 	public String format(Connection conn, Object data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		String out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);
@@ -39,7 +39,7 @@ public class BSTimestamp implements BSFieldDataType {
 
 	@Override
 	public Boolean validData(Connection conn, String data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		DateFormat formatter = new SimpleDateFormat(formatDate);
 		try {
@@ -52,7 +52,7 @@ public class BSTimestamp implements BSFieldDataType {
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		String formatDate = config.getString(conn, "FORMAT_DATETIME");
 		Date out = null;
 		DateFormat formatter = new SimpleDateFormat(formatDate);

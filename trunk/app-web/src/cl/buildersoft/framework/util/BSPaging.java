@@ -155,7 +155,7 @@ public class BSPaging {
 	}
 
 	private Integer getRecordsPerPage(Connection conn) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		return config.getInteger(conn, "RECORDS_PER_PAGE");
 	}
 

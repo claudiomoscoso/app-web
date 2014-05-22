@@ -11,3 +11,4 @@ INSERT INTO bsframework.tDomainAttribute(cDomain, cKey, cName, cValue) VALUES(1,
 INSERT INTO bsframework.tDomainAttribute(cDomain, cKey, cName, cValue) VALUES(1, 'database.username', 'User', 'root');
 INSERT INTO bsframework.tDomainAttribute(cDomain, cKey, cName, cValue) VALUES(1, 'database.password', 'Password', 'admin');
 
+INSERT INTO bsframework.tConfig(cKey, cLabel, cValue, cDataType) VALUES('USE_BOOTSTRAP', 'Indica el uso de Bootrsrat en el sitio', 'true', @booleanId);

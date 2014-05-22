@@ -1,17 +1,17 @@
 /** Tablas específicas para la relacion de roles, opciones y usuarios */
-CREATE TABLE IF NOT EXISTS tRol (
+CREATE TABLE tRol (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cName		VARCHAR(50) NULL ,
 	cDeleted	BIT NOT NULL DEFAULT 0
 ) ENGINE=innoDB;
 
-CREATE TABLE IF NOT EXISTS tR_UserRol (
+CREATE TABLE tR_UserRol (
 	cUser 		BIGINT NOT NULL,
 	cRol		BIGINT NOT NULL,
 	PRIMARY KEY(cUser,cRol)
 ) ENGINE=innoDB;
 
-CREATE TABLE IF NOT EXISTS tOption (
+CREATE TABLE tOption (
 	cId			BIGINT  NOT NULL AUTO_INCREMENT,
 	cKey		VARCHAR(20) NOT NULL UNIQUE,
 	cLabel 		VARCHAR(50) NOT NULL,
@@ -22,13 +22,11 @@ CREATE TABLE IF NOT EXISTS tOption (
 	PRIMARY KEY(cId)
 ) ENGINE=innoDB;
 
-CREATE TABLE IF NOT EXISTS tR_RolOption (
+CREATE TABLE tR_RolOption (
 	cRol		BIGINT NOT NULL,
 	cOption		BIGINT NOT NULL,
 	PRIMARY KEY(cRol, cOption)
 ) ENGINE=innoDB;
-
-
 
 /** Tablas con los parámetros del sistema */
 CREATE TABLE tParameter (
@@ -38,14 +36,6 @@ CREATE TABLE tParameter (
   cValue		Varchar(100) NOT NULL,
   cDataType		BIGINT NOT NULL
 ) ENGINE=InnoDB;
-
-CREATE TABLE tDataType (
-	cId		BIGINT UNIQUE AUTO_INCREMENT,
-	cKey	VARCHAR(10) NOT NULL, 
-	cName	VARCHAR(20) NOT NULL,
-	PRIMARY KEY(cId)
-) ENGINE=InnoDB;
-
 
 /*********** Tablas para el trabajo del Workflow *********/
 CREATE TABLE tFlow (
@@ -105,7 +95,7 @@ C:\archivos\	-> Configuracion
 */
 
 /********
-CREATE TABLE IF NOT EXISTS tFile (
+CREATE TABLE tFile (
 	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cDesc			VARCHAR(100) COMMENT 'Descripcion que ingresa el usuario',
     cFileName		VARCHAR(255) NOT NULL COMMENT 'Nombre del archivo que se subio, ej. foto-01.jpg',
@@ -116,7 +106,7 @@ CREATE TABLE IF NOT EXISTS tFile (
     cContentType	VARCHAR(100) COMMENT 'Tipo de archivo'
 ) ENGINE=innoDB;
 
-CREATE TABLE IF NOT EXISTS tFileCategory (
+CREATE TABLE tFileCategory (
 	cId				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cName			VARCHAR(30) NOT NULL
 ) ENGINE=innoDB;

@@ -1,15 +1,11 @@
-INSERT INTO tDataType(cKey, cName) VALUES('STRING', 'String');
-SET @stringId = LAST_INSERT_ID();
-INSERT INTO tDataType(cKey, cName) VALUES('DOUBLE', 'Double');
-SET @doubleId = LAST_INSERT_ID();
-INSERT INTO tDataType(cKey, cName) VALUES('INTEGER', 'Integer');
-SET @integerId = LAST_INSERT_ID();
-INSERT INTO tDataType(cKey, cName) VALUES('TIMESTAMP', 'Timestamp');
-SET @timestampId = LAST_INSERT_ID();
-INSERT INTO tDataType(cKey, cName) VALUES('BOOLEAN', 'Boolean');
-SET @booleanId = LAST_INSERT_ID();
-INSERT INTO tDataType(cKey, cName) VALUES('LONG', 'Long');
-SET @longId = LAST_INSERT_ID();
+SELECT cId INTO @stringId FROM bsframework.tDataType WHERE cKey = 'STRING';
+SELECT cId INTO @doubleId FROM bsframework.tDataType WHERE cKey = 'DOUBLE';
+SELECT cId INTO @integerId FROM bsframework.tDataType WHERE cKey = 'INTEGER';
+# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'TIMESTAMP';
+# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'BOOLEAN';
+# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'LONG';
+
+
 
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', @stringId);
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', @stringId);
@@ -21,8 +17,6 @@ INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_DECIMAL'
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('CSV_SEPARATOR', 'Separador de archivos csv', ';', @stringId);
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', @integerId);
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('EMPLOYEE_FILES', 'Ubicación de archivos de empleados (en server)', 'D:\\temp\\remcon', @stringId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('USE_BOOTSTRAP', 'Indica el uso de Bootrsrat en el sitio', 'true', @booleanId);
-
 
 INSERT INTO tRol(cName) VALUES('Administrador');
 SET @rolId = LAST_INSERT_ID();

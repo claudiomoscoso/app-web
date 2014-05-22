@@ -106,7 +106,7 @@ public class BSWeb {
 	}
 
 	private static String getConfig(Connection conn, String key) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		return config.getString(conn, key);
 	}
 

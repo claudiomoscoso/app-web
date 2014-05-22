@@ -53,10 +53,9 @@ public class ValidateLoginServlet extends HttpServlet {
 
 			User user = null;
 			List<Rol> rols = null;
-			Connection connBSframework = null;
 			Connection connDomain = null;
 
-			connBSframework = dau.getConnection(getServletContext(), "bsframework");
+			Connection connBSframework = dau.getConnection(getServletContext(), "bsframework");
 			user = userService.login(connBSframework, mail, password);
 
 			List<Domain> domains = null;

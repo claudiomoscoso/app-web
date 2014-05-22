@@ -3,7 +3,7 @@
 /** PARAMETER */
 ALTER TABLE tParameter
 ADD INDEX Parameter_index (cDataType ASC),
-ADD CONSTRAINT ParameterToDataType FOREIGN KEY (cDataType) REFERENCES tDataType(cId);
+ADD CONSTRAINT ParameterToDataType FOREIGN KEY (cDataType) REFERENCES bsframework.tDataType(cId);
 
 /** ROL-OPTION */
 ALTER TABLE tR_RolOption

@@ -88,7 +88,7 @@ public class BSDateTimeUtil {
 	}
 
 	public static String getFormatDatetime(Connection conn) {
-		BSConfig config = new BSConfig();
+		BSParameter config = new BSParameter();
 		return config.getString(conn, "FORMAT_DATETIME");
 	}
 
@@ -107,7 +107,7 @@ public class BSDateTimeUtil {
 
 	public static String getFormatDate(Connection conn) {
 		if (formatDate == null) {
-			BSConfig config = new BSConfig();
+			BSParameter config = new BSParameter();
 			formatDate = config.getString(conn, "FORMAT_DATE");
 		}
 		return formatDate;
