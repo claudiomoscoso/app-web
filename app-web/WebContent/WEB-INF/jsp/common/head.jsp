@@ -1,3 +1,4 @@
+<%@page import="org.apache.catalina.ant.SessionsTask"%>
 <%@page import="cl.buildersoft.framework.beans.Domain"%>
 <%@page import="cl.buildersoft.framework.beans.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -78,31 +79,8 @@ loadFormat();
 	<table border="0" style="width: 100%">
 		<tr>
 			<td align="right"><span class="cLabel">Dominio:</span><span
-				class="cData">&nbsp;<%=getDomainName(session)%></span>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<span class="cLabel">Usuario:</span><span class="cData">&nbsp;<%=getUserName(session)%>
-					- <%=getUserMail(session)%></span></td>
+				class="cData">&nbsp;${sessionScope.Domain.alias}</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<span class="cLabel">Usuario:</span><span class="cData">&nbsp;${sessionScope.User.name}
+					- ${sessionScope.User.mail}</span></td>
 		<tr>
-			<td valign="top"><%!private String getDomainName(HttpSession session) {
-		Object o = session.getAttribute("Domain");
-		String out = "";
-
-		if (o != null) {
-			out = ((Domain) o).getAlias();
-		}
-
-		return out;
-	}
-
-	private String getUserName(HttpSession session) {
-		Object o = session.getAttribute("User");
-		String out = "";
-		
-		
-		return "";
-		//		return ((User) session.getAttribute("User")).getName();
-	}
-
-	private String getUserMail(HttpSession session) {
-		return "";
-		//		return ((User) session.getAttribute("User")).getMail();
-	}%>
+			<td valign="top">
