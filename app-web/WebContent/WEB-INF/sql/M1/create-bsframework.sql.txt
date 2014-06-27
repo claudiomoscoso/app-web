@@ -83,6 +83,29 @@ ALTER TABLE bsframework.tConfig
 ADD INDEX DataType_Index (cDataType ASC),
 ADD CONSTRAINT ConfigToDataType FOREIGN KEY (cDataType) REFERENCES tDataType(cId);
 
+drop table if exists bsframework.tSessionData;
+drop table if exists bsframework.tSession;
+
+create table bsframework.tSession (
+	cId		BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cSessionId 	VARCHAR(32) NOT NULL UNIQUE,
+	cLastAccess	TIMESTAMP NOT NULL
+) ENGINE=innoDB;
+
+create table bsframework.tSessionData (
+	cId		BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cSession 	BIGINT  NOT NULL,
+	cName		VARCHAR(250) NOT NULL,
+	cValue		TEXT
+) ENGINE=innoDB;
+
+
+ALTER TABLE bsframework.tSessionData
+ADD INDEX Index_Session (cSession ASC),
+ADD CONSTRAINT SessionData_To_Session FOREIGN KEY (cSession) REFERENCES tSession(cId);
+
+
+
  /** V I S T A S **/
 DROP VIEW IF EXISTS bsframework.vUserAdmin;
 CREATE VIEW bsframework.vUserAdmin
