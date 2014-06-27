@@ -1,4 +1,4 @@
-package cl.buildersoft.test.bean;
+package cl.buildersoft.sso.bean;
 
 import cl.buildersoft.framework.beans.BSBean;
 

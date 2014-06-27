@@ -1,4 +1,4 @@
-package cl.buildersoft.test.filter;
+package cl.buildersoft.sso.filter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.test.bean.SessionBean;
-import cl.buildersoft.test.bean.SessionDataBean;
+import cl.buildersoft.sso.bean.SessionBean;
+import cl.buildersoft.sso.bean.SessionDataBean;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
