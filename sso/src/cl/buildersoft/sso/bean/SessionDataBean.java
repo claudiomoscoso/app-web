@@ -4,8 +4,8 @@ import cl.buildersoft.framework.beans.BSBean;
 
 public class SessionDataBean extends BSBean {
 	private static final long serialVersionUID = -5016005306711675113L;
-
-	private String TABLE = "tSessionData";
+	@SuppressWarnings("unused")
+	private String TABLE = "bsframework.tSessionData";
 
 	private Long session = null;
 	private String name = null;

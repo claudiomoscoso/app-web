@@ -25,7 +25,7 @@ import sun.misc.BASE64Encoder;
 
 public class BSHttpServletUtil extends HttpServlet {
 	private static final long serialVersionUID = -3697395018919620104L;
-	public static String SESSION_COOKIE_NAME = "SessionCookie";
+	public static String SESSION_COOKIE_NAME = "BSSESSIONCOOKIE";
 	protected static final int MAX_AGE = 24 * 60 * 60;
 
 	public void saveSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
