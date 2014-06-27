@@ -1,4 +1,4 @@
-package cl.buildersoft.test.bean;
+package cl.buildersoft.sso.bean;
 
 import java.io.Serializable;
 

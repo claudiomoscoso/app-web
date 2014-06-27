@@ -1,4 +1,4 @@
-package cl.buildersoft.test.filter;
+package cl.buildersoft.sso.filter;
 
 import java.io.IOException;
 
