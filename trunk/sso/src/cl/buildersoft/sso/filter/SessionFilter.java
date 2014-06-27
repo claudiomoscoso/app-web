@@ -17,22 +17,22 @@ import javax.servlet.http.HttpServletResponse;
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST }, urlPatterns = { "/servlet/*" })
 public class SessionFilter implements Filter {
 
-	public static String SESSION_COOKIE_NAME = "SessionCookie";
+	// public static String SESSION_COOKIE_NAME = "SessionCookie";
 
 	public SessionFilter() {
-		System.out.println("SessionFilterFordward");
+		// System.out.println("SessionFilterFordward");
 	}
 
 	public void destroy() {
-		System.out.println("destroy");
+		// System.out.println("destroy");
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
-		System.out.println("init");
+		// System.out.println("init");
 	}
 
 	public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
-		System.out.println("SessionFilter");
+		// System.out.println("SessionFilter");
 		HttpServletRequest request = (HttpServletRequest) rq;
 		HttpServletResponse response = (HttpServletResponse) rs;
 
