@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.util.ReflectionUtils;
+import cl.buildersoft.framework.util.crud.BSField;
 
 public class AbstractServletUtil extends HttpServlet {
 	private static final long serialVersionUID = -34792656017725168L;

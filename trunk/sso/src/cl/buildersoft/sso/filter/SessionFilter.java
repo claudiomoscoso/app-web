@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,15 +31,15 @@ public class SessionFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
-		// System.out.println("SessionFilter");
+		System.out.println("SessionFilter");
 		HttpServletRequest request = (HttpServletRequest) rq;
 		HttpServletResponse response = (HttpServletResponse) rs;
 
-		BSHttpServletUtil su = new BSHttpServletUtil();
+		BSHttpServletSSO su = new BSHttpServletSSO();
 
-		Cookie sessionCookie = su.readCookie(request);
+		String sessionId = su.readCookieValue(request);
 		try {
-			if (sessionCookie == null) {
+			if (sessionId == null) {
 				request.getRequestDispatcher("Invaliduser.jsp").forward(request, response);
 			} else {
 				su.restoreSession(request, response);

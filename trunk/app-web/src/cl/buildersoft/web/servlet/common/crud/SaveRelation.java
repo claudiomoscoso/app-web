@@ -1,4 +1,4 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.crud;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.BSAction;
-import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.util.crud.BSAction;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
 
 /**
  * Servlet implementation class SaveRelation
  */
-@WebServlet("/servlet/common/SaveRelation")
+@WebServlet("/servlet/common/crud/SaveRelation")
 public class SaveRelation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -53,10 +53,15 @@ public class SaveRelation extends HttpServlet {
 			mysql.setAutoCommit(conn, false);
 
 			removeRelation(conn, mysql, id, table, action);
-			setRelation(conn, mysql, id, relations, action);
+			if (relations != null) {
+				setRelation(conn, mysql, id, relations, action);
+			}
 			mysql.commit(conn);
 
 		} catch (Exception e) {
+			System.out.println("---------------------------------");
+			e.printStackTrace();
+			System.out.println("---------------------------------");
 			mysql.rollback(conn);
 			throw new BSDataBaseException("0300", e.getMessage());
 		} finally {

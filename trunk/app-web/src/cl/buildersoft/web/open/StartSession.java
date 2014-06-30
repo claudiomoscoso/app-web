@@ -3,17 +3,18 @@ package cl.buildersoft.web.open;
 import java.io.IOException;
 import java.sql.Connection;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 @WebServlet("/open/StartSession")
-public class StartSession extends HttpServlet {
+public class StartSession extends BSHttpServletSSO {
 
 	private static final long serialVersionUID = 2003517134295990179L;
 
@@ -23,14 +24,16 @@ public class StartSession extends HttpServlet {
 		BSmySQL mysql = new BSmySQL();
 
 		// BSDataUtils dau = new BSDataUtils();
-		Connection conn = mysql.getConnection(getServletContext(), "bsframework");
+		ServletContext ctx = request.getServletContext();
+		Connection conn = mysql.getConnection2(ctx, (String) ctx.getAttribute("bsframework.datasource"));
 
 		url = "/jsp/login/login.jsp";
 		if (config.getBoolean(conn, "USE_BOOTSTRAP")) {
 			url = "/jsp/login/login2.jsp";
 		}
-		request.getRequestDispatcher(url).forward(request, response);
-//		response.sendRedirect(url);
+		super.fordward(request, response, url);
+		// request.getRequestDispatcher(url).forward(request, response);
+		// response.sendRedirect(url);
 
 	}
 

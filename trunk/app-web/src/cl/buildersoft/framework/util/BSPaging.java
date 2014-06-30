@@ -7,10 +7,10 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.type.BSFieldType;
+import cl.buildersoft.framework.util.crud.BSField;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
 
 public class BSPaging {
 	private Boolean requiresPaging = null;
@@ -23,18 +23,15 @@ public class BSPaging {
 
 	// private Integer lastRecord = null;
 
-	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig table,
-			HttpServletRequest request) {
+	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig table, HttpServletRequest request) {
 		// ServletContext context = request.getServletContext();
 		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);
 		this.recordCount = recordCount(conn, mysql, table);
 		this.recordPerPage = getRecordsPerPage(conn);
 		this.requiresPaging = requiresPaging();
-		this.pageCount = calculatePageCount(this.recordCount,
-				this.recordPerPage);
-		this.firstRecord = this.currentPage == 1 ? 0
-				: ((this.currentPage - 1) * recordPerPage);
+		this.pageCount = calculatePageCount(this.recordCount, this.recordPerPage);
+		this.firstRecord = this.currentPage == 1 ? 0 : ((this.currentPage - 1) * recordPerPage);
 	}
 
 	public String getSearchValue(HttpServletRequest request) {
@@ -52,8 +49,7 @@ public class BSPaging {
 		return out;
 	}
 
-	private Integer calculatePageCount(Integer recordCount,
-			Integer recordPerPage) {
+	private Integer calculatePageCount(Integer recordCount, Integer recordPerPage) {
 		Integer out = recordCount / recordPerPage;
 		out += recordCount % recordPerPage > 0 ? 1 : 0;
 		return out;
@@ -70,11 +66,9 @@ public class BSPaging {
 		return currentPageInteger;
 	}
 
-	private Integer recordCount(Connection conn, BSmySQL mysql,
-			BSTableConfig table) {
+	private Integer recordCount(Connection conn, BSmySQL mysql, BSTableConfig table) {
 		String sql = getSQLCount(table);
-		Integer out = Integer
-				.parseInt(mysql.queryField(conn, sql, getParams()));
+		Integer out = Integer.parseInt(mysql.queryField(conn, sql, getParams()));
 		mysql.closeSQL();
 		return out;
 	}
@@ -97,8 +91,7 @@ public class BSPaging {
 
 	public String getSQL(BSTableConfig table) {
 		String sql = "SELECT " + unSplit(table, ",", false);
-		sql += " FROM " + table.getDatabase() + "."
-				+ table.getTableOrViewName();
+		sql += " FROM " + table.getDatabase() + "." + table.getTableOrViewName();
 		sql += getWhere(table);
 		sql += getOrder(table);
 
@@ -106,8 +99,7 @@ public class BSPaging {
 	}
 
 	private String getOrder(BSTableConfig table) {
-		return table.getSortField() != null ? " ORDER BY "
-				+ table.getSortField() : "";
+		return table.getSortField() != null ? " ORDER BY " + table.getSortField() : "";
 	}
 
 	private String getWhere(BSTableConfig table) {
@@ -121,8 +113,7 @@ public class BSPaging {
 		return out;
 	}
 
-	protected String unSplit(BSTableConfig table, String s,
-			Boolean excludeBoolean) {
+	protected String unSplit(BSTableConfig table, String s, Boolean excludeBoolean) {
 		String out = "";
 		for (BSField f : table.getFields()) {
 			if (excludeBoolean) {
@@ -143,8 +134,7 @@ public class BSPaging {
 
 	@Deprecated
 	private Integer getRecordsPerPage(ServletContext context) {
-		String recordPerPageString = context
-				.getInitParameter("bsframework.recordPerPage");
+		String recordPerPageString = context.getInitParameter("bsframework.recordPerPage");
 		Integer recordPerPageInteger;
 		try {
 			recordPerPageInteger = Integer.parseInt(recordPerPageString);

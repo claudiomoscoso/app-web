@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,13 +29,14 @@ import cl.buildersoft.framework.services.BSUserService;
 import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
 import cl.buildersoft.framework.util.BSConfig;
 import cl.buildersoft.framework.util.BSDataUtils;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 /**
  * Servlet implementation class ValidateServlet
  */
 
 @WebServlet(urlPatterns = "/login/ValidateLoginServlet")
-public class ValidateLoginServlet extends HttpServlet {
+public class ValidateLoginServlet extends BSHttpServletSSO {
 	private static final long serialVersionUID = -4481703270849068766L;
 
 	public ValidateLoginServlet() {
@@ -45,6 +47,8 @@ public class ValidateLoginServlet extends HttpServlet {
 		String mail = request.getParameter("mail");
 		String password = request.getParameter("password");
 		String page = "/";
+		ServletContext ctx = request.getServletContext();
+		String dataSource = (String) ctx.getAttribute("bsframework.datasource");
 
 		mail = "".equals(mail) ? null : mail;
 		password = "".equals(password) ? null : password;
@@ -56,20 +60,20 @@ public class ValidateLoginServlet extends HttpServlet {
 			List<Rol> rols = null;
 			Connection connDomain = null;
 
-			Connection connBSframework = dau.getConnection(getServletContext(), "bsframework");
+			Connection connBSframework = dau.getConnection2(ctx, dataSource);
 			user = userService.login(connBSframework, mail, password);
 
 			List<Domain> domains = null;
 			Domain defaultDomain = null;
-			Map<String, DomainAttribute> domainAttribute = null;
+			Map<String, DomainAttribute> domainAttributes = null;
 			if (user != null) {
 				domains = getDomains(connBSframework, user);
 				if (domains.size() == 0) {
 					throw new BSUserException("", "El usuario '" + user.getMail() + "' no esta completamente configurado");
 				}
 				defaultDomain = domains.get(0);
-				domainAttribute = getDomainAttribute(connBSframework, defaultDomain);
-				connDomain = dau.getConnection(domainAttribute);
+				domainAttributes = getDomainAttributes(connBSframework, defaultDomain);
+				connDomain = dau.getConnection2(ctx, domainAttributes.get("datasource").getValue());
 
 				rols = userService.getRols(connDomain, user);
 				if (rols.size() == 0) {
@@ -78,7 +82,7 @@ public class ValidateLoginServlet extends HttpServlet {
 			}
 
 			if (user != null) {
-				HttpSession session = request.getSession(true);
+				HttpSession session = createSession(request, response);
 				BSConfig config = new BSConfig();
 				Boolean useBootstrap = config.getBoolean(connBSframework, "USE_BOOTSTRAP");
 
@@ -88,19 +92,21 @@ public class ValidateLoginServlet extends HttpServlet {
 					session.setAttribute("Menu", true);
 					session.setAttribute("Domains", domains);
 					session.setAttribute("Domain", defaultDomain);
-					session.setAttribute("DomainAttribute", domainAttribute);
+					session.setAttribute("DomainAttribute", domainAttributes);
 					session.setAttribute("UseBootrstap", useBootstrap);
 				}
+//				Cookie cookie = saveCookieToResponse(response, null);
+
 				page = "/servlet/login/GetMenuServlet";
 			} else {
 				page = "/WEB-INF/jsp/login/not-found.jsp";
 			}
 		}
-		request.getRequestDispatcher(page).forward(request, response);
+		// request.getRequestDispatcher(page).forward(request, response);
+		super.fordward(request, response, page);
 	}
 
-	private Map<String, DomainAttribute> getDomainAttribute(Connection conn, Domain defaultDomain) {
-
+	private Map<String, DomainAttribute> getDomainAttributes(Connection conn, Domain defaultDomain) {
 		BSmySQL mysql = new BSmySQL();
 		ResultSet rs = mysql.callSingleSP(conn, "pListDomainAttributes", defaultDomain.getId());
 
@@ -119,7 +125,7 @@ public class ValidateLoginServlet extends HttpServlet {
 			}
 			mysql.closeSQL(rs);
 		} catch (SQLException e) {
-			throw new BSDataBaseException("1000", e.getMessage());
+			throw new BSDataBaseException(e);
 		}
 
 		return out;

@@ -2,10 +2,9 @@
 <%@page import="cl.buildersoft.framework.beans.BSCss"%>
 <%@page import="cl.buildersoft.framework.beans.BSScript"%>
 <%@page import="cl.buildersoft.framework.beans.BSHeadConfig"%>
-<%@page import="cl.buildersoft.framework.util.BSWeb"%>
-<%@page import="cl.buildersoft.framework.type.BSFieldType"%>
-<%@page import="cl.buildersoft.framework.beans.BSField"%>
-<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
+<%@page import="cl.buildersoft.framework.dataType.BSDataType"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSField"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
 <%@page import="java.sql.ResultSet"%>
 
 <%
@@ -35,21 +34,21 @@ BSField[] fields = table.getFields();
 		var msg = null;
 <%String fieldName=null;
 	String html = "";
-	BSFieldType type=null;
+	BSDataType type=null;
 	String typeHtml = null;
 	for (BSField field : fields) {
 		type = field.getType();
 		fieldName = field.getName();
 		typeHtml = field.getTypeHtml();
 		
-		if(type.equals(BSFieldType.Double)|| type.equals(BSFieldType.Integer)|| type.equals(BSFieldType.Date)|| "email".equalsIgnoreCase(typeHtml)) {		
-			if(type.equals(BSFieldType.Double)){
+		if(type.equals(BSDataType.DOUBLE)|| type.equals(BSDataType.INTEGER)|| type.equals(BSDataType.DATE)|| "email".equalsIgnoreCase(typeHtml)) {		
+			if(type.equals(BSDataType.DOUBLE)){
 				html = "var " + fieldName + " = formated2double(document.getElementById('"+fieldName+"').value);\n";
 			}
-			if(type.equals(BSFieldType.Integer)){
+			if(type.equals(BSDataType.INTEGER)){
 				html = "var " + fieldName + " = formated2integer(document.getElementById('"+fieldName+"').value);\n";
 			}
-			if(type.equals(BSFieldType.Date)){
+			if(type.equals(BSDataType.DATE)){
 				html = "var " + fieldName + " = isDate(document.getElementById('"+fieldName+"').value);\n";
 				html += fieldName + " = " + fieldName +"?"+fieldName +":null;\n";
 			}
@@ -73,7 +72,7 @@ BSField[] fields = table.getFields();
 for (BSField field : fields) {
 		type = field.getType();
 		fieldName = field.getName();
-		if(type.equals(BSFieldType.Double)|| type.equals(BSFieldType.Integer)){
+		if(type.equals(BSDataType.DOUBLE)|| type.equals(BSDataType.INTEGER)){
 			html += "document.getElementById('"+fieldName+"').value = "+fieldName+";\n";
 		}%>
 	
@@ -123,7 +122,7 @@ for (BSField field : fields) {
 
 	private String writeHTMLField(BSField field, HttpServletRequest request) {
 		String out = "";
-		BSFieldType type = field.getType();
+		BSDataType type = field.getType();
 		Object value = field.getValue();
 		Integer maxlength = 0;
 		String name = field.getName();
@@ -138,7 +137,7 @@ for (BSField field : fields) {
 		if (isFK(field)) {
 			out += getFKSelect(field);
 		} else {
-			if (type.equals(BSFieldType.Boolean)) {
+			if (type.equals(BSDataType.BOOLEAN)) {
 				out += "<SELECT name='" + name + "' ";
 				out += isReadOnly ? " DISABLED " : "";
 				out += ">";
@@ -148,38 +147,38 @@ for (BSField field : fields) {
 
 				out += "</SELECT>";
 			} else {
-				if (type.equals(BSFieldType.String)) {
+				if (type.equals(BSDataType.STRING)) {
 					value = value == null ? "" : value;
 					maxlength = field.getLength();
 					size = maxlength;
 					if (size > 75) {
 						size = 75;
 					}
-				} else if (type.equals(BSFieldType.Date)) {
+				} else if (type.equals(BSDataType.DATE)) {
 					maxlength = 10;
 					format = BSDateTimeUtil.getFormatDate(request);
 					value = BSDateTimeUtil.date2String(value, format);
 					size = maxlength;
 					afterInput = "(formato: " + format + ")";
 
-				} else if (type.equals(BSFieldType.Timestamp)) {
+				} else if (type.equals(BSDataType.TIMESTAMP)) {
 					maxlength = 16;
 					format = BSDateTimeUtil.getFormatDatetime(request);
 					value = BSDateTimeUtil.date2String(value, format);
 					size = maxlength;
 					afterInput = "(formato: " + format + ")";
-				} else if (type.equals(BSFieldType.Double)) {
+				} else if (type.equals(BSDataType.DOUBLE)) {
 					maxlength = 15;
 					//					format = BSWeb.getFormatDecimal(request);
 					value = BSWeb.formatDouble(request, (Double) value); // number2String(value, format);
 					size = maxlength;
-				} else if (type.equals(BSFieldType.Integer)) {
+				} else if (type.equals(BSDataType.INTEGER)) {
 					maxlength = 8;
 					//					format = BSWeb.getFormatInteger(request);
 					//					value = BSWeb.number2String(value, format);
 					value = BSWeb.formatInteger(request, (Integer) value);
 					size = maxlength;
-				} else if (type.equals(BSFieldType.Long)) {
+				} else if (type.equals(BSDataType.LONG)) {
 					maxlength = 10;
 					//					format = BSWeb.getFormatInteger(request);
 					if (isPk && value == null) {
@@ -213,7 +212,7 @@ for (BSField field : fields) {
 	}
 
 	private String drawInputText(String type, String name, Integer maxlength, Boolean isReadonly, Object value, Integer size,
-			String afterInput, String validationOnBlur, Boolean isPk, BSFieldType dataType) {
+			String afterInput, String validationOnBlur, Boolean isPk, BSDataType dataType) {
 		String out = "";
 
 		if (isPk) {
@@ -241,15 +240,15 @@ for (BSField field : fields) {
 		return out;
 	}
 
-	private String addScript(BSFieldType dataType, String type) {
+	private String addScript(BSDataType dataType, String type) {
 		String out = "";
-		if (dataType.equals(BSFieldType.Double)) {
+		if (dataType.equals(BSDataType.DOUBLE)) {
 			out = "onfocus='javascript:doubleFocus(this);' ";
 			out += "onblur='javascript:doubleBlur(this);' ";
-		} else if (dataType.equals(BSFieldType.Integer)) {
+		} else if (dataType.equals(BSDataType.INTEGER)) {
 			out = "onfocus='javascript:integerFocus(this);' ";
 			out += "onblur='javascript:integerBlur(this);' ";
-		} else if (dataType.equals(BSFieldType.Date)) {
+		} else if (dataType.equals(BSDataType.DATE)) {
 			out += "onblur='javascript:dateBlur(this);' ";
 		} else {
 			if (type.equalsIgnoreCase("email")) {

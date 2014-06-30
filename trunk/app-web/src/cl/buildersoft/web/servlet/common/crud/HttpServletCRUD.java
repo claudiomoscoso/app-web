@@ -1,4 +1,4 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.crud;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,12 +13,12 @@ import cl.buildersoft.framework.beans.Domain;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 
-public abstract class BSHttpServlet extends HttpServlet {
+public abstract class HttpServletCRUD extends HttpServlet {
 	private static final long serialVersionUID = 713819586332712332L;
 
 	protected abstract BSTableConfig getBSTableConfig(HttpServletRequest request);
 
-	public BSHttpServlet() {
+	public HttpServletCRUD() {
 		super();
 	}
 
@@ -34,7 +34,7 @@ public abstract class BSHttpServlet extends HttpServlet {
 			session.setAttribute("BSTable", table);
 		}
 
-		request.getRequestDispatcher("/servlet/common/LoadTable").forward(request, response);
+		request.getRequestDispatcher(LoadTable.URL).forward(request, response);
 	}
 
 	protected BSTableConfig initTable(HttpServletRequest request, String tableName) {

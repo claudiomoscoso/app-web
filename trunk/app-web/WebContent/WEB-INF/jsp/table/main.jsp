@@ -1,3 +1,5 @@
+<%@page import="cl.buildersoft.framework.util.crud.BSAction"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSActionType"%>
 <%@page import="cl.buildersoft.framework.util.BSDateTimeUtil"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="cl.buildersoft.framework.database.BSmySQL"%>
@@ -7,9 +9,6 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.Format"%>
-<%@page import="cl.buildersoft.framework.type.BSFieldType"%>
-<%@page import="cl.buildersoft.framework.beans.BSField"%>
-<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
 <%@page import="java.sql.ResultSet"%>
 
 <%

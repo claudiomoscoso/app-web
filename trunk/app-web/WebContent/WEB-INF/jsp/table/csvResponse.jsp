@@ -3,8 +3,9 @@
 <%@page import="cl.buildersoft.framework.type.BSData"%>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
-<%@ include file="/WEB-INF/jsp/table/functions.jsp"%>
-
+<!-- 
+< % @ include file="/WEB-INF/jsp/table/functions.jsp" % >
+ -->
 
 <h1 class="cTitle">Respuesta del CSV</h1>
 <div style="overflow: scroll; width: 1080px; height: 400px">

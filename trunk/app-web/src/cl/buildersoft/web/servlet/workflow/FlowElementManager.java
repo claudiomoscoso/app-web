@@ -4,7 +4,7 @@ import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.framework.beans.BSTableConfig;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/workflow/FlowElementManager")

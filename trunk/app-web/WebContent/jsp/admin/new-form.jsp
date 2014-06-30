@@ -1,10 +1,10 @@
 <%@page import="cl.buildersoft.framework.type.BSFieldType"%>
-<%@page import="cl.buildersoft.framework.beans.BSField"%>
-<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSField"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
 <%@page import="java.sql.ResultSet"%>
 <%
 	BSTableConfig table = (BSTableConfig) session
-			.getAttribute("BSTable");
+	.getAttribute("BSTable");
 	BSField[] fields = table.getFields();
 %>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
@@ -15,7 +15,7 @@
 
 	}
 </script>
-XXXXXXXXXXXXXXXXXXXXXXXXXX
+
 <form action="${pageContext.request.contextPath}/admin/InsertRecord"
 	method="post" id="editForm">
 	<table>

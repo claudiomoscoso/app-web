@@ -1,6 +1,5 @@
-<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
-<%@page import="cl.buildersoft.framework.util.BSPaging"%>
-
+<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSPaging"%>
 <br>
 <div class="cLabel" align="center"><%=write_pagination_jsp(request)%></div>
 <script type="text/javascript">

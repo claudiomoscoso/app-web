@@ -1,6 +1,7 @@
 package cl.buildersoft.framework.type;
 
 import cl.buildersoft.framework.beans.BSField;
+import cl.buildersoft.framework.dataType.BSDataType;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 
 public class BSTypeFactory {
@@ -10,7 +11,7 @@ public class BSTypeFactory {
 		return create(field.getType());
 	}
 
-	public static BSFieldDataType create(BSFieldType type) {
+	public static BSFieldDataType create(BSDataType type) {
 		// BSFieldType type = field.getType();
 		String classInstance = BSTypeFactory.class.getPackage().getName() + BS + type.toString();
 		BSFieldDataType out = null;
