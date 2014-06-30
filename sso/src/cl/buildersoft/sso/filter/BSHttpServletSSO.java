@@ -141,9 +141,24 @@ public class BSHttpServletSSO extends HttpServlet {
 		String sessionId = session.getId();
 		saveCookieToResponse(response, sessionId);
 		request.setAttribute(SESSION_COOKIE_NAME, sessionId);
+		saveSessionToDB(getConnection(), session, sessionId);
 		return session;
 	}
 
+	protected void deleteSession(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		String sessionId = session.getId();
+		
+		saveCookieToResponse(response, sessionId, true);
+
+//		request.setAttribute(SESSION_COOKIE_NAME, sessionId);
+//		saveSessionToDB(getConnection(), session, sessionId);
+		deleteSessionOfDB(session, sessionId);
+		
+		session.invalidate();
+	}
+
+	
 	public void updateSession(HttpServletRequest request, HttpServletResponse response) {
 		String cookie = readCookieValue(request);
 		if (cookie != null) {
@@ -172,13 +187,27 @@ public class BSHttpServletSSO extends HttpServlet {
 
 	}
 
+		protected void deleteSessionOfDB(HttpSession session, String sessionId) {
+                SessionBean sessionBean = new SessionBean();
+                SessionDataBean sessionDataBean = new SessionDataBean();
+				BSBeanUtils bu = new BSBeanUtils();
+				Connection conn = ds.getConnection();
+				
+				 bu.search(conn, sessionBean, "cSessionId=?", sessionId);
+				
+				bu.delete(conn, sessionDataBean, "cSession=?", sessionBean.getId());
+				bu.delete(conn, sessionBean);
+				
+				
+		}
+		
 		protected SessionBean saveSessionToDB(Connection conn, HttpSession session, String sessionId) {
                 SessionBean sessionBean = new SessionBean();
                 SessionDataBean sessionDataBean = new SessionDataBean();
                 BSBeanUtils bu = new BSBeanUtils();
 				
 				sessionBean.setSessionId(sessionId);
-                bu.search(conn, sessionBean, "cSessionId=?", sessionId));
+                bu.search(conn, sessionBean, "cSessionId=?", sessionId);
 				sessionBean.setLastAccess(new Timestamp(System.currentTimeMillis()));
                 bu.save(conn, sessionBean);
 
@@ -274,9 +303,12 @@ public class BSHttpServletSSO extends HttpServlet {
 	}
 
 	public Cookie saveCookieToResponse(HttpServletResponse response, String sessionId) {
+		saveCookieToResponse(response, sessionId, false);
+	}
+	public Cookie saveCookieToResponse(HttpServletResponse response, String sessionId, Boolean delete) {
 		Cookie cookie = new Cookie(SESSION_COOKIE_NAME, sessionId);
 		cookie.setPath(ROOT);
-		cookie.setMaxAge(MAX_AGE);
+		cookie.setMaxAge(delete?0:MAX_AGE);
 		response.addCookie(cookie);
 		return cookie;
 	}
