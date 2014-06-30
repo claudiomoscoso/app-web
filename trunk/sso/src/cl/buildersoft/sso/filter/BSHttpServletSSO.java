@@ -172,28 +172,38 @@ public class BSHttpServletSSO extends HttpServlet {
 
 	}
 
-	protected SessionBean saveSessionToDB(Connection conn, HttpSession session, String sessionId) {
-		SessionBean sessionBean = new SessionBean();
-		SessionDataBean sessionDataBean = new SessionDataBean();
-		BSBeanUtils bu = new BSBeanUtils();
-		Enumeration<String> names = session.getAttributeNames();
+		protected SessionBean saveSessionToDB(Connection conn, HttpSession session, String sessionId) {
+                SessionBean sessionBean = new SessionBean();
+                SessionDataBean sessionDataBean = new SessionDataBean();
+                BSBeanUtils bu = new BSBeanUtils();
+				
+				sessionBean.setSessionId(sessionId);
+                bu.search(conn, sessionBean, "cSessionId=?", sessionId));
+				sessionBean.setLastAccess(new Timestamp(System.currentTimeMillis()));
+                bu.save(conn, sessionBean);
 
-		if (!bu.search(conn, sessionBean, "cSessionId=?", sessionId)) {
-			sessionBean.setSessionId(sessionId);
-		}
-		sessionBean.setLastAccess(new Timestamp(System.currentTimeMillis()));
-		bu.save(conn, sessionBean);
+				
+                Enumeration<String> names = session.getAttributeNames();
+                String name = null;
+				
+                while (names.hasMoreElements()) {
+                        name = names.nextElement();
+						
+						sessionDataBean.setSession(sessionBean.getId());
+						bu.search(conn, sessionDataBean, "cSession=? AND cName=?", sessionBean.getId(), name);
+						sessionDataBean.setSession(sessionBean.getId());
+						
+						sessionDataBean.setName(name);
+						sessionDataBean.setValue(objectToString(session.getAttribute(name)));
+						
+                        // saveObjectToDB(conn, bu, sessionDataBean, sessionBean.getId(), name, objectAsString);
+                        // saveObjectToDB(conn, sessionId, name, objectAsString);
+						
+						bu.save(conn, sessionDataBean);
+                }
+                return sessionBean;
+        }
 
-		String name = null;
-		String objectAsString = null;
-		while (names.hasMoreElements()) {
-			name = names.nextElement();
-			objectAsString = objectToString(session.getAttribute(name));
-			saveObjectToDB(conn, bu, sessionDataBean, sessionBean.getId(), name, objectAsString);
-			// saveObjectToDB(conn, sessionId, name, objectAsString);
-		}
-		return sessionBean;
-	}
 
 	protected void saveObjectToDB(Connection conn, BSBeanUtils bu, SessionDataBean sessionDataBean, Long sessionId,
 			String dataName, String object) {
