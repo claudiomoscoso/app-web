@@ -1,10 +1,22 @@
-SELECT cId INTO @stringId FROM bsframework.tDataType WHERE cKey = 'STRING';
-SELECT cId INTO @doubleId FROM bsframework.tDataType WHERE cKey = 'DOUBLE';
-SELECT cId INTO @integerId FROM bsframework.tDataType WHERE cKey = 'INTEGER';
+# SELECT cId INTO @stringId FROM bsframework.tDataType WHERE cKey = 'STRING';
+# SELECT cId INTO @doubleId FROM bsframework.tDataType WHERE cKey = 'DOUBLE';
+# SELECT cId INTO @integerId FROM bsframework.tDataType WHERE cKey = 'INTEGER';
 # SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'TIMESTAMP';
 # SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'BOOLEAN';
 # SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'LONG';
 
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('STRING', 'String');
+SET @stringId = LAST_INSERT_ID();
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('DOUBLE', 'Double');
+SET @doubleId = LAST_INSERT_ID();
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('INTEGER', 'Integer');
+SET @integerId = LAST_INSERT_ID();
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('TIMESTAMP', 'Timestamp');
+SET @timestampId = LAST_INSERT_ID();
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('BOOLEAN', 'Boolean');
+SET @booleanId = LAST_INSERT_ID();
+INSERT INTO bsframework.tDataType(cKey, cName) VALUES('LONG', 'Long');
+SET @longId = LAST_INSERT_ID();
 
 
 INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', @stringId);

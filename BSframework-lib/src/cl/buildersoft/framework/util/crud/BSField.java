@@ -18,6 +18,7 @@ public class BSField {
 	private Boolean visible = Boolean.TRUE;
 	private String[] fkInfo = null;
 	private List<Object[]> fkData = null;
+	private String typeHtml = null;
 
 	public BSField(String name, String label) {
 		super();
@@ -186,5 +187,13 @@ public class BSField {
 		return "BSField [name=" + name + ", label=" + label + ", pk=" + pk + ", unique=" + unique + ", readonly=" + readonly
 				+ ", length=" + length + ", type=" + type + ", value=" + value + ", validationOnBlur=" + validationOnBlur
 				+ ", visible=" + visible + ", fk=" + Arrays.toString(fkInfo) + ", fkData=" + fkData + "]";
+	}
+
+	public String getTypeHtml() {
+		return typeHtml;
+	}
+
+	public void setTypeHtml(String typeHtml) {
+		this.typeHtml = typeHtml;
 	}
 }

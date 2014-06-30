@@ -4,6 +4,15 @@
   <welcome-file-list>
     <welcome-file>open/StartSession</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+		<servlet-name>StartupServlet</servlet-name>
+		<servlet-class>cl.buildersoft.framework.services.StartupServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	
+<!-- 	
   <context-param>
     <param-name>bsframework.database.driver</param-name>
     <param-value>org.gjt.mm.mysql.Driver</param-value>
@@ -24,6 +33,7 @@
     <param-name>bsframework.database.password</param-name>
     <param-value>admin</param-value>
   </context-param>
+   -->
   <error-page>
     <exception-type>java.lang.BSException</exception-type>
     <location>/jsp/error/error.jsp</location>
@@ -32,10 +42,36 @@
     <exception-type>java.lang.RuntimeException</exception-type>
     <location>/jsp/error/error.jsp</location>
   </error-page>
+  
   <resource-ref>
-    <description>DB Connection</description>
+    <description>Connection To bsframework</description>
     <res-ref-name>jdbc/bsframework</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
+  
+    <resource-ref>
+    <description>Connection To bsframework</description>
+    <res-ref-name>jdbc/timecontrol</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  	<!-- http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html#MySQL_DBCP_Example -->
+	<!-- 
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/ibk</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	 -->
+	 
+	<!--  
+	EN El archivo Context.xml agregar lo siguiente:
+	<Resource name="jdbc/ibk" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="root" password="admin" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/ibk"/>
+	
+	-->
 </web-app>

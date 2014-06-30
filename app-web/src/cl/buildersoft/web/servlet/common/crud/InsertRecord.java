@@ -1,9 +1,7 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.crud;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.BSDataBaseException;
+import cl.buildersoft.framework.util.BSUtils;
 import cl.buildersoft.framework.util.BSWeb;
+import cl.buildersoft.framework.util.crud.BSField;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.web.servlet.common.AbstractServletUtil;
 
-@WebServlet("/servlet/common/InsertRecord")
+@WebServlet("/servlet/common/crud/InsertRecord")
 public class InsertRecord extends AbstractServletUtil {
 
 	private static final long serialVersionUID = 947236230190327847L;
@@ -46,33 +45,26 @@ public class InsertRecord extends AbstractServletUtil {
 		if (saveSP == null) {
 			BSField[] fields = table.deleteId();
 			String sql = getSQL(table, fields, request);
+			// BSmySQL mySQL = new BSmySQL();
+			// Connection conn = mySQL.getConnection(request);
 			List<Object> params = getValues4Insert(conn, request, fields);
 			Long id = mysql.insert(conn, sql, params);
 			request.setAttribute("cId", id);
 		} else {
+			// String sql = getSQLsp(saveSP, table);
+			// BSmySQL mySQL = new BSmySQL();
+			// Connection conn = mySQL.getConnection(request);
 			List<Object> params = getValues4Insert(conn, request, table.getFields());
-			ResultSet rs = mysql.callSingleSP(conn, saveSP, params);
-			if(rs != null){
-				try {
-					if(rs.next()){
-						request.setAttribute("cId", rs.getLong(1));
-					}
-				} catch (SQLException e) {
-					throw new BSDataBaseException(e);
-				}
-				mysql.closeSQL(rs);
-			}
-			
-
+			mysql.callSingleSP(conn, saveSP, params);
 		}
 		mysql.closeConnection(conn);
 
-		request.getRequestDispatcher("/servlet/common/LoadTable").forward(request, response);
+		request.getRequestDispatcher(LoadTable.URL).forward(request, response);
 	}
 
 	private String getSQL(BSTableConfig table, BSField[] fields, HttpServletRequest request) {
-		String sql = "INSERT INTO " + table.getDatabase() + "." + table.getTableName();
-		sql += "(" + unSplit(fields, ",") + ") ";
+				String sql = "INSERT INTO " + table.getDatabase() + "." + table.getTableName();
+		sql += "(" + BSUtils.unSplitField(fields, ",") + ") ";
 		sql += " VALUES (" + getCommas(fields) + ")";
 
 		return sql;

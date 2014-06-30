@@ -1,4 +1,4 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.crud;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,14 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.BSAction;
-import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.util.crud.BSAction;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
 
-/**
- * Servlet implementation class NatTable
- */
-@WebServlet("/servlet/common/NatTable")
+@WebServlet("/servlet/common/crud/NatTable")
 public class NatTable extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -29,8 +26,7 @@ public class NatTable extends HttpServlet {
 
 	}
 
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = null;
 		synchronized (request) {
 			session = request.getSession();
@@ -55,20 +51,18 @@ public class NatTable extends HttpServlet {
 		request.setAttribute("List", list);
 		request.setAttribute("Conn", conn);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/table/relation-nat.jsp")
-				.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/table/relation-nat.jsp").forward(request, response);
 	}
 
 	private ResultSet getList(BSAction action, BSmySQL mysql, Connection conn) {
 		String sql;
-String []		natInfo = action.getNatTable();
-		sql = "SELECT * FROM " +   natInfo[2]+"."+natInfo[3]; // action.getNatTable()[1];
+		String[] natInfo = action.getNatTable();
+		sql = "SELECT * FROM " + natInfo[2] + "." + natInfo[3]; // action.getNatTable()[1];
 		ResultSet list = mysql.queryResultSet(conn, sql, null);
 		return list;
 	}
 
-	private ResultSet getRelation(Long id, String sql, BSmySQL mysql,
-			Connection conn) {
+	private ResultSet getRelation(Long id, String sql, BSmySQL mysql, Connection conn) {
 		List<Object> prms = new ArrayList<Object>();
 		prms.add(id);
 		ResultSet relation = mysql.queryResultSet(conn, sql, prms);
@@ -84,14 +78,11 @@ LEFT JOIN tRol AS c ON b.cRol = c.cId;
 		  </code>
 		 */
 		String natInfo[] = action.getNatTable();
-		String sql = "SELECT c.* FROM " + table.getDatabase() + "."
-				+ table.getTableName() + " AS a ";
-		sql += "LEFT JOIN " + natInfo[0] + "." + natInfo[1]
-				+ " AS b ON a.cId = b." + table2Field(table.getTableName()) + " ";
-		sql += "LEFT JOIN " + natInfo[2] + "." + natInfo[3] + " AS c ON b."
-				+ table2Field(natInfo[3]) + " = c.cId ";
+		String sql = "SELECT c.* FROM " + table.getDatabase() + "." + table.getTableName() + " AS a ";
+		sql += "LEFT JOIN " + natInfo[0] + "." + natInfo[1] + " AS b ON a.cId = b." + table2Field(table.getTableName()) + " ";
+		sql += "LEFT JOIN " + natInfo[2] + "." + natInfo[3] + " AS c ON b." + table2Field(natInfo[3]) + " = c.cId ";
 		sql += "WHERE a.cId=? AND c.cId IS NOT NULL";
-	//	 System.out.println(sql);
+		// System.out.println(sql);
 		return sql;
 	}
 

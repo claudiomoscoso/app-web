@@ -1,4 +1,4 @@
-<%@page import="cl.buildersoft.framework.beans.BSTableConfig"%>
+<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
 <%@page import="cl.buildersoft.framework.util.BSPaging"%>
 
 <div align="right" width="100%" class="cLabel">

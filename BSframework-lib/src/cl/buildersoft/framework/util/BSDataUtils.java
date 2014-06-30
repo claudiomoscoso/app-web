@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 import cl.buildersoft.framework.beans.DomainAttribute;
 import cl.buildersoft.framework.exception.BSConfigurationException;
@@ -148,10 +151,10 @@ public class BSDataUtils {
 						preparedStatement.setInt(initIndex + 1, ((Integer) param).intValue());
 					} else if (param instanceof Double) {
 						preparedStatement.setDouble(initIndex + 1, ((Double) param).doubleValue());
-						
+
 					} else if (param instanceof BigDecimal) {
 						preparedStatement.setBigDecimal(initIndex + 1, (BigDecimal) param);
-						
+
 					} else if (param instanceof Long) {
 						preparedStatement.setLong(initIndex + 1, ((Long) param).longValue());
 					} else if (param instanceof Boolean) {
@@ -184,6 +187,7 @@ public class BSDataUtils {
 		return getConnection(context, "cosoav");
 	}
 
+	@Deprecated
 	public Connection getConnection(Map<String, DomainAttribute> domainAttribute) {
 		String driverName = domainAttribute.get("database.driver").getValue();
 		String serverName = domainAttribute.get("database.server").getValue();
@@ -194,6 +198,7 @@ public class BSDataUtils {
 		return getConnection(driverName, serverName, database, password, username);
 	}
 
+	@Deprecated
 	public Connection getConnection(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Map<String, DomainAttribute> domainAttribute = null;
@@ -204,6 +209,7 @@ public class BSDataUtils {
 		return getConnection(domainAttribute);
 	}
 
+	@Deprecated
 	public Connection getConnection(ServletContext context, String prefix) {
 		String driverName = context.getInitParameter(prefix + ".database.driver");
 		String serverName = context.getInitParameter(prefix + ".database.server");
@@ -213,8 +219,24 @@ public class BSDataUtils {
 		return getConnection(driverName, serverName, database, password, username);
 	}
 
-	public Connection getConnection(String driverName, String serverName, String database, String password, String username) {
+	public Connection getConnection2(ServletContext ctx, String dataSourceName) {
+		Connection conn = null;
 
+		try {
+			Context initContext = new InitialContext();
+			Context envContext = (Context) initContext.lookup("java:/comp/env");
+			DataSource ds = (DataSource) envContext.lookup(dataSourceName);
+			conn = ds.getConnection();
+		} catch (Exception e) {
+			throw new BSConfigurationException(e);
+		}
+
+		return conn;
+
+	}
+
+	@Deprecated
+	public Connection getConnection(String driverName, String serverName, String database, String password, String username) {
 		Connection connection = null;
 		try {
 			Class.forName(driverName);

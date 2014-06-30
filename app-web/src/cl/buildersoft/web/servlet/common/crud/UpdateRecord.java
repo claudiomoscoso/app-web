@@ -1,4 +1,4 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.crud;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.BSField;
-import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.BSWeb;
+import cl.buildersoft.framework.util.crud.BSField;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.web.servlet.common.AbstractServletUtil;
 
-@WebServlet("/servlet/common/UpdateRecord")
+@WebServlet("/servlet/common/crud/UpdateRecord")
 public class UpdateRecord extends AbstractServletUtil {
 	private static final long serialVersionUID = 1L;
 
@@ -55,7 +56,7 @@ public class UpdateRecord extends AbstractServletUtil {
 		mysql.update(conn, sql, params);
 		mysql.closeConnection(conn);
 		
-		request.getRequestDispatcher("/servlet/common/LoadTable").forward(
+		request.getRequestDispatcher(LoadTable.URL).forward(
 				request, response);
 	}
 

@@ -12,11 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cl.buildersoft.framework.dataType.BSDataType;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 import cl.buildersoft.framework.type.BSActionType;
-import cl.buildersoft.framework.type.BSFieldType;
+import cl.buildersoft.framework.type.BSDataType;
 
 import com.mysql.jdbc.DatabaseMetaData;
 
@@ -403,19 +404,19 @@ public class BSTableConfig {
 		}
 
 		if (typeName.equals("BIGINT")) {
-			field.setType(BSFieldType.Long);
+			field.setType(BSDataType.LONG);
 		} else if (typeName.equals("VARCHAR") || typeName.equals("CHAR")) {
-			field.setType(BSFieldType.String);
+			field.setType(BSDataType.STRING);
 		} else if (typeName.equals("DATE")) {
-			field.setType(BSFieldType.Date);
+			field.setType(BSDataType.DATE);
 		} else if (typeName.equals("TIMESTAMP")) {
-			field.setType(BSFieldType.Timestamp);
+			field.setType(BSDataType.TIMESTAMP);
 		} else if (typeName.equals("DOUBLE")) {
-			field.setType(BSFieldType.Double);
+			field.setType(BSDataType.DOUBLE);
 		} else if (typeName.equals("BIT")) {
-			field.setType(BSFieldType.Boolean);
+			field.setType(BSDataType.BOOLEAN);
 		} else if (typeName.equals("INT")) {
-			field.setType(BSFieldType.Integer);
+			field.setType(BSDataType.INTEGER);
 		} else {
 			throw new BSProgrammerException("0110", "No está catalogado el tipo " + typeName
 					+ ", verifique método BSTableConfig.setRealType()");
