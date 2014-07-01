@@ -147,18 +147,16 @@ public class BSHttpServletSSO extends HttpServlet {
 
 	protected void deleteSession(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(false);
-		String sessionId = session.getId();
-		
-		saveCookieToResponse(response, sessionId, true);
+		if (session != null) {
+			String sessionId = session.getId();
 
-//		request.setAttribute(SESSION_COOKIE_NAME, sessionId);
-//		saveSessionToDB(getConnection(), session, sessionId);
-		deleteSessionOfDB(session, sessionId);
-		
-		session.invalidate();
+			saveCookieToResponse(response, sessionId, true);
+
+			deleteSessionOfDB(session, sessionId);
+			session.invalidate();
+		}
 	}
 
-	
 	public void updateSession(HttpServletRequest request, HttpServletResponse response) {
 		String cookie = readCookieValue(request);
 		if (cookie != null) {
@@ -187,53 +185,59 @@ public class BSHttpServletSSO extends HttpServlet {
 
 	}
 
-		protected void deleteSessionOfDB(HttpSession session, String sessionId) {
-                SessionBean sessionBean = new SessionBean();
-                SessionDataBean sessionDataBean = new SessionDataBean();
-				BSBeanUtils bu = new BSBeanUtils();
-				Connection conn = ds.getConnection();
-				
-				 bu.search(conn, sessionBean, "cSessionId=?", sessionId);
-				
-				bu.delete(conn, sessionDataBean, "cSession=?", sessionBean.getId());
-				bu.delete(conn, sessionBean);
-				
-				
+	protected void deleteSessionOfDB(HttpSession session, String sessionId) {
+		SessionBean sessionBean = new SessionBean();
+		SessionDataBean sessionDataBean = new SessionDataBean();
+		BSBeanUtils bu = new BSBeanUtils();
+		Connection conn = getConnection();
+
+		bu.search(conn, sessionBean, "cSessionId=?", sessionId);
+
+		List<SessionDataBean> dataList = (List<SessionDataBean>) bu
+				.list(conn, sessionDataBean, "cSession=?", sessionBean.getId());
+
+		for (SessionDataBean data : dataList) {
+			bu.delete(conn, data);
 		}
-		
-		protected SessionBean saveSessionToDB(Connection conn, HttpSession session, String sessionId) {
-                SessionBean sessionBean = new SessionBean();
-                SessionDataBean sessionDataBean = new SessionDataBean();
-                BSBeanUtils bu = new BSBeanUtils();
-				
-				sessionBean.setSessionId(sessionId);
-                bu.search(conn, sessionBean, "cSessionId=?", sessionId);
-				sessionBean.setLastAccess(new Timestamp(System.currentTimeMillis()));
-                bu.save(conn, sessionBean);
+		bu.delete(conn, sessionBean);
 
-				
-                Enumeration<String> names = session.getAttributeNames();
-                String name = null;
-				
-                while (names.hasMoreElements()) {
-                        name = names.nextElement();
-						
-						sessionDataBean.setSession(sessionBean.getId());
-						bu.search(conn, sessionDataBean, "cSession=? AND cName=?", sessionBean.getId(), name);
-						sessionDataBean.setSession(sessionBean.getId());
-						
-						sessionDataBean.setName(name);
-						sessionDataBean.setValue(objectToString(session.getAttribute(name)));
-						
-                        // saveObjectToDB(conn, bu, sessionDataBean, sessionBean.getId(), name, objectAsString);
-                        // saveObjectToDB(conn, sessionId, name, objectAsString);
-						
-						bu.save(conn, sessionDataBean);
-                }
-                return sessionBean;
-        }
+	}
 
+	protected SessionBean saveSessionToDB(Connection conn, HttpSession session, String sessionId) {
+		SessionBean sessionBean = new SessionBean();
+		SessionDataBean sessionDataBean = null;
+		BSBeanUtils bu = new BSBeanUtils();
 
+		sessionBean.setSessionId(sessionId);
+		bu.search(conn, sessionBean, "cSessionId=?", sessionId);
+		sessionBean.setLastAccess(new Timestamp(System.currentTimeMillis()));
+		bu.save(conn, sessionBean);
+
+		Enumeration<String> names = session.getAttributeNames();
+		String name = null;
+
+		while (names.hasMoreElements()) {
+			name = names.nextElement();
+			sessionDataBean = new SessionDataBean();
+
+			sessionDataBean.setSession(sessionBean.getId());
+			bu.search(conn, sessionDataBean, "cSession=? AND cName=?", sessionBean.getId(), name);
+			sessionDataBean.setSession(sessionBean.getId());
+
+			sessionDataBean.setName(name);
+			sessionDataBean.setData(objectToString(session.getAttribute(name)));
+
+			// saveObjectToDB(conn, bu, sessionDataBean, sessionBean.getId(),
+			// name, objectAsString);
+			// saveObjectToDB(conn, sessionId, name, objectAsString);
+
+			bu.save(conn, sessionDataBean);
+		}
+		return sessionBean;
+	}
+
+	/**
+	 * <code>
 	protected void saveObjectToDB(Connection conn, BSBeanUtils bu, SessionDataBean sessionDataBean, Long sessionId,
 			String dataName, String object) {
 		sessionDataBean.setId(sessionId);
@@ -245,7 +249,8 @@ public class BSHttpServletSSO extends HttpServlet {
 
 		bu.save(conn, sessionDataBean);
 	}
-
+</code>
+	 */
 	public String readCookieValue(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		String out = null;
@@ -303,12 +308,13 @@ public class BSHttpServletSSO extends HttpServlet {
 	}
 
 	public Cookie saveCookieToResponse(HttpServletResponse response, String sessionId) {
-		saveCookieToResponse(response, sessionId, false);
+		return saveCookieToResponse(response, sessionId, false);
 	}
+
 	public Cookie saveCookieToResponse(HttpServletResponse response, String sessionId, Boolean delete) {
 		Cookie cookie = new Cookie(SESSION_COOKIE_NAME, sessionId);
 		cookie.setPath(ROOT);
-		cookie.setMaxAge(delete?0:MAX_AGE);
+		cookie.setMaxAge(delete ? 0 : MAX_AGE);
 		response.addCookie(cookie);
 		return cookie;
 	}

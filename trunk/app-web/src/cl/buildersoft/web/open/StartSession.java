@@ -19,6 +19,7 @@ public class StartSession extends BSHttpServletSSO {
 	private static final long serialVersionUID = 2003517134295990179L;
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		deleteSession(request, response);
 		String url = null;
 		BSConfig config = new BSConfig();
 		BSmySQL mysql = new BSmySQL();

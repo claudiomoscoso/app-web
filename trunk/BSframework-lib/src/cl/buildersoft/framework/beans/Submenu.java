@@ -1,9 +1,11 @@
 package cl.buildersoft.framework.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Submenu {
+public class Submenu implements Serializable {
+	private static final long serialVersionUID = 9072040188432813085L;
 	private Option option = null;
 	private List<Submenu> submenuList = null;
 
@@ -70,7 +72,6 @@ public class Submenu {
 
 	@Override
 	public String toString() {
-		return "Submenu [option=" + option + ", submenuList=" + submenuList
-				+ "]\n\t";
+		return "Submenu [option=" + option + ", submenuList=" + submenuList + "]\n\t";
 	}
 }

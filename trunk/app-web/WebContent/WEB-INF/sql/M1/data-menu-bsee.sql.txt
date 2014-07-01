@@ -11,3 +11,22 @@ SET @menuIdWorkflow = LAST_INSERT_ID();
 	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('INSTANCES', 'Flujos en ejecución', '/servlet/workflow/InstancesManager', @menuIdWorkflow, 2);
 
 /*********************************************/
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('SYSTEM', 'Sistema', NULL, NULL, 1);
+SET @menuIdSystem = LAST_INSERT_ID(); 
+INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, @menuIdSystem);
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('USER', 'Usuarios', '/servlet/system/user/UserManager', @menuIdSystem, 1);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('ALLOW', 'Permisos de roles', '/servlet/system/roleDef/RoleDef', @menuIdSystem, 3);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('CH_PASS', 'Cambio de clave', '/servlet/system/changepassword/SearchPassword', @menuIdSystem, 4);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('ROL', 'Definicion de Roles', '/servlet/system/role/RolManager', @menuIdSystem, 2);
+	INSERT INTO tR_RolOption(cRol, cOption) VALUES(@rolId, LAST_INSERT_ID());
+	
+INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('CONFIG', 'Configuracion del Sistema', NULL, NULL, 2);
+SET @menuIdConfig = LAST_INSERT_ID();
+	INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cOrder) VALUES('PARAMS', 'Parametros', '/servlet/config/systemparams/ParameterManager', @menuIdConfig, 1);
+	SET @menuId = LAST_INSERT_ID();
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('ADD_PARAMS', 'Boton Nuevo', null, @menuId, 2);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('MOD_PARAMS', 'Boton Modificar', null, @menuId, 2);
+		INSERT INTO tOption(cKey, cLabel, cUrl, cParent, cType) VALUES('DEL_PARAMS', 'Boton Borrar', null, @menuId, 2);

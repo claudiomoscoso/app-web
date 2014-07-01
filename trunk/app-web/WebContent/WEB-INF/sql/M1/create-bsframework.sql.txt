@@ -96,7 +96,7 @@ create table bsframework.tSessionData (
 	cId		BIGINT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cSession 	BIGINT  NOT NULL,
 	cName		VARCHAR(250) NOT NULL,
-	cValue		TEXT
+	cData		TEXT
 ) ENGINE=innoDB;
 
 

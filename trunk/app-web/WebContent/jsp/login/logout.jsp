@@ -1,6 +1,6 @@
 <%=getServletContext().getContextPath() %>
 <%
-request.getSession().invalidate();
+//request.getSession().invalidate();
 
 response.sendRedirect(getServletContext().getContextPath());
 %>
