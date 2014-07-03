@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.util.crud.BSField;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 /**
  * Servlet implementation class RolManager
  */
 @WebServlet("/servlet/admin/RolManager")
-public class RolManager extends BSHttpServlet {
+public class RolManager extends BSHttpServletCRUD {
 	private static final long serialVersionUID = 1L;
 
 	public RolManager() {

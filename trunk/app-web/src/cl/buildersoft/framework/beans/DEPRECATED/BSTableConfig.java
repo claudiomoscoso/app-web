@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.beans.DEPRECATED;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,18 +6,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import cl.buildersoft.framework.beans.BSField;
 import cl.buildersoft.framework.dataType.BSDataType;
+import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
-import cl.buildersoft.framework.type.BSActionType;
-import cl.buildersoft.framework.type.BSDataType;
+import cl.buildersoft.framework.util.crud.BSActionType;
 
 import com.mysql.jdbc.DatabaseMetaData;
 
@@ -31,7 +29,7 @@ public class BSTableConfig {
 	private BSAction[] actions = null;
 	private String sortField = null;
 	private Map<String, String[]> fkInfo = null;
-	private Set<String> tablesCommon = null;
+//	private Set<String> tablesCommon = null;
 	private String pk = null;
 	private String key = null;
 
@@ -247,7 +245,7 @@ public class BSTableConfig {
 					String sql = "SELECT cId,cName ";
 					sql += "FROM " + databaseFK + ".";
 					sql += tableFK;
-//					sql += field2Table(conn, field.getName());
+					// sql += field2Table(conn, field.getName());
 					sql += " ORDER BY cName";
 
 					field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(conn, sql, null)));
@@ -256,6 +254,7 @@ public class BSTableConfig {
 		}
 	}
 
+	/**<code>
 	private String field2Table(Connection conn, String fieldName) {
 		String out = null;
 		String table = "t" + fieldName.substring(1);
@@ -276,7 +275,7 @@ public class BSTableConfig {
 
 		return out;
 	}
-
+</code>*/
 	private String[] getFKTableInfo(Connection conn, BSField field) {
 		/**
 		 * <code>
@@ -319,7 +318,7 @@ public class BSTableConfig {
 
 		return out;
 	}
-
+/**<code>
 	private Boolean isExistInCommon(Connection conn, String table) {
 		// Boolean out = Boolean.FALSE;
 		if (this.tablesCommon == null) {
@@ -362,7 +361,7 @@ public class BSTableConfig {
 		}
 		return databases;
 	}
-
+</code>*/
 	protected void configField(Connection conn, ResultSetMetaData metaData, String name, Integer i, BSField field) {
 		try {
 			if (field.getType() == null) {
@@ -404,19 +403,25 @@ public class BSTableConfig {
 		}
 
 		if (typeName.equals("BIGINT")) {
-			field.setType(BSDataType.LONG);
+			field.setType(BSDataTypeUtil.create(BSDataType.LONG));
+			// field.setType(BSDataType.LONG);
 		} else if (typeName.equals("VARCHAR") || typeName.equals("CHAR")) {
-			field.setType(BSDataType.STRING);
+			field.setType(BSDataTypeUtil.create(BSDataType.STRING));
 		} else if (typeName.equals("DATE")) {
-			field.setType(BSDataType.DATE);
+			field.setType(BSDataTypeUtil.create(BSDataType.DATE));
+			//field.setType(BSDataType.DATE);
 		} else if (typeName.equals("TIMESTAMP")) {
-			field.setType(BSDataType.TIMESTAMP);
+			field.setType(BSDataTypeUtil.create(BSDataType.CALENDAR));
+			//field.setType(BSDataType.TIMESTAMP);
 		} else if (typeName.equals("DOUBLE")) {
-			field.setType(BSDataType.DOUBLE);
+			field.setType(BSDataTypeUtil.create(BSDataType.DOUBLE));
+//			field.setType(BSDataType.DOUBLE);
 		} else if (typeName.equals("BIT")) {
-			field.setType(BSDataType.BOOLEAN);
+			field.setType(BSDataTypeUtil.create(BSDataType.BOOLEAN));
+//			field.setType(BSDataType.BOOLEAN);
 		} else if (typeName.equals("INT")) {
-			field.setType(BSDataType.INTEGER);
+			field.setType(BSDataTypeUtil.create(BSDataType.INTEGER));
+//			field.setType(BSDataType.INTEGER);
 		} else {
 			throw new BSProgrammerException("0110", "No está catalogado el tipo " + typeName
 					+ ", verifique método BSTableConfig.setRealType()");

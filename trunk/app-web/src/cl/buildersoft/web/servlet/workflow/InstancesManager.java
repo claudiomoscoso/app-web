@@ -7,9 +7,10 @@ import cl.buildersoft.framework.util.crud.BSAction;
 import cl.buildersoft.framework.util.crud.BSActionType;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/workflow/InstancesManager")
-public class InstancesManager extends BSHttpServlet {
+public class InstancesManager extends BSHttpServletCRUD {
 	private static final long serialVersionUID = 583201704776707035L;
 
 	@Override

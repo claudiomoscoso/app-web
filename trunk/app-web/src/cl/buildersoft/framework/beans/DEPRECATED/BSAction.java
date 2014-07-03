@@ -1,6 +1,6 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.beans.DEPRECATED;
 
-import cl.buildersoft.framework.type.BSActionType;
+import cl.buildersoft.framework.util.crud.BSActionType;
 
 public class BSAction {
 	private String code = null;

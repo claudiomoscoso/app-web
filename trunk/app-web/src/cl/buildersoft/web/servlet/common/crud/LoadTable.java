@@ -13,10 +13,10 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.crud.BSPaging;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/LoadTable")
-public class LoadTable extends AbstractServletUtil {
+public class LoadTable extends BSHttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static String URL = "/servlet/common/crud/LoadTable";
 
@@ -31,10 +31,9 @@ public class LoadTable extends AbstractServletUtil {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 
+		Connection conn = getConnection(request);
+
 		BSmySQL mysql = new BSmySQL();
-
-		Connection conn = mysql.getConnection(request);
-
 		table.configFields(conn, mysql);
 
 		BSPaging paging = new BSPaging(conn, mysql, table, request);

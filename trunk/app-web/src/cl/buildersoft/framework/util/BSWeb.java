@@ -39,6 +39,7 @@ public class BSWeb {
 	private static final String PATTERN_DECIMAL = "PATTERN_DECIMAL";
 	private static final String PATTERN_INTEGER = "PATTERN_INTEGER";
 
+	/**<code>
 	public static Object value2Object(Connection conn, HttpServletRequest request, BSField field, boolean fromWebPage) {
 		Object out = null;
 		String name = field.getName();
@@ -54,7 +55,7 @@ public class BSWeb {
 
 		return out;
 	}
-
+</code>*/
 	private static Object evaluateType(Connection conn, HttpServletRequest request, Object out, String value, BSFieldType type,
 			BSField field) {
 

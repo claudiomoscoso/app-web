@@ -7,12 +7,13 @@ import cl.buildersoft.framework.util.crud.BSAction;
 import cl.buildersoft.framework.util.crud.BSActionType;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 /**
  * Servlet implementation class EmployeeManager
  */
 @WebServlet("/servlet/config/employee/EmployeeManager")
-public class EmployeeManager extends BSHttpServlet {
+public class EmployeeManager extends BSHttpServletCRUD {
 	private static final long serialVersionUID = 1L;
 
 	@Override

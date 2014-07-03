@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.BSUtils;
-import cl.buildersoft.framework.util.BSWeb;
 import cl.buildersoft.framework.util.crud.BSField;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.AbstractServletUtil;
@@ -81,8 +81,11 @@ public class InsertRecord extends AbstractServletUtil {
 		List<Object> out = new ArrayList<Object>();
 		Object value = null;
 
+//		BSDataTypeUtil du = new BSDataTypeUtil();
+		
 		for (BSField field : fields) {
-			value = BSWeb.value2Object(conn, request, field, true);
+//			value = BSWeb.value2Object(conn, request, field, true);
+			value = field.getType().parse(conn, field.getValue().toString());
 			out.add(value);
 
 		}

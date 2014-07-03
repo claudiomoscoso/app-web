@@ -3,9 +3,9 @@
 <%@page import="cl.buildersoft.framework.dataType.BSDataType"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.PrintWriter"%>
-<%@page import="cl.buildersoft.framework.beans.BSCss"%>
-<%@page import="cl.buildersoft.framework.beans.BSScript"%>
-<%@page import="cl.buildersoft.framework.beans.BSHeadConfig"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSCss"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSScript"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSHeadConfig"%>
 <%!private String getAlign(BSField field) {
 		String out = " align='left' ";
 

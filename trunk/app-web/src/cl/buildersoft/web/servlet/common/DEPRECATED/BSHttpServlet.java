@@ -1,14 +1,21 @@
-package cl.buildersoft.web.servlet.common;
+package cl.buildersoft.web.servlet.common.DEPRECATED;
 
-import cl.buildersoft.sso.filter.BSHttpServletSSO;
+import java.io.IOException;
+import java.sql.Connection;
 
-public abstract class BSHttpServlet extends BSHttpServletSSO {
-	private static final long serialVersionUID = 1537122543903845585L;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-	
-	
-	/**
-	 * <code>
+import cl.buildersoft.framework.beans.Domain;
+import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.framework.util.crud.BSTableConfig;
+
+public abstract class BSHttpServlet extends HttpServlet {
+	private static final long serialVersionUID = 713819586332712332L;
+
 	protected abstract BSTableConfig getBSTableConfig(HttpServletRequest request);
 
 	public BSHttpServlet() {
@@ -46,6 +53,5 @@ public abstract class BSHttpServlet extends BSHttpServletSSO {
 			table.getField(fieldName).setVisible(false);
 		}
 	}
-</code>
-	 */
+
 }

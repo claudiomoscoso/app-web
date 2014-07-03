@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.beans;
+package cl.buildersoft.framework.beans.DEPRECATED;
 
 import java.util.ArrayList;
 import java.util.List;

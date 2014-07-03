@@ -1,7 +1,7 @@
 <%@page import="cl.buildersoft.framework.util.BSDateTimeUtil"%>
-<%@page import="cl.buildersoft.framework.beans.BSCss"%>
-<%@page import="cl.buildersoft.framework.beans.BSScript"%>
-<%@page import="cl.buildersoft.framework.beans.BSHeadConfig"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSCss"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSScript"%>
+<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSHeadConfig"%>
 <%@page import="cl.buildersoft.framework.dataType.BSDataType"%>
 <%@page import="cl.buildersoft.framework.util.crud.BSField"%>
 <%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
