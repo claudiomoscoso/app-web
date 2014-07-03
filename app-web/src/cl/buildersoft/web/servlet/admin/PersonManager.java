@@ -11,9 +11,10 @@ import cl.buildersoft.framework.util.crud.BSAction;
 import cl.buildersoft.framework.util.crud.BSActionType;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/admin/PersonManager")
-public class PersonManager extends BSHttpServlet implements Servlet {
+public class PersonManager extends BSHttpServletCRUD implements Servlet {
 	private static final long serialVersionUID = 1L;
 
 	public PersonManager() {

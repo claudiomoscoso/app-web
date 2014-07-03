@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -94,6 +93,7 @@ public class ValidateLoginServlet extends BSHttpServletSSO {
 					session.setAttribute("Domain", defaultDomain);
 					session.setAttribute("DomainAttribute", domainAttributes);
 					session.setAttribute("UseBootrstap", useBootstrap);
+					session.setAttribute("CurrentDatasource", domainAttributes.get("datasource").getValue());
 				}
 //				Cookie cookie = saveCookieToResponse(response, null);
 

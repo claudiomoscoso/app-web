@@ -5,9 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/admin/comuna/ComunaManager")
-public class ComunaManager extends BSHttpServlet {
+public class ComunaManager extends BSHttpServletCRUD {
 
 	private static final long serialVersionUID = -3771211715459399925L;
 

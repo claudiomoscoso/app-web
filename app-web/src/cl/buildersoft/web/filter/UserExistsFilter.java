@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet Filter implementation class UserExists
- */
-@WebFilter(urlPatterns = { "/servlet/*" }, dispatcherTypes = {
+ 
+@ WebFilter(urlPatterns = { "/servlet/*" }, dispatcherTypes = {
 		DispatcherType.REQUEST, DispatcherType.FORWARD })
+		 */
 public class UserExistsFilter implements Filter {
 	public UserExistsFilter() {
 	}

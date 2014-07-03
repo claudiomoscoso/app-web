@@ -5,9 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/workflow/FlowManager")
-public class FlowManager extends BSHttpServlet {
+public class FlowManager extends BSHttpServletCRUD {
 	private static final long serialVersionUID = 5031905095957507242L;
 
 	@Override

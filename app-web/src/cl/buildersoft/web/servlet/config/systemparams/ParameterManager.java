@@ -6,9 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.framework.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/config/systemparams/ParameterManager")
-public class ParameterManager extends BSHttpServlet implements Servlet {
+public class ParameterManager extends BSHttpServletCRUD implements Servlet {
 	private static final long serialVersionUID = 5621476235297476355L;
 
 	public ParameterManager() {

@@ -11,8 +11,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
-
-@WebFilter(urlPatterns = { "/servlet/*", "/jsp/*", "/Test*" })
+/**
+@ WebFilter(urlPatterns = { "/servlet/*", "/jsp/*", "/Test*" })
+*/
 public class NoCacheFilter implements Filter {
 
 	public NoCacheFilter() {

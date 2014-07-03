@@ -25,14 +25,11 @@ public class UpdateRecord extends AbstractServletUtil {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
-				.forward(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		BSTableConfig table = null;
 		synchronized (session) {
@@ -55,27 +52,25 @@ public class UpdateRecord extends AbstractServletUtil {
 
 		mysql.update(conn, sql, params);
 		mysql.closeConnection(conn);
-		
-		request.getRequestDispatcher(LoadTable.URL).forward(
-				request, response);
+
+		request.getRequestDispatcher(LoadTable.URL).forward(request, response);
 	}
 
-	private List<Object> getParams(Connection conn, HttpServletRequest request,
-			BSField[] fieldsWidthoutId, BSField idField) {
+	private List<Object> getParams(Connection conn, HttpServletRequest request, BSField[] fieldsWidthoutId, BSField idField) {
 		List<Object> out = new ArrayList<Object>();
 
 		for (BSField field : fieldsWidthoutId) {
-			out.add(BSWeb.value2Object(conn, request, field,true));
+			out.add(field.getType().parse(conn, field.getValueAsString()));
+			// out.add(BSWeb.value2Object(conn, request, field,true));
 		}
-		out.add(BSWeb.value2Object(conn, request, idField, true));
+		out.add(idField.getType().parse(conn, idField.getValueAsString()));
+		// out.add(BSWeb.value2Object(conn, request, idField, true));
 
 		return out;
 	}
 
-	private String getSQL(BSTableConfig table, BSField[] fieldsWidthoutId,
-			BSField idField) {
-		String sql = "UPDATE " + table.getDatabase() + "."
-				+ table.getTableName();
+	private String getSQL(BSTableConfig table, BSField[] fieldsWidthoutId, BSField idField) {
+		String sql = "UPDATE " + table.getDatabase() + "." + table.getTableName();
 		sql += " SET " + unSplit(fieldsWidthoutId, "=?,");
 		sql += " WHERE " + idField.getName() + "=?";
 

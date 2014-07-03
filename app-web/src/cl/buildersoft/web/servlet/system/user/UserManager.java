@@ -10,10 +10,10 @@ import cl.buildersoft.framework.util.crud.BSAction;
 import cl.buildersoft.framework.util.crud.BSActionType;
 import cl.buildersoft.framework.util.crud.BSField;
 import cl.buildersoft.framework.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.BSHttpServlet;
+import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/system/user/UserManager")
-public class UserManager extends BSHttpServlet {
+public class UserManager extends BSHttpServletCRUD {
 	private static final long serialVersionUID = -3497399350893131897L;
 
 	@Override
