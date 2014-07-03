@@ -1,5 +1,6 @@
 package cl.buildersoft.framework.util.crud;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -19,7 +20,8 @@ import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
 
-public class BSTableConfig {
+public class BSTableConfig implements Serializable {
+	private static final long serialVersionUID = -6147545302213822743L;
 	private String database = null;
 	private String tableName = null;
 	private String[] fields = null;

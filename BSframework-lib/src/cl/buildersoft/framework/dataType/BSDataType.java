@@ -3,7 +3,7 @@ package cl.buildersoft.framework.dataType;
 import java.sql.Connection;
 
 public interface BSDataType {
-	public static final String STRING = BSDataType.class.getPackage().getName() + ".BSString";
+	public static final String STRING =  BSDataType.class.getPackage().getName() + ".BSString";
 	public static final String INTEGER = BSDataType.class.getPackage().getName() + ".BSInteger";
 	public static final String DOUBLE = BSDataType.class.getPackage().getName() + ".BSDouble";
 	public static final String LONG = BSDataType.class.getPackage().getName() + ".BSLong";
