@@ -25,9 +25,11 @@ import javax.sql.DataSource;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import cl.buildersoft.framework.beans.Domain;
 import cl.buildersoft.framework.database.BSBeanUtils;
 import cl.buildersoft.framework.exception.BSConfigurationException;
 import cl.buildersoft.framework.exception.BSSystemException;
+import cl.buildersoft.framework.util.BSDataUtils;
 import cl.buildersoft.sso.bean.SessionBean;
 import cl.buildersoft.sso.bean.SessionDataBean;
 
@@ -103,6 +105,18 @@ public class BSHttpServletSSO extends HttpServlet {
 
 	private boolean thereDataSource() {
 		return this.dataSourceName != null && this.dataSourceName.trim().length() > 0;
+	}
+
+	public Connection getConnection(HttpServletRequest request) throws BSConfigurationException {
+		BSDataUtils dau = new BSDataUtils();
+
+		String currentDataSource = (String) request.getSession().getAttribute("CurrentDatasource");
+
+		// defaultDomain = domains.get(0);
+		// domainAttributes = getDomainAttributes(connBSframework,
+		// defaultDomain);
+		Connection conn = dau.getConnection2(request.getServletContext(), currentDataSource);
+		return conn;
 	}
 
 	public Connection getConnection() throws BSConfigurationException {
