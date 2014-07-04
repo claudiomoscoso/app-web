@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import cl.buildersoft.business.enterprise.beans.Employee;
 import cl.buildersoft.business.enterprise.service.EmployeeService;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.exception.BSProgrammerException;
 
 public class EmployeeServiceImpl implements EmployeeService {
 

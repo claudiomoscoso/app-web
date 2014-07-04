@@ -2,8 +2,8 @@ package cl.buildersoft.business.workflow.beans;
 
 import java.util.List;
 
-import cl.buildersoft.framework.beans.BSBean;
-import cl.buildersoft.framework.dataType.BSDataType;
+import cl.buildersoft.lib.beans.BSBean;
+import cl.buildersoft.lib.dataType.BSDataType;
 
 public class Step extends BSBean {
 	private static final long serialVersionUID = 6066212423899455423L;

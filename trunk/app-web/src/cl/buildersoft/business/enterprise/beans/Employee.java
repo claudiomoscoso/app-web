@@ -2,7 +2,7 @@ package cl.buildersoft.business.enterprise.beans;
 
 import java.util.Date;
 
-import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.lib.beans.BSBean;
 
 public class Employee extends BSBean {
 	private static final long serialVersionUID = 5015716040873333572L;
