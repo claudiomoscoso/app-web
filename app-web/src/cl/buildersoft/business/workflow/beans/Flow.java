@@ -1,6 +1,6 @@
 package cl.buildersoft.business.workflow.beans;
 
-import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.lib.beans.BSBean;
 
 public class Flow extends BSBean {
 	private static final long serialVersionUID = -2550466801996973243L;

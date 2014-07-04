@@ -1,6 +1,6 @@
 package cl.buildersoft.business.workflow.beans;
 
-import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.lib.beans.BSBean;
 
 public class Instance extends BSBean {
 	private static final long serialVersionUID = 5970049877943399494L;

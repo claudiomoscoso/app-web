@@ -1,6 +1,6 @@
 package cl.buildersoft.business.enterprise.beans;
 
-import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.lib.beans.BSBean;
 
 public class FiscalDate extends BSBean {
 	private static final long serialVersionUID = 5758421276681861269L;

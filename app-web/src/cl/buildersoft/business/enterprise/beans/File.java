@@ -1,6 +1,6 @@
 package cl.buildersoft.business.enterprise.beans;
 
-import cl.buildersoft.framework.beans.BSBean;
+import cl.buildersoft.lib.beans.BSBean;
 
 public class File extends BSBean {
 	private static final long serialVersionUID = 8534647655605197606L;

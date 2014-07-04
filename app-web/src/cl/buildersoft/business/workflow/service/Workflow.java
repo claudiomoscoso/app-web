@@ -5,7 +5,7 @@ import java.util.List;
 import cl.buildersoft.business.workflow.beans.Flow;
 import cl.buildersoft.business.workflow.beans.Instance;
 import cl.buildersoft.business.workflow.beans.Step;
-import cl.buildersoft.framework.beans.User;
+import cl.buildersoft.lib.beans.User;
 
 public interface Workflow {
 	public List<Flow> getFlows();

@@ -13,10 +13,9 @@ import cl.buildersoft.business.workflow.beans.Flow;
 import cl.buildersoft.business.workflow.beans.Instance;
 import cl.buildersoft.business.workflow.beans.Step;
 import cl.buildersoft.business.workflow.service.Workflow;
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.exception.BSConfigurationException;
-import cl.buildersoft.framework.util.BSUtils;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.exception.BSConfigurationException;
 
 public class WorkflowImpl implements Workflow {
 
@@ -81,7 +80,7 @@ public class WorkflowImpl implements Workflow {
 	@Override
 	public void update(Instance instance, User user) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -93,31 +92,33 @@ public class WorkflowImpl implements Workflow {
 	@Override
 	public void jumpStep(Instance instance, Step step, User user) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void loadFieldsFlow(Flow flow) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void loadFieldsInstance(Instance instance) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void updateFieldsInstance(Instance instance, User user) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void loadFlowFromXPDL(String xml) {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	 
 
 }
