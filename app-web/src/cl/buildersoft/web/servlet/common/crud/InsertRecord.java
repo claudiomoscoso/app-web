@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.dataType.BSDataTypeUtil;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.BSUtils;
-import cl.buildersoft.framework.util.crud.BSField;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.dataType.BSDataTypeUtil;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.util.BSUtils;
+import cl.buildersoft.lib.util.crud.BSField;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.AbstractServletUtil;
 
 @WebServlet("/servlet/common/crud/InsertRecord")

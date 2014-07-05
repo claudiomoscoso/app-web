@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Rol;
-import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.lib.beans.Rol;
+import cl.buildersoft.lib.database.BSmySQL;
 
 @WebServlet("/servlet/system/roledef/SaveRoleDef")
 public class SaveRoleDef extends HttpServlet {

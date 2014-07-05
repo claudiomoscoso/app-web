@@ -1,4 +1,4 @@
-<%@page import="cl.buildersoft.framework.util.BSWeb"%>
+<%@page import="cl.buildersoft.lib.util.BSWeb"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%

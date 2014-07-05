@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.database;
+package cl.buildersoft.lib.database;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -12,10 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import cl.buildersoft.framework.beans.BSTableConfig;
-import cl.buildersoft.framework.exception.BSDataBaseException;
-import cl.buildersoft.framework.util.BSDataUtils;
-import cl.buildersoft.framework.util.BSPaging;
+import cl.buildersoft.lib.exception.BSDataBaseException;
+import cl.buildersoft.lib.util.BSDataUtils;
+import cl.buildersoft.lib.util.crud.BSPaging;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 
 public class BSmySQL extends BSDataUtils {
 	CallableStatement callableStatement;

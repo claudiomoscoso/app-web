@@ -19,9 +19,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import cl.buildersoft.business.enterprise.beans.DatabaseFile;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.BSSystemException;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.exception.BSSystemException;
 
 @WebServlet("/servlet/file/Upload")
 public class Upload extends HttpServlet {

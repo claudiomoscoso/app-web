@@ -1,7 +1,7 @@
-<%@page import="cl.buildersoft.framework.util.BSWeb"%>
-<%@ page import="cl.buildersoft.framework.beans.Menu"%>
-<%@ page import="cl.buildersoft.framework.beans.Submenu"%>
-<%@ page import="cl.buildersoft.framework.beans.Option"%>
+<%@page import="cl.buildersoft.lib.util.BSWeb"%>
+<%@page import="cl.buildersoft.lib.beans.Option"%>
+<%@page import="cl.buildersoft.lib.beans.Submenu"%>
+<%@page import="cl.buildersoft.lib.beans.Menu"%>
 <%@ page import="java.util.List"%>
 
 

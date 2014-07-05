@@ -1,11 +1,10 @@
-<%@page import="cl.buildersoft.framework.util.crud.BSAction"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSActionType"%>
-<%@page import="cl.buildersoft.framework.util.BSDateTimeUtil"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSAction"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSActionType"%>
+<%@page import="cl.buildersoft.lib.util.BSDateTimeUtil"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="cl.buildersoft.framework.database.BSmySQL"%>
-<%@page import="cl.buildersoft.framework.type.BSFieldDataType"%>
-<%@page import="cl.buildersoft.framework.type.BSTypeFactory"%>
-<%@page import="cl.buildersoft.framework.util.BSWeb"%>
+<%@page import="cl.buildersoft.lib.database.BSmySQL"%>
+<%@page import="cl.buildersoft.lib.type.BSFieldDataType"%>
+<%@page import="cl.buildersoft.lib.util.BSWeb"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.Format"%>
@@ -199,7 +198,7 @@
 
 			out += "</td>";
 		}
-		BSFieldType type = null;
+		BSDataType type = null;
 		for (BSField field : fields) {
 			type = field.getType();
 
@@ -212,18 +211,18 @@
 				if (field.isFK()) {
 					out += getFKValue(field, value);
 				} else {
-					if (type.equals(BSFieldType.Boolean)) {
+					if (type.equals(BSDataType.BOOLEAN)) {
 						Boolean b = (Boolean) value;
 						if (b.booleanValue() == Boolean.TRUE) {
 							out += "Si";
 						} else {
 							out += "No";
 						}
-					} else if (type.equals(BSFieldType.Double)) {
+					} else if (type.equals(BSDataType.DOUBLE)) {
 						out += BSWeb.formatDouble(request, (Double) value);
-					} else if (type.equals(BSFieldType.Date)) {
+					} else if (type.equals(BSDataType.DATE)) {
 						out += BSDateTimeUtil.date2String(request, value);
-					} else if (type.equals(BSFieldType.Integer)) {
+					} else if (type.equals(BSDataType.INTEGER)) {
 						out += BSWeb.formatInteger(request, (Integer) value);
 					}
 

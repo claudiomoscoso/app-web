@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.beans.Menu;
-import cl.buildersoft.framework.beans.Rol;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.services.BSMenuService;
-import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
+import cl.buildersoft.lib.beans.Menu;
+import cl.buildersoft.lib.beans.Rol;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.services.BSMenuService;
+import cl.buildersoft.lib.services.impl.BSMenuServiceImpl;
 
 /**
  * Servlet implementation class RoleDef

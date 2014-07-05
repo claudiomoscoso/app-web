@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.BSWeb;
-import cl.buildersoft.framework.util.crud.BSField;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.util.BSWeb;
+import cl.buildersoft.lib.util.crud.BSField;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.AbstractServletUtil;
 
 @WebServlet("/servlet/common/crud/UpdateRecord")

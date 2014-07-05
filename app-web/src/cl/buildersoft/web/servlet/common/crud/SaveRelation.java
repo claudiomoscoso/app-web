@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.BSDataBaseException;
-import cl.buildersoft.framework.util.crud.BSAction;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.exception.BSDataBaseException;
+import cl.buildersoft.lib.util.crud.BSAction;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 
 /**
  * Servlet implementation class SaveRelation

@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.util.BSDateTimeUtil;
+import cl.buildersoft.lib.util.BSDateTimeUtil;
 
 @WebServlet("/servlet/ajax/IsDate")
 public class IsDate extends AbstractAjaxServlet {

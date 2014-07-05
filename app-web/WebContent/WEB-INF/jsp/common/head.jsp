@@ -1,6 +1,6 @@
 <%@page import="org.apache.catalina.ant.SessionsTask"%>
-<%@page import="cl.buildersoft.framework.beans.Domain"%>
-<%@page import="cl.buildersoft.framework.beans.User"%>
+
+<%@page import="cl.buildersoft.lib.beans.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

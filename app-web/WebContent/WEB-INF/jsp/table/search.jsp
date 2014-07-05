@@ -1,5 +1,5 @@
-<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
-<%@page import="cl.buildersoft.framework.util.BSPaging"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSTableConfig"%>
+ 
 
 <div align="right" width="100%" class="cLabel">
 

@@ -2,8 +2,6 @@ package cl.buildersoft.web.servlet.system.user;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.beans.BSBean;
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.database.BSmySQL;
 
 /**
  * Servlet implementation class UserSave

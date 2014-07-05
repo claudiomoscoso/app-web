@@ -1,7 +1,7 @@
-<%@page import="cl.buildersoft.framework.util.crud.BSField"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSField"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSTableConfig"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="cl.buildersoft.framework.database.BSmySQL"%>
+<%@page import="cl.buildersoft.lib.database.BSmySQL"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.util.ArrayList"%>
@@ -24,9 +24,8 @@
 
 	List<Object[]> relationArray = mysql.resultSet2Matrix(relation);
 	relation.close();
-	
-	new BSmySQL().closeConnection(conn);
 
+	new BSmySQL().closeConnection(conn);
 %>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/table/relation.js?<%=Math.random()%>"></script>

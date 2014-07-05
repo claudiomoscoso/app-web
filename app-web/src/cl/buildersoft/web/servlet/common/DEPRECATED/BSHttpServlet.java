@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Domain;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.beans.Domain;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 
 public abstract class BSHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 713819586332712332L;

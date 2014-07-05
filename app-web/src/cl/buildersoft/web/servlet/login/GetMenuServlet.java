@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Domain;
-import cl.buildersoft.framework.beans.DomainAttribute;
-import cl.buildersoft.framework.beans.Menu;
-import cl.buildersoft.framework.beans.Rol;
-import cl.buildersoft.framework.services.BSMenuService;
-import cl.buildersoft.framework.services.impl.BSMenuServiceImpl;
-import cl.buildersoft.framework.util.BSDataUtils;
+import cl.buildersoft.lib.beans.DomainAttribute;
+import cl.buildersoft.lib.beans.Menu;
+import cl.buildersoft.lib.beans.Rol;
+import cl.buildersoft.lib.services.BSMenuService;
+import cl.buildersoft.lib.services.impl.BSMenuServiceImpl;
+import cl.buildersoft.lib.util.BSDataUtils;
 import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 /**

@@ -4,12 +4,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Domain;
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.util.crud.BSAction;
-import cl.buildersoft.framework.util.crud.BSActionType;
-import cl.buildersoft.framework.util.crud.BSField;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.beans.Domain;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.util.crud.BSAction;
+import cl.buildersoft.lib.util.crud.BSActionType;
+import cl.buildersoft.lib.util.crud.BSField;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/system/user/UserManager")

@@ -3,8 +3,8 @@ package cl.buildersoft.web.servlet.admin;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.framework.util.crud.BSField;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.util.crud.BSField;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 /**

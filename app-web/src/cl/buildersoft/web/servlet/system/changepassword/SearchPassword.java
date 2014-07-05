@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.database.BSmySQL;
 
 @WebServlet("/servlet/system/changepassword/SearchPassword")
 public class SearchPassword extends HttpServlet {

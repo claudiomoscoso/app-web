@@ -1,6 +1,6 @@
-<%@page import="cl.buildersoft.framework.type.BSFieldType"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSField"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
+<%@page import="cl.buildersoft.lib.dataType.BSDataType"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSField"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSTableConfig"%>
 <%@page import="java.sql.ResultSet"%>
 <%
 	BSTableConfig table = (BSTableConfig) session
@@ -53,7 +53,7 @@
 		Integer len = 8;
 		Object value = field.getValue();
 
-		if (field.getType().equals(BSFieldType.String)) {
+		if (field.getType().equals(BSDataType.STRING)) {
 			len = field.getLength();
 			out += "<input type='text' name=' ";
 			out += field.getName();
@@ -69,14 +69,14 @@
 				out += "value='" + value + "' ";
 			}
 			out += ">";
-		} else if (field.getType().equals(BSFieldType.Boolean)) {
+		} else if (field.getType().equals(BSDataType.BOOLEAN)) {
 			out += "<SELECT name='" + field.getName() + "'>";
 
 			out += writeOptionHTML("true", "Si", value);
 			out += writeOptionHTML("false", "No", value);
 
 			out += "</SELECT>";
-		} else if (field.getType().equals(BSFieldType.Date)) {
+		} else if (field.getType().equals(BSDataType.DATE)) {
 			len = 10;
 			out += "<input type='text' name='";
 			out += field.getName();
@@ -84,7 +84,7 @@
 			out += "maxlength='" + len + "'";
 			out += " size='" + len + "px'";
 			out += "> (formato: dd/mm/aaaa)";
-		} else if (field.getType().equals(BSFieldType.Timestamp)) {
+		} else if (field.getType().equals(BSDataType.TIMESTAMP)) {
 			len = 16;
 			out += "<input type='text' name='";
 			out += field.getName();
@@ -92,7 +92,7 @@
 			out += "maxlength='" + len + "'";
 			out += " size='" + len + "px'";
 			out += "> (formato: dd/mm/aaaa hh:mm)";
-		} else if (field.getType().equals(BSFieldType.Double)) {
+		} else if (field.getType().equals(BSDataType.DOUBLE)) {
 			len = 15;
 			out += "<input type='text' name='";
 			out += field.getName();
@@ -100,7 +100,7 @@
 			out += "maxlength='" + len + "'";
 			out += " size='" + len + "px'";
 			out += ">";
-		} else if (field.getType().equals(BSFieldType.Integer)) {
+		} else if (field.getType().equals(BSDataType.INTEGER)) {
 			len = 8;
 			out += "<input type='text' name='";
 			out += field.getName();

@@ -1,6 +1,6 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Map"%>
-<%@page import="cl.buildersoft.framework.type.BSData"%>
+<%@page import="cl.buildersoft.lib.type.BSData"%>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
 <!-- 

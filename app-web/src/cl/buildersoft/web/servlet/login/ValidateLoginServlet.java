@@ -16,18 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Domain;
-import cl.buildersoft.framework.beans.DomainAttribute;
-import cl.buildersoft.framework.beans.Rol;
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.database.BSBeanUtils;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.exception.BSDataBaseException;
-import cl.buildersoft.framework.exception.BSUserException;
-import cl.buildersoft.framework.services.BSUserService;
-import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
-import cl.buildersoft.framework.util.BSConfig;
-import cl.buildersoft.framework.util.BSDataUtils;
+import cl.buildersoft.lib.beans.Domain;
+import cl.buildersoft.lib.beans.DomainAttribute;
+import cl.buildersoft.lib.beans.Rol;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.database.BSBeanUtils;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.exception.BSDataBaseException;
+import cl.buildersoft.lib.exception.BSUserException;
+import cl.buildersoft.lib.services.BSUserService;
+import cl.buildersoft.lib.services.impl.BSUserServiceImpl;
+import cl.buildersoft.lib.util.BSConfig;
+import cl.buildersoft.lib.util.BSDataUtils;
 import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 /**
