@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.util.BSWeb;
+import cl.buildersoft.lib.util.BSWeb;
 
 @WebServlet("/servlet/ajax/FormatedToDouble")
 public class FormatedToDouble extends AbstractAjaxServlet {

@@ -9,8 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.util.BSConfig;
 import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 @WebServlet("/open/StartSession")

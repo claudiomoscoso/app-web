@@ -3,9 +3,9 @@ package cl.buildersoft.web.servlet.config.employee;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
-import cl.buildersoft.framework.util.crud.BSAction;
-import cl.buildersoft.framework.util.crud.BSActionType;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.util.crud.BSAction;
+import cl.buildersoft.lib.util.crud.BSActionType;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 

@@ -1,10 +1,10 @@
-<%@page import="cl.buildersoft.framework.util.BSDateTimeUtil"%>
-<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSCss"%>
-<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSScript"%>
-<%@page import="cl.buildersoft.framework.beans.DEPRECATED.BSHeadConfig"%>
-<%@page import="cl.buildersoft.framework.dataType.BSDataType"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSField"%>
-<%@page import="cl.buildersoft.framework.util.crud.BSTableConfig"%>
+<%@page import="cl.buildersoft.lib.beans.BSCss"%>
+<%@page import="cl.buildersoft.lib.beans.BSScript"%>
+<%@page import="cl.buildersoft.lib.beans.BSHeadConfig"%>
+<%@page import="cl.buildersoft.lib.util.BSDateTimeUtil"%>
+<%@page import="cl.buildersoft.lib.dataType.BSDataType"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSField"%>
+<%@page import="cl.buildersoft.lib.util.crud.BSTableConfig"%>
 <%@page import="java.sql.ResultSet"%>
 
 <%

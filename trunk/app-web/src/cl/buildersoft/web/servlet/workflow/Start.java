@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import cl.buildersoft.business.workflow.beans.Flow;
 import cl.buildersoft.business.workflow.service.Workflow;
 import cl.buildersoft.business.workflow.service.impl.WorkflowImpl;
-import cl.buildersoft.framework.beans.User;
+import cl.buildersoft.lib.beans.User;
 
 @WebServlet("/servlet/workflow/Start")
 public class Start extends HttpServlet {

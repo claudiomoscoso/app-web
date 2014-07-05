@@ -1,6 +1,6 @@
 package cl.buildersoft.web.servlet.system.user;
 
-import static cl.buildersoft.framework.util.BSUtils.array2List;
+import static cl.buildersoft.lib.util.BSUtils.array2List;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,10 +15,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.framework.beans.Domain;
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.database.BSmySQL;
-import cl.buildersoft.framework.util.crud.BSTableConfig;
+import cl.buildersoft.lib.beans.Domain;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.lib.util.crud.BSTableConfig;
 
 @WebFilter(urlPatterns = { "/servlet/common/InsertRecord" })
 public class SaveNewUserFilter implements Filter {

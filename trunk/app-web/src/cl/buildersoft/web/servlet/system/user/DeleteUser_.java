@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cl.buildersoft.framework.database.BSmySQL;
+import cl.buildersoft.lib.database.BSmySQL;
 
 @WebServlet("/servlet/system/user/DeleteUser_")
 public class DeleteUser_ extends HttpServlet {

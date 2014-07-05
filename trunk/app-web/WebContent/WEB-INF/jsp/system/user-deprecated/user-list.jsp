@@ -1,4 +1,4 @@
-<%@page import="cl.buildersoft.framework.beans.User"%>
+<%@page import="cl.buildersoft.lib.beans.User"%>
 <%@page import="java.sql.ResultSet"%>
 <%@ include file="/WEB-INF/jsp/common/head.jsp"%>
 <%@ include file="/WEB-INF/jsp/common/menu.jsp"%>

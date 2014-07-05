@@ -1,11 +1,11 @@
-<%@page import="cl.buildersoft.framework.exception.BSSystemException"%>
+<%@page import="cl.buildersoft.lib.exception.BSSystemException"%>
 <%@page
-	import="cl.buildersoft.framework.exception.BSProgrammerException"%>
-<%@page import="cl.buildersoft.framework.exception.BSDataBaseException"%>
+	import="cl.buildersoft.lib.exception.BSProgrammerException"%>
+<%@page import="cl.buildersoft.lib.exception.BSDataBaseException"%>
 <%@page
-	import="cl.buildersoft.framework.exception.BSConfigurationException"%>
-<%@page import="cl.buildersoft.framework.exception.BSUserException"%>
-<%@page import="cl.buildersoft.framework.exception.BSException"%>
+	import="cl.buildersoft.lib.exception.BSConfigurationException"%>
+<%@page import="cl.buildersoft.lib.exception.BSUserException"%>
+<%@page import="cl.buildersoft.lib.exception.BSException"%>
 <%@page import="java.util.Properties"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.net.URL"%>

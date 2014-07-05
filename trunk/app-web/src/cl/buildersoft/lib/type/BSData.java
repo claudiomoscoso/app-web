@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.type;
+package cl.buildersoft.lib.type;
 
 import java.io.Serializable;
 

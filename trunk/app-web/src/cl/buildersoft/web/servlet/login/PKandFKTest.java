@@ -11,9 +11,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import cl.buildersoft.framework.beans.User;
-import cl.buildersoft.framework.services.impl.BSUserServiceImpl;
-import cl.buildersoft.framework.util.BSDataUtils;
+import cl.buildersoft.lib.beans.User;
+import cl.buildersoft.lib.services.impl.BSUserServiceImpl;
+import cl.buildersoft.lib.util.BSDataUtils;
 
 import com.mysql.jdbc.DatabaseMetaData;
 
