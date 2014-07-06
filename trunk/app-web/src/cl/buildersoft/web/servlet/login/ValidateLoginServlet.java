@@ -103,7 +103,7 @@ public class ValidateLoginServlet extends BSHttpServletSSO {
 			}
 		}
 		// request.getRequestDispatcher(page).forward(request, response);
-		super.fordward(request, response, page);
+		super.forward(request, response, page);
 	}
 
 	private Map<String, DomainAttribute> getDomainAttributes(Connection conn, Domain defaultDomain) {

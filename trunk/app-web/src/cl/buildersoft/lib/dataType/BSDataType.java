@@ -1,8 +1,9 @@
 package cl.buildersoft.lib.dataType;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
-public interface BSDataType {
+public interface BSDataType extends Serializable{
 	public static final String STRING =  BSDataType.class.getPackage().getName() + ".BSString";
 	public static final String INTEGER = BSDataType.class.getPackage().getName() + ".BSInteger";
 	public static final String DOUBLE = BSDataType.class.getPackage().getName() + ".BSDouble";

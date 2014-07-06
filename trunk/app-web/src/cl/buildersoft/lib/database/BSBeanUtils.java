@@ -18,6 +18,7 @@ import cl.buildersoft.lib.exception.BSProgrammerException;
 import cl.buildersoft.lib.exception.BSSystemException;
 import cl.buildersoft.lib.util.BSDataUtils;
 import cl.buildersoft.lib.util.BSUtils;
+import cl.buildersoft.lib.util.crud.BSField;
 
 //import static cl.buildersoft.framework.util.BSUtils.array2List;
 
@@ -287,6 +288,15 @@ public class BSBeanUtils extends BSDataUtils {
 		return sql;
 	}
 
+	public static String getCommas(Object[] fields) {
+		String out = "";
+		for (int i = 0; i < fields.length; i++) {
+			out += "?,";
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
+	}
+
 	private String buildUpdateSQLString(Class<? extends BSBean> c, String[] tableFields, BSBean bean) {
 
 		String id = getIdField(tableFields);
@@ -383,15 +393,6 @@ public class BSBeanUtils extends BSDataUtils {
 		}
 
 		return value;
-	}
-
-	private String getCommas(String[] tableFields) {
-		String out = "";
-		for (int i = 0; i < tableFields.length; i++) {
-			out += "?,";
-		}
-		out = out.substring(0, out.length() - 1);
-		return out;
 	}
 
 	private String[] deleteId(String[] tableFields) {

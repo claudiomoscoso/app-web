@@ -26,6 +26,7 @@ public class BSField implements Serializable {
 		super();
 		this.name = name;
 		this.label = label;
+		this.typeHtml = "text";
 	}
 
 	@Deprecated

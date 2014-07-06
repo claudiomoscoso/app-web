@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,22 +17,25 @@ import cl.buildersoft.lib.database.BSBeanUtils;
 import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.services.BSMenuService;
 import cl.buildersoft.lib.services.impl.BSMenuServiceImpl;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 /**
  * Servlet implementation class RoleDef
  */
 @WebServlet("/servlet/system/roleDef/RoleDef")
-public class RoleDef extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class RoleDef extends BSHttpServlet {
+	private static final long serialVersionUID = 111140893680994718L;
 
 	public RoleDef() {
 		super();
 	}
 
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request);
+
+		BSHttpServletSSO servletUtil = new BSHttpServletSSO();
+		Connection conn = servletUtil.getConnection(request);
 
 		String sql = "SELECT cId, cName FROM tRol";
 		ResultSet rolsResultSet = mysql.queryResultSet(conn, sql, null);
@@ -47,16 +49,17 @@ public class RoleDef extends HttpServlet {
 		Menu fullMenu = menuService.getMenu(conn, null);
 		Menu rolMenu = menuService.getMenu(conn, rols);
 		mysql.closeConnection(conn);
-		
-//		System.out.println(rolMenu.list().toString());
-		
+
+		// System.out.println(rolMenu.list().toString());
+
 		request.setAttribute("Rols", rolsArray);
 		request.setAttribute("FullMenu", fullMenu);
 		request.setAttribute("RolMenu", rolMenu);
 		request.setAttribute("cId", idRolLong);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/system/role-def/role-def.jsp")
-				.forward(request, response);
+
+		forward(request, response, "/WEB-INF/jsp/system/role-def/role-def.jsp");
+//		request.getRequestDispatcher("/WEB-INF/jsp/system/role-def/role-def.jsp").forward(request, response);
 
 	}
 
@@ -65,7 +68,7 @@ public class RoleDef extends HttpServlet {
 		String idRolString = request.getParameter("cId");
 		if (idRolString == null) {
 			Object[] row1 = (Object[]) rolsArray.get(0);
-			idRolLong = (Long)row1[0];
+			idRolLong = (Long) row1[0];
 		} else {
 			idRolLong = Long.parseLong(idRolString);
 		}
@@ -83,7 +86,8 @@ public class RoleDef extends HttpServlet {
 
 		return out;
 	}
-/**<code>
+	/**
+	 * <code>
 	private List<String[]> resultSet2Matrix(ResultSet rs) {
 		List<String[]> out = new ArrayList<String[]>();
 
@@ -112,6 +116,7 @@ public class RoleDef extends HttpServlet {
 		}
 
 		return out;
-	}</code>*/
+	}</code>
+	 */
 
 }

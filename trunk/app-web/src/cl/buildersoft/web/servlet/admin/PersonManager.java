@@ -10,12 +10,11 @@ import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.util.crud.BSAction;
 import cl.buildersoft.lib.util.crud.BSActionType;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.BSHttpServlet;
 import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
 
 @WebServlet("/servlet/admin/PersonManager")
-public class PersonManager extends BSHttpServletCRUD implements Servlet {
-	private static final long serialVersionUID = 1L;
+public class PersonManager extends BSHttpServletCRUD implements Servlet {  
+	private static final long serialVersionUID = 1184309385458871021L;
 
 	public PersonManager() {
 		super();

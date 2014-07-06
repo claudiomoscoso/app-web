@@ -7,17 +7,18 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.lib.beans.Rol;
 import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/system/roledef/SaveRoleDef")
-public class SaveRoleDef extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class SaveRoleDef extends BSHttpServlet {
+	private static final long serialVersionUID = -2938011475821935220L;
 
 	public SaveRoleDef() {
 		super();
@@ -29,7 +30,9 @@ public class SaveRoleDef extends HttpServlet {
 		Long rol = Long.parseLong(request.getParameter("Rol"));
 
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request);
+		BSHttpServletSSO servletUtil = new BSHttpServletSSO();
+		Connection conn = servletUtil.getConnection(request);
+
 		try {
 			mysql.setAutoCommit(conn, false);
 
@@ -48,6 +51,7 @@ public class SaveRoleDef extends HttpServlet {
 		String nextServlet = "/servlet/system/roleDef/RoleDef";
 
 		HttpSession session = request.getSession();
+		@SuppressWarnings("unchecked")
 		List<Rol> rols = (List<Rol>) session.getAttribute("Rol");
 		for (Rol rolUser : rols) {
 			if (rolUser.getId().equals(rol)) {
@@ -56,7 +60,8 @@ public class SaveRoleDef extends HttpServlet {
 			}
 		}
 
-		request.getRequestDispatcher(nextServlet).forward(request, response);
+		forward(request, response, nextServlet);
+		// request.getRequestDispatcher(nextServlet).forward(request, response);
 
 	}
 
@@ -68,19 +73,21 @@ public class SaveRoleDef extends HttpServlet {
 		for (String option : options) {
 			prms.add(Long.parseLong(option));
 			mysql.update(conn, sql, prms);
-//			printSQL(sql, prms);
+			// printSQL(sql, prms);
 			prms.remove(1);
 		}
 	}
 
-	/**<code>
+	/**
+	 * <code>
 	private void printSQL(String sql, List<Object> prms) {
 		String s = sql;
 		s = s.replaceFirst("[?]", "@rolId");
 		s = s.replaceFirst("[?]", prms.get(1).toString());
 		System.out.println(s);
 	}
-</code>*/
+</code>
+	 */
 	private void deleteRolDef(Connection conn, BSmySQL mysql, Long rol) {
 		String sql = "DELETE FROM tR_RolOption WHERE cRol=?";
 		List<Object> prms = new ArrayList<Object>();

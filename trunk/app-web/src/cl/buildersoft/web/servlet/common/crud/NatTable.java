@@ -19,7 +19,7 @@ import cl.buildersoft.lib.util.crud.BSTableConfig;
 
 @WebServlet("/servlet/common/crud/NatTable")
 public class NatTable extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8859355117730874781L;
 
 	public NatTable() {
 		super();

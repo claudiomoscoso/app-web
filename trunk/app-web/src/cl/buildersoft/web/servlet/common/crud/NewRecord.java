@@ -13,8 +13,8 @@ import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.AbstractServletUtil;
 
 @WebServlet("/servlet/common/crud/NewRecord")
-public class NewRecord extends AbstractServletUtil {
-	private static final long serialVersionUID = 1L;
+public class NewRecord extends AbstractServletUtil {  
+	private static final long serialVersionUID = 6670045198123132551L;
 	public static String URL = "/servlet/common/crud/NewRecord";
 
 	public NewRecord() {

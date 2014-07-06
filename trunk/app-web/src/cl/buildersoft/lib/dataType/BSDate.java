@@ -1,5 +1,6 @@
 package cl.buildersoft.lib.dataType;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,7 +9,8 @@ import java.util.Date;
 import cl.buildersoft.lib.exception.BSProgrammerException;
 import cl.buildersoft.lib.util.BSConfig;
 
-public class BSDate implements BSDataType {
+public class BSDate implements BSDataType, Serializable { 
+	private static final long serialVersionUID = 4782481281337666899L;
 
 	@Override
 	public Boolean validData(String data) {

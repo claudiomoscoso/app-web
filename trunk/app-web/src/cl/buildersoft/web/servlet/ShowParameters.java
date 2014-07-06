@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/servlet/ShowParameters")
 public class ShowParameters extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6514375742618981280L;
 
 	public ShowParameters() {
 		super();
@@ -72,20 +72,20 @@ public class ShowParameters extends HttpServlet {
 		}
 		out.print("</ul>");
 
-//		names = request.getAttributeNames();
-//
-//		out.print("<ul class='cLabel'>");
-//		while (names.hasMoreElements()) {
-//			String name = (String) names.nextElement();
-//
-//			out.println("<li>" + name);
-//			Object value = request.getAttribute(name);
-//
-//			out.print("<ul>");
-//			out.println("<li class='cData'>" + value.toString() + "</li>");
-//			out.print("</ul></li>");
-//		}
-//		out.print("</ul>");
+		// names = request.getAttributeNames();
+		//
+		// out.print("<ul class='cLabel'>");
+		// while (names.hasMoreElements()) {
+		// String name = (String) names.nextElement();
+		//
+		// out.println("<li>" + name);
+		// Object value = request.getAttribute(name);
+		//
+		// out.print("<ul>");
+		// out.println("<li class='cData'>" + value.toString() + "</li>");
+		// out.print("</ul></li>");
+		// }
+		// out.print("</ul>");
 	}
 
 }

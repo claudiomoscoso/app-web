@@ -31,6 +31,7 @@ import cl.buildersoft.lib.exception.BSProgrammerException;
 import cl.buildersoft.lib.services.BSMenuService;
 import cl.buildersoft.lib.services.impl.BSMenuServiceImpl;
 import cl.buildersoft.lib.util.crud.BSField;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
 
 public class BSWeb {
 	private static final String LOCALE = "LOCALE";
@@ -58,7 +59,6 @@ public class BSWeb {
 	 */
 	private static Object evaluateType(Connection conn, HttpServletRequest request, Object out, String value, BSDataType type,
 			BSField field) {
-
 		if (type.equals(BSDataType.STRING)) {
 			out = value;
 		} else if (type.equals(BSDataType.BOOLEAN)) {
@@ -102,8 +102,8 @@ public class BSWeb {
 	/********************/
 
 	private static Connection requestToConnection(HttpServletRequest request) {
-		BSmySQL mysql = new BSmySQL();
-		return mysql.getConnection(request);
+		BSHttpServletSSO servletUtil = new BSHttpServletSSO();
+		return servletUtil.getConnection(request);
 	}
 
 	private static String getConfig(Connection conn, String key) {
@@ -118,7 +118,7 @@ public class BSWeb {
 	public static String getLocale(HttpServletRequest request) {
 		Connection conn = requestToConnection(request);
 		String out = getLocale(conn);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -129,14 +129,14 @@ public class BSWeb {
 	public static String formatDouble(HttpServletRequest request, Double value) {
 		Connection conn = requestToConnection(request);
 		String out = formatDouble(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
 	public static String formatLong(HttpServletRequest request, Long value) {
 		Connection conn = requestToConnection(request);
 		String out = formatLong(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -147,7 +147,7 @@ public class BSWeb {
 	public static String formatInteger(HttpServletRequest request, Integer value) {
 		Connection conn = requestToConnection(request);
 		String out = formatInteger(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -158,7 +158,7 @@ public class BSWeb {
 	public static String formatNumber(HttpServletRequest request, Object value, String pattern) {
 		Connection conn = requestToConnection(request);
 		String out = formatNumber(conn, value, pattern);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -216,7 +216,7 @@ public class BSWeb {
 	public static Double parseDouble(HttpServletRequest request, String value) {
 		Connection conn = requestToConnection(request);
 		Double out = parseDouble(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -227,7 +227,7 @@ public class BSWeb {
 	public static Integer parseInteger(HttpServletRequest request, String value) {
 		Connection conn = requestToConnection(request);
 		Integer out = parseInteger(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 
 	}
@@ -239,7 +239,7 @@ public class BSWeb {
 	public static Long parseLong(HttpServletRequest request, String value) {
 		Connection conn = requestToConnection(request);
 		Long out = parseLong(conn, value);
-		new BSmySQL().closeConnection(conn);
+		// new BSmySQL().closeConnection(conn);
 		return out;
 	}
 
@@ -283,7 +283,8 @@ public class BSWeb {
 		Boolean out = Boolean.TRUE;
 
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request);
+
+		Connection conn = requestToConnection(request);
 
 		BSMenuService menuService = new BSMenuServiceImpl();
 		Option option = menuService.searchResourceByKey(conn, optionKey);
@@ -399,7 +400,7 @@ public class BSWeb {
 		return out;
 	}
 
-	static public String randomString() {
+	public static String randomString() {
 		long l = System.currentTimeMillis();
 		String out = String.valueOf(l);
 		out = Base64.encode(out.getBytes());

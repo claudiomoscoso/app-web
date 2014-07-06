@@ -12,7 +12,7 @@ import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
  */
 @WebServlet("/servlet/admin/RolManager")
 public class RolManager extends BSHttpServletCRUD {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4259494830171384785L;
 
 	public RolManager() {
 		super();

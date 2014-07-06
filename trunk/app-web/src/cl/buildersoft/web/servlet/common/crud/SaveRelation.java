@@ -22,7 +22,7 @@ import cl.buildersoft.lib.util.crud.BSTableConfig;
  */
 @WebServlet("/servlet/common/crud/SaveRelation")
 public class SaveRelation extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5258067179947958726L;
 
 	public SaveRelation() {
 		super();

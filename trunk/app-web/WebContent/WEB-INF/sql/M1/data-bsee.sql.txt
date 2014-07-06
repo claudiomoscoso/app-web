@@ -1,9 +1,9 @@
 # SELECT cId INTO @stringId FROM bsframework.tDataType WHERE cKey = 'STRING';
 # SELECT cId INTO @doubleId FROM bsframework.tDataType WHERE cKey = 'DOUBLE';
 # SELECT cId INTO @integerId FROM bsframework.tDataType WHERE cKey = 'INTEGER';
-# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'TIMESTAMP';
-# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'BOOLEAN';
-# SELECT cId TO @stringId FROM bsframework.tDataType WHERE cKey = 'LONG';
+# SELECT cId INTO @timestampId FROM bsframework.tDataType WHERE cKey = 'TIMESTAMP';
+# SELECT cId INTO @booleanId FROM bsframework.tDataType WHERE cKey = 'BOOLEAN';
+# SELECT cId INTO @longId FROM bsframework.tDataType WHERE cKey = 'LONG';
 
 INSERT INTO bsframework.tDataType(cKey, cName) VALUES('STRING', 'String');
 SET @stringId = LAST_INSERT_ID();
@@ -19,26 +19,25 @@ INSERT INTO bsframework.tDataType(cKey, cName) VALUES('LONG', 'Long');
 SET @longId = LAST_INSERT_ID();
 
 
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', @stringId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATE', 'Formato de Fecha', 'dd/MM/yyyy', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('FORMAT_DATETIME', 'Formado de fecha/hora', 'dd/MM/yyyy HH:mm', @stringId);
 
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('LOCALE', 'Región, afecta a formato de números(ISO-639)', 'ES', @stringId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_INTEGER', 'Formato para montos enteros', '###.###.##0', @stringId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_DECIMAL', 'Formato para montos con decimales', '###.###.##0,00###', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('LOCALE', 'Region, afecta a formato de números(ISO-639)', 'ES', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_INTEGER', 'Formato para montos enteros', '###.###.##0', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('PATTERN_DECIMAL', 'Formato para montos con decimales', '###.###.##0,00###', @stringId);
 
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('CSV_SEPARATOR', 'Separador de archivos csv', ';', @stringId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', @integerId);
-INSERT INTO tParameter(cKey, cLabel, cValue, cDataType) VALUES('EMPLOYEE_FILES', 'Ubicación de archivos de empleados (en server)', 'D:\\temp\\remcon', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('CSV_SEPARATOR', 'Separador de archivos csv', ';', @stringId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('RECORDS_PER_PAGE', 'Registros por p&aacute;gina', '15', @integerId);
+INSERT INTO tConfig(cKey, cLabel, cValue, cDataType) VALUES('EMPLOYEE_FILES', 'Ubicación de archivos de empleados (en server)', 'D:\\temp\\remcon', @stringId);
 
-INSERT INTO tRol(cName) VALUES('Administrador');
+#INSERT INTO tRol(cName) VALUES('Administrador');
 SET @rolId = LAST_INSERT_ID();
-
 SELECT cId INTO @userId FROM bsframework.tUser WHERE cMail = 'admin';
-
 INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
 
+/*
 INSERT INTO tStep(cName, cClass) VALUES('Paso', 'cl.buildersoft.business.workflow.service.impl.Step');
-
+*/
 
 /* Genero 
 INSERT INTO tGenere(cKey, cName) VALUES('F', 'Femenino');

@@ -13,7 +13,7 @@ import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
  */
 @WebServlet("/servlet/system/role/RolManager")
 public class RolManager extends BSHttpServletCRUD {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7472609948621377415L;
 
 	public RolManager() {
 		super();
@@ -22,8 +22,8 @@ public class RolManager extends BSHttpServletCRUD {
 
 	@Override
 	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {
-		Domain		domain = (Domain)request.getSession().getAttribute("Domain");
-		
+		Domain domain = (Domain) request.getSession().getAttribute("Domain");
+
 		BSTableConfig table = new BSTableConfig(domain.getAlias(), "tRol");
 		table.setTitle("Mantenimeito de Roles");
 

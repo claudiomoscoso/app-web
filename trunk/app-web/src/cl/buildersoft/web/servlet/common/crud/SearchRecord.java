@@ -15,13 +15,12 @@ import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.exception.BSDataBaseException;
 import cl.buildersoft.lib.util.crud.BSField;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
-/**
- * Servlet implementation class EditRecord
- */
+import static cl.buildersoft.web.servlet.common.AbstractServletUtil.*;
+
 @WebServlet("/servlet/common/crud/SearchRecord")
-public class SearchRecord extends AbstractServletUtil {
+public class SearchRecord extends BSHttpServlet {
 
 	private static final long serialVersionUID = -5785656616097922095L;
 
@@ -43,14 +42,14 @@ public class SearchRecord extends AbstractServletUtil {
 		Connection conn = null;
 		BSmySQL mysql = new BSmySQL();
 
-		conn = mysql.getConnection(request);
+		conn = getConnection(request);
 		ResultSet rs = mysql.queryResultSet(conn, sql, array2List(id));
 		resultset2Table(rs, table);
 
 		mysql.closeConnection(conn);
-		
-//		request.setAttribute("Data", rs);
-//		request.setAttribute("Conn", conn);
+
+		// request.setAttribute("Data", rs);
+		// request.setAttribute("Conn", conn);
 
 		request.setAttribute("Action", "Update");
 		request.getRequestDispatcher("/WEB-INF/jsp/table/data-form.jsp").forward(request, response);

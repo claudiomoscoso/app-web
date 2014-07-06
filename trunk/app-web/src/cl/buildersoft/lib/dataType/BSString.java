@@ -1,8 +1,10 @@
 package cl.buildersoft.lib.dataType;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
-public class BSString implements BSDataType {
+public class BSString implements BSDataType, Serializable {
+	private static final long serialVersionUID = 3687275098899337703L;
 
 	@Override
 	public Boolean validData(String data) {

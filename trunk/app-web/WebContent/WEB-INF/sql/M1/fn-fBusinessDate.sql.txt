@@ -3,7 +3,8 @@ DROP FUNCTION IF EXISTS fHoliday;
 
 DELIMITER $$
 
-/* Funcion que retorma la fecha que resulta de la fecha inicial más los días que se pasan por parámetro */
+/* Funcion que retorma la fecha que resulta de la fecha inicial mas los dias 
+ * que se pasan por parametro */
 CREATE FUNCTION fBusinessDate(vStartDay DATE, vCountDays INTEGER) RETURNS DATE
 BEGIN
 	DECLARE vIndexDay DATE;
