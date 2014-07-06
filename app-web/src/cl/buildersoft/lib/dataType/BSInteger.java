@@ -1,8 +1,10 @@
 package cl.buildersoft.lib.dataType;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
-public class BSInteger implements BSDataType {
+public class BSInteger implements BSDataType, Serializable {
+	private static final long serialVersionUID = 3979631388923761259L;
 
 	@Override
 	public Boolean validData(String data) {

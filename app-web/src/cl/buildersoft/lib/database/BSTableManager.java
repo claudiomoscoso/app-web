@@ -187,7 +187,7 @@ public abstract class BSTableManager extends BSDataUtils {
 		String sql = "INSERT INTO " + getTableName(c) + "(";
 
 		sql += unSplit(tableFields, ",") + ") VALUES(";
-		sql += getCommas(tableFields) + ");";
+		sql += BSBeanUtils.getCommas(tableFields) + ");";
 		return sql;
 	}
 
@@ -285,15 +285,6 @@ public abstract class BSTableManager extends BSDataUtils {
 		}
 
 		return value;
-	}
-
-	private String getCommas(String[] tableFields) {
-		String out = "";
-		for (int i = 0; i < tableFields.length; i++) {
-			out += "?,";
-		}
-		out = out.substring(0, out.length() - 1);
-		return out;
 	}
 
 	private String[] deleteId(String[] tableFields) {

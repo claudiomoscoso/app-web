@@ -32,7 +32,7 @@ public class StartSession extends BSHttpServletSSO {
 		if (config.getBoolean(conn, "USE_BOOTSTRAP")) {
 			url = "/jsp/login/login2.jsp";
 		}
-		super.fordward(request, response, url);
+		super.forward(request, response, url);
 		// request.getRequestDispatcher(url).forward(request, response);
 		// response.sendRedirect(url);
 

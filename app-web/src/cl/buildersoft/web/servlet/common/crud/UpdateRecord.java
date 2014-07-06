@@ -12,14 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.lib.database.BSmySQL;
-import cl.buildersoft.lib.util.BSWeb;
 import cl.buildersoft.lib.util.crud.BSField;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/UpdateRecord")
-public class UpdateRecord extends AbstractServletUtil {
-	private static final long serialVersionUID = 1L;
+public class UpdateRecord extends BSHttpServlet {
+	private static final long serialVersionUID = -1232881282582472525L;
 
 	public UpdateRecord() {
 		super();

@@ -11,21 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import cl.buildersoft.lib.dataType.BSDataTypeUtil;
 import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.util.BSUtils;
 import cl.buildersoft.lib.util.crud.BSField;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/InsertRecord")
-public class InsertRecord extends AbstractServletUtil {
+public class InsertRecord extends BSHttpServlet {
 
 	private static final long serialVersionUID = 947236230190327847L;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp").forward(request, response);
+		forward(request, response, "/WEB-INF/jsp/common/no-access.jsp");
+		// request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp").forward(request,
+		// response);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class InsertRecord extends AbstractServletUtil {
 		String saveSP = table.getSaveSP();
 
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request);
+		Connection conn = getConnection(request);
 		if (saveSP == null) {
 			BSField[] fields = table.deleteId();
 			String sql = getSQL(table, fields, request);
@@ -63,28 +64,29 @@ public class InsertRecord extends AbstractServletUtil {
 	}
 
 	private String getSQL(BSTableConfig table, BSField[] fields, HttpServletRequest request) {
-				String sql = "INSERT INTO " + table.getDatabase() + "." + table.getTableName();
+		String sql = "INSERT INTO " + table.getDatabase() + "." + table.getTableName();
 		sql += "(" + BSUtils.unSplitField(fields, ",") + ") ";
 		sql += " VALUES (" + getCommas(fields) + ")";
 
 		return sql;
 	}
-
+/**<code>
 	private String getSQLsp(String spName, BSTableConfig table) {
 		String sql = "call " + table.getDatabase() + "." + spName;
 		sql += "(" + getCommas(table.getFields()) + ") ";
 		return sql;
 	}
+	</code>*/
 
 	private List<Object> getValues4Insert(Connection conn, HttpServletRequest request, BSField[] fields) {
 
 		List<Object> out = new ArrayList<Object>();
 		Object value = null;
 
-//		BSDataTypeUtil du = new BSDataTypeUtil();
-		
+		// BSDataTypeUtil du = new BSDataTypeUtil();
+
 		for (BSField field : fields) {
-//			value = BSWeb.value2Object(conn, request, field, true);
+			// value = BSWeb.value2Object(conn, request, field, true);
 			value = field.getType().parse(conn, field.getValue().toString());
 			out.add(value);
 
@@ -106,6 +108,23 @@ public class InsertRecord extends AbstractServletUtil {
 		}
 		return out;
 	}
-	</code>
+	
+	private String getCommas(String[] tableFields) {
+		String out = "";
+		for (int i = 0; i < tableFields.length; i++) {
+			out += "?,";
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
+	}
+</code>
 	 */
+	protected String getCommas(BSField[] fields) {
+		String out = "";
+		for (int i = 0; i < fields.length; i++) {
+			out += "?,";
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
+	}
 }

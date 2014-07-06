@@ -14,7 +14,7 @@ import cl.buildersoft.web.servlet.common.crud.BSHttpServletCRUD;
  */
 @WebServlet("/servlet/config/employee/EmployeeManager")
 public class EmployeeManager extends BSHttpServletCRUD {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2218422182993347540L;
 
 	@Override
 	protected BSTableConfig getBSTableConfig(HttpServletRequest request) {

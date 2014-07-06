@@ -16,8 +16,8 @@ import cl.buildersoft.lib.util.crud.BSTableConfig;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/LoadTable")
-public class LoadTable extends BSHttpServlet {
-	private static final long serialVersionUID = 1L;
+public class LoadTable extends BSHttpServlet {  
+	private static final long serialVersionUID = -5652978400823425729L;
 	public static String URL = "/servlet/common/crud/LoadTable";
 
 	public LoadTable() {
@@ -48,7 +48,9 @@ public class LoadTable extends BSHttpServlet {
 			session.setAttribute("BSTable", table);
 		}
 
-		request.getRequestDispatcher("/WEB-INF/jsp/table/main2.jsp").forward(request, response);
+		forward(request, response, "/WEB-INF/jsp/table/main2.jsp");
+		// request.getRequestDispatcher("/WEB-INF/jsp/table/main2.jsp").forward(request,
+		// response);
 	}
 
 }

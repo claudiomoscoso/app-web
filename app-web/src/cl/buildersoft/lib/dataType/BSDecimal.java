@@ -1,11 +1,13 @@
 package cl.buildersoft.lib.dataType;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Connection;
 
 import cl.buildersoft.lib.exception.BSProgrammerException;
 
-public class BSDecimal extends Object implements BSDataType {
+public class BSDecimal extends Object implements BSDataType, Serializable { 
+	private static final long serialVersionUID = -8244294557285869182L;
 
 	@Override
 	public Boolean validData(Connection conn, String data) {

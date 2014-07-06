@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import cl.buildersoft.lib.beans.Domain;
 import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
 import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 public abstract class BSHttpServletCRUD extends BSHttpServlet {
@@ -34,7 +35,7 @@ public abstract class BSHttpServletCRUD extends BSHttpServlet {
 			session.setAttribute("BSTable", table);
 		}
 
-		fordward(request, response, LoadTable.URL);
+		forward(request, response, LoadTable.URL);
 		// request.getRequestDispatcher(LoadTable.URL).forward(request,
 		// response);
 	}
@@ -44,7 +45,9 @@ public abstract class BSHttpServletCRUD extends BSHttpServlet {
 
 		BSTableConfig table = new BSTableConfig(domain.getAlias(), tableName);
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request);
+		
+		BSHttpServletSSO utilServlet = new BSHttpServletSSO();
+		Connection conn = utilServlet.getConnection(request);
 		table.configFields(conn, mysql);
 		mysql.closeConnection(conn);
 		return table;
@@ -54,6 +57,15 @@ public abstract class BSHttpServletCRUD extends BSHttpServlet {
 		for (String fieldName : hideFields) {
 			table.getField(fieldName).setVisible(false);
 		}
+	}
+	
+	public String getCommas(String[] tableFields) {
+		String out = "";
+		for (int i = 0; i < tableFields.length; i++) {
+			out += "?,";
+		}
+		out = out.substring(0, out.length() - 1);
+		return out;
 	}
 
 }

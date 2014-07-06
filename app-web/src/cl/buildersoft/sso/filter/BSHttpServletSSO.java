@@ -54,7 +54,7 @@ public class BSHttpServletSSO extends HttpServlet {
 	private String username = null;
 	private String password = null;
 
-	protected void fordward(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException,
+	protected void forward(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException,
 			IOException {
 		updateSession(request, response);
 		request.getRequestDispatcher(url).forward(request, response);
@@ -111,9 +111,6 @@ public class BSHttpServletSSO extends HttpServlet {
 
 		String currentDataSource = (String) request.getSession().getAttribute("CurrentDatasource");
 
-		// defaultDomain = domains.get(0);
-		// domainAttributes = getDomainAttributes(connBSframework,
-		// defaultDomain);
 		Connection conn = dau.getConnection2(request.getServletContext(), currentDataSource);
 		return conn;
 	}
@@ -142,10 +139,8 @@ public class BSHttpServletSSO extends HttpServlet {
 				} catch (Exception ex) {
 					throw new BSConfigurationException(ex);
 				}
-
 			}
 		}
-
 		return conn;
 	}
 
@@ -206,8 +201,7 @@ public class BSHttpServletSSO extends HttpServlet {
 
 		bu.search(conn, sessionBean, "cSessionId=?", sessionId);
 
-		List<SessionDataBean> dataList = (List<SessionDataBean>) bu
-				.list(conn, sessionDataBean, "cSession=?", sessionBean.getId());
+		List<SessionDataBean> dataList = getSessionData(conn, bu, sessionBean, sessionDataBean);
 
 		for (SessionDataBean data : dataList) {
 			bu.delete(conn, data);
@@ -339,12 +333,18 @@ public class BSHttpServletSSO extends HttpServlet {
 
 		bu.search(conn, sessionBean, "cSessionId=?", sessionValue);
 
-		List<SessionDataBean> objectList = (List<SessionDataBean>) bu.list(conn, sessionDataBean, "cSession=?",
-				sessionBean.getId());
+		List<SessionDataBean> objectList = getSessionData(conn, bu, sessionBean, sessionDataBean);
 		Object obj = null;
 		for (SessionDataBean record : objectList) {
 			obj = stringToObject(record.getData());
 			session.setAttribute(record.getName(), obj);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<SessionDataBean> getSessionData(Connection conn, BSBeanUtils bu, SessionBean sessionBean,
+			SessionDataBean sessionDataBean) {
+
+		return (List<SessionDataBean>) bu.list(conn, sessionDataBean, "cSession=?", sessionBean.getId());
 	}
 }

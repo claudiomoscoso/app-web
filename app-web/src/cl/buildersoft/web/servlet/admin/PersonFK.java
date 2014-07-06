@@ -9,15 +9,15 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/admin/PersonFK")
-public class PersonFK extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class PersonFK extends BSHttpServlet {
+	private static final long serialVersionUID = -614956026680417724L;
 
 	public PersonFK() {
 		super();
@@ -26,7 +26,7 @@ public class PersonFK extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BSmySQL mysql = new BSmySQL();
 
-		Connection conn = mysql.getConnection(request);
+		Connection conn = getConnection(request);
 
 		List<Object> prms = new ArrayList<Object>();
 		prms.add("hola po");
@@ -36,7 +36,8 @@ public class PersonFK extends HttpServlet {
 
 		request.setAttribute("Data", data);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/admin/person-fk.jsp").forward(request, response);
+		forward(request, response, "/WEB-INF/jsp/admin/person-fk.jsp");
+//		request.getRequestDispatcher("/WEB-INF/jsp/admin/person-fk.jsp").forward(request, response);
 
 	}
 }

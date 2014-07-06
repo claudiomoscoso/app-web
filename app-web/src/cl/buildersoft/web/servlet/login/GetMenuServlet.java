@@ -51,7 +51,7 @@ public class GetMenuServlet extends BSHttpServletSSO {
 		}
 
 		String page = "/servlet/Home";
-		fordward(request, response, page);
+		forward(request, response, page);
 //		request.getRequestDispatcher(page).forward(request, response);
 	}
 

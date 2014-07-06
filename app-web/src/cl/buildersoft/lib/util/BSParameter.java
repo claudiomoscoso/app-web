@@ -20,7 +20,7 @@ public class BSParameter extends BSDataUtils {
 	}
 
 	private String getValue(Connection conn, String key) {
-		String sql = "SELECT cValue FROM tParameter WHERE cKey=?";
+		String sql = "SELECT cValue FROM tConfig WHERE cKey=?";
 		return super.queryField(conn, sql, key);
 	}
 

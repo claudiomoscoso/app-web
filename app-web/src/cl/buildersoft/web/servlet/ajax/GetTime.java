@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import cl.buildersoft.lib.util.BSDateTimeUtil;
 
 @WebServlet("/servlet/ajax/GetTime")
-public class GetTime extends AbstractAjaxServlet {
-	private static final long serialVersionUID = 1L;
+public class GetTime extends AbstractAjaxServlet {  
+	private static final long serialVersionUID = 1084790385135065317L;
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Calendar c = Calendar.getInstance();

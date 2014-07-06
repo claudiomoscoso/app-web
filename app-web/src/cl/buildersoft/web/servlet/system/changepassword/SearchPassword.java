@@ -5,24 +5,24 @@ import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cl.buildersoft.lib.beans.User;
 import cl.buildersoft.lib.database.BSBeanUtils;
 import cl.buildersoft.lib.database.BSmySQL;
+import cl.buildersoft.sso.filter.BSHttpServletSSO;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/system/changepassword/SearchPassword")
-public class SearchPassword extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class SearchPassword extends BSHttpServlet {
+	private static final long serialVersionUID = 7455312993130724891L;
 
 	public SearchPassword() {
 		super();
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		Long id;
 
 		String idString = request.getParameter("cId");
@@ -33,8 +33,13 @@ public class SearchPassword extends HttpServlet {
 		} else {
 			id = Long.parseLong(idString);
 		}
+
 		BSmySQL mysql = new BSmySQL();
-		Connection conn = mysql.getConnection(request.getServletContext(), "bsframework");
+		BSHttpServletSSO servletUtil = new BSHttpServletSSO();
+		Connection conn = servletUtil.getConnection();
+		// Connection conn =
+		// servletUtil.getConnection(request.getServletContext(),
+		// "bsframework");
 
 		BSBeanUtils bu = new BSBeanUtils();
 		User user = new User();
@@ -44,6 +49,8 @@ public class SearchPassword extends HttpServlet {
 
 		request.setAttribute("PASS_IS_NULL", user.getPassword() == null);
 
-		request.getRequestDispatcher("/WEB-INF/jsp/system/change-password/change-password.jsp").forward(request, response);
+		forward(request, response, "/WEB-INF/jsp/system/change-password/change-password.jsp");
+		// request.getRequestDispatcher("/WEB-INF/jsp/system/change-password/change-password.jsp").forward(request,
+		// response);
 	}
 }

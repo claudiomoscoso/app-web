@@ -1,10 +1,9 @@
-<%@ include file="/WEB-INF/jsp/common/head.jsp"%>
-<%@ include file="/WEB-INF/jsp/common/menu.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/header2.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/menu2.jsp"%>
 <%
 	String nextAction = "/servlet/system/changepassword/ChangePassword";
 	String cancelAction = "/servlet/system/user/UserManager";
-	Boolean passwordIsNull = (Boolean) request
-			.getAttribute("PASS_IS_NULL");
+	Boolean passwordIsNull = (Boolean) request.getAttribute("PASS_IS_NULL");
 
 	Object id = request.getParameter("cId");
 	if (id == null) {
@@ -39,9 +38,10 @@
 			<td><input type="password" name="CommitPassword"></td>
 		</tr>
 	</table>
-	<button type="submit" >Confirmar</button> <a class="cCancel"
+	<button type="submit">Confirmar</button>
+	<a class="cCancel"
 		href="${pageContext.request.contextPath}<%=cancelAction%>">Cancelar</a>
 </form>
 
-<%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/footer2.jsp"%>
 
