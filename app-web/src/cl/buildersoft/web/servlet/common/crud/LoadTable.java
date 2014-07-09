@@ -48,7 +48,7 @@ public class LoadTable extends BSHttpServlet {
 			session.setAttribute("BSTable", table);
 		}
 
-		forward(request, response, "/WEB-INF/jsp/table/main2.jsp");
+		forward(request, response, "/WEB-INF/jsp/table/main.jsp");
 		// request.getRequestDispatcher("/WEB-INF/jsp/table/main2.jsp").forward(request,
 		// response);
 	}

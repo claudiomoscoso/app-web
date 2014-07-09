@@ -31,7 +31,6 @@ public class InsertRecord extends BSHttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		HttpSession session = request.getSession();
 		BSTableConfig table = null;
 
@@ -60,7 +59,7 @@ public class InsertRecord extends BSHttpServlet {
 		}
 		mysql.closeConnection(conn);
 
-		request.getRequestDispatcher(LoadTable.URL).forward(request, response);
+		forward(request, response, LoadTable.URL);
 	}
 
 	private String getSQL(BSTableConfig table, BSField[] fields, HttpServletRequest request) {

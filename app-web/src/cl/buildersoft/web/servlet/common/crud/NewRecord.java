@@ -10,10 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.lib.util.crud.BSField;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/NewRecord")
-public class NewRecord extends AbstractServletUtil {  
+public class NewRecord extends BSHttpServlet {
 	private static final long serialVersionUID = 6670045198123132551L;
 	public static String URL = "/servlet/common/crud/NewRecord";
 
@@ -32,7 +32,9 @@ public class NewRecord extends AbstractServletUtil {
 			f.setValue(null);
 		}
 		request.setAttribute("Action", "Insert");
-		request.getRequestDispatcher("/WEB-INF/jsp/table/data-form.jsp").forward(request, response);
+		forward(request, response, "/WEB-INF/jsp/table/data-form.jsp");
+		// request.getRequestDispatcher("/WEB-INF/jsp/table/data-form.jsp").forward(request,
+		// response);
 	}
 
 }

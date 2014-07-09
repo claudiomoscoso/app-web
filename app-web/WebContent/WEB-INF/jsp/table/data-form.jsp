@@ -1,3 +1,4 @@
+<%@page import="cl.buildersoft.lib.dataType.BSDataTypeUtil"%>
 <%@page import="cl.buildersoft.lib.beans.BSCss"%>
 <%@page import="cl.buildersoft.lib.beans.BSScript"%>
 <%@page import="cl.buildersoft.lib.beans.BSHeadConfig"%>
@@ -95,7 +96,7 @@ for (BSField field : fields) {
 %>
 
 <form
-	action="${pageContext.request.contextPath}/servlet/common/<%=nextServlet%>"
+	action="${pageContext.request.contextPath}/servlet/common/crud/<%=nextServlet%>"
 	method="post" id="editForm">
 	<table>
 		<%
@@ -113,7 +114,7 @@ for (BSField field : fields) {
 <button type="button" onclick="javascript:sendForm()">Aceptar</button>
 &nbsp;&nbsp;&nbsp;
 <a class="cCancel"
-	href="${pageContext.request.contextPath}/servlet/common/LoadTable">Cancelar</a>
+	href="${pageContext.request.contextPath}/servlet/common/crud/LoadTable">Cancelar</a>
 
 
 <%@ include file="/WEB-INF/jsp/common/footer.jsp"%>
@@ -137,7 +138,10 @@ for (BSField field : fields) {
 		if (isFK(field)) {
 			out += getFKSelect(field);
 		} else {
-			if (type.equals(BSDataType.BOOLEAN)) {
+			BSDataTypeUtil dataUtil = new BSDataTypeUtil();
+
+			
+			if (type.toString().equals(BSDataType.BOOLEAN)) {
 				out += "<SELECT name='" + name + "' ";
 				out += isReadOnly ? " DISABLED " : "";
 				out += ">";
@@ -147,38 +151,40 @@ for (BSField field : fields) {
 
 				out += "</SELECT>";
 			} else {
-				if (type.equals(BSDataType.STRING)) {
+				if (type.toString().equals(BSDataType.STRING)) {
+//				if (type.equals(BSDataType.STRING)) {
 					value = value == null ? "" : value;
 					maxlength = field.getLength();
 					size = maxlength;
 					if (size > 75) {
 						size = 75;
 					}
-				} else if (type.equals(BSDataType.DATE)) {
+				} else if (type.toString().equals(BSDataType.DATE)) {
+//				} else if (type.equals(BSDataType.DATE)) {
 					maxlength = 10;
 					format = BSDateTimeUtil.getFormatDate(request);
 					value = BSDateTimeUtil.date2String(value, format);
 					size = maxlength;
 					afterInput = "(formato: " + format + ")";
 
-				} else if (type.equals(BSDataType.TIMESTAMP)) {
+				} else if (type.toString().equals(BSDataType.TIMESTAMP)) {
 					maxlength = 16;
 					format = BSDateTimeUtil.getFormatDatetime(request);
 					value = BSDateTimeUtil.date2String(value, format);
 					size = maxlength;
 					afterInput = "(formato: " + format + ")";
-				} else if (type.equals(BSDataType.DOUBLE)) {
+				} else if (type.toString().equals(BSDataType.DOUBLE)) {
 					maxlength = 15;
 					//					format = BSWeb.getFormatDecimal(request);
 					value = BSWeb.formatDouble(request, (Double) value); // number2String(value, format);
 					size = maxlength;
-				} else if (type.equals(BSDataType.INTEGER)) {
+				} else if (type.toString().equals(BSDataType.INTEGER)) {
 					maxlength = 8;
 					//					format = BSWeb.getFormatInteger(request);
 					//					value = BSWeb.number2String(value, format);
 					value = BSWeb.formatInteger(request, (Integer) value);
 					size = maxlength;
-				} else if (type.equals(BSDataType.LONG)) {
+				} else if (type.toString().equals(BSDataType.LONG)) {
 					maxlength = 10;
 					//					format = BSWeb.getFormatInteger(request);
 					if (isPk && value == null) {
