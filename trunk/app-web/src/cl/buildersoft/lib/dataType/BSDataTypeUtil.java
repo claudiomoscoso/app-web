@@ -15,8 +15,8 @@ public class BSDataTypeUtil {
 	 */
 
 	@SuppressWarnings("rawtypes")
-	public static BSDataType create(String bsDataType) {
-		String classInstance = bsDataType;
+	public static BSDataType create(String dataType) {
+		String classInstance = dataType;
 		BSDataType out = null;
 		try {
 			Class newClass = Class.forName(classInstance);
@@ -70,4 +70,10 @@ public class BSDataTypeUtil {
 		out = out.substring(index + BS.length());
 		return out;
 	}
+
+/**<code>
+	public static Boolean equalTypes(BSDataType a, BSDataType b) {
+		return a.toString().equals(b.toString());
+	}
+</code>*/
 }

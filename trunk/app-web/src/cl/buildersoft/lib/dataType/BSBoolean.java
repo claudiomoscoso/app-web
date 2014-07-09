@@ -42,4 +42,5 @@ public class BSBoolean implements BSDataType, Serializable {
 	public String toString() {
 		return BSDataType.BOOLEAN;
 	}
+
 }

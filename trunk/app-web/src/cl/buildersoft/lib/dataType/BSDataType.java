@@ -25,5 +25,5 @@ public interface BSDataType extends Serializable{
 
 	@Deprecated
 	public Object convert(String data);
-
-}
+	
+	}

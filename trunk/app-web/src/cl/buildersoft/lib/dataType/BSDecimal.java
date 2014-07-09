@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 import cl.buildersoft.lib.exception.BSProgrammerException;
 
-public class BSDecimal extends Object implements BSDataType, Serializable { 
+public class BSDecimal implements BSDataType, Serializable {
 	private static final long serialVersionUID = -8244294557285869182L;
 
 	@Override
@@ -51,9 +51,9 @@ public class BSDecimal extends Object implements BSDataType, Serializable {
 	public Object convert(String data) {
 		return null;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return BSDataType.DECIMAL;
 	}
 }
