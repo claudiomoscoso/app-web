@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cl.buildersoft.lib.dataType.BSDataType;
 import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.util.BSUtils;
 import cl.buildersoft.lib.util.crud.BSField;
@@ -69,16 +70,18 @@ public class InsertRecord extends BSHttpServlet {
 
 		return sql;
 	}
-/**<code>
+
+	/**
+	 * <code>
 	private String getSQLsp(String spName, BSTableConfig table) {
 		String sql = "call " + table.getDatabase() + "." + spName;
 		sql += "(" + getCommas(table.getFields()) + ") ";
 		return sql;
 	}
-	</code>*/
+	</code>
+	 */
 
 	private List<Object> getValues4Insert(Connection conn, HttpServletRequest request, BSField[] fields) {
-
 		List<Object> out = new ArrayList<Object>();
 		Object value = null;
 
@@ -86,7 +89,11 @@ public class InsertRecord extends BSHttpServlet {
 
 		for (BSField field : fields) {
 			// value = BSWeb.value2Object(conn, request, field, true);
-			value = field.getType().parse(conn, field.getValue().toString());
+			Object fieldValue = field.getValue();
+
+			String valueString = fieldValue == null ? "" : fieldValue.toString();
+			BSDataType type = field.getType();
+			value = type.parse(conn, valueString);
 			out.add(value);
 
 		}

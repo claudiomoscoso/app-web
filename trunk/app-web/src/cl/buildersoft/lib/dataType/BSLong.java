@@ -34,7 +34,7 @@ public class BSLong implements BSDataType, Serializable {
 
 	@Override
 	public Object parse(Connection conn, String data) {
-		return Long.parseLong(data);
+		return Long.parseLong(data==null|| data.length()==0?"0":data);
 	}
 
 	@Override

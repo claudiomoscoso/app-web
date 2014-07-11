@@ -71,7 +71,7 @@
 
 <%@ include file="/WEB-INF/jsp/table/search.jsp"%>
 <form method="post"
-	action="${pageContext.request.contextPath}/servlet/common/DeleteRecords"
+	action="${pageContext.request.contextPath}/servlet/common/crud/DeleteRecords"
 	id='frm'>
 
 	<table class="cList" cellpadding="0" cellspacing="0">
