@@ -42,14 +42,14 @@ BSField[] fields = table.getFields();
 		fieldName = field.getName();
 		typeHtml = field.getTypeHtml();
 		
-		if(type.equals(BSDataType.DOUBLE)|| type.equals(BSDataType.INTEGER)|| type.equals(BSDataType.DATE)|| "email".equalsIgnoreCase(typeHtml)) {		
-			if(type.equals(BSDataType.DOUBLE)){
+		if(type.toString().equals(BSDataType.STRING)||type.toString().equals(BSDataType.LONG)||type.toString().equals(BSDataType.DOUBLE)|| type.toString().equals(BSDataType.INTEGER)|| type.toString().equals(BSDataType.DATE)|| "email".equalsIgnoreCase(typeHtml)) {		
+			if(type.toString().equals(BSDataType.DOUBLE)){
 				html = "var " + fieldName + " = formated2double(document.getElementById('"+fieldName+"').value);\n";
 			}
-			if(type.equals(BSDataType.INTEGER)){
+			if(type.toString().equals(BSDataType.INTEGER) || type.toString().equals(BSDataType.LONG)){
 				html = "var " + fieldName + " = formated2integer(document.getElementById('"+fieldName+"').value);\n";
 			}
-			if(type.equals(BSDataType.DATE)){
+			if(type.toString().equals(BSDataType.DATE)){
 				html = "var " + fieldName + " = isDate(document.getElementById('"+fieldName+"').value);\n";
 				html += fieldName + " = " + fieldName +"?"+fieldName +":null;\n";
 			}
@@ -140,7 +140,6 @@ for (BSField field : fields) {
 		} else {
 			BSDataTypeUtil dataUtil = new BSDataTypeUtil();
 
-			
 			if (type.toString().equals(BSDataType.BOOLEAN)) {
 				out += "<SELECT name='" + name + "' ";
 				out += isReadOnly ? " DISABLED " : "";
@@ -152,7 +151,7 @@ for (BSField field : fields) {
 				out += "</SELECT>";
 			} else {
 				if (type.toString().equals(BSDataType.STRING)) {
-//				if (type.equals(BSDataType.STRING)) {
+					//				if (type.equals(BSDataType.STRING)) {
 					value = value == null ? "" : value;
 					maxlength = field.getLength();
 					size = maxlength;
@@ -160,7 +159,7 @@ for (BSField field : fields) {
 						size = 75;
 					}
 				} else if (type.toString().equals(BSDataType.DATE)) {
-//				} else if (type.equals(BSDataType.DATE)) {
+					//				} else if (type.equals(BSDataType.DATE)) {
 					maxlength = 10;
 					format = BSDateTimeUtil.getFormatDate(request);
 					value = BSDateTimeUtil.date2String(value, format);

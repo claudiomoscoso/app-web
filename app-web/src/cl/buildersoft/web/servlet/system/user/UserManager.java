@@ -37,7 +37,7 @@ public class UserManager extends BSHttpServletCRUD {
 			table.setSaveSP("bsframework.pSaveUser");
 		}
 		table.setTitle("Usuarios del sistema");
-		table.setDeleteSP("bsframework.pDelUser");
+//		table.setDeleteSP("bsframework.pDelUser");
 
 		field = new BSField("cId", "ID");
 		field.setPK(true);

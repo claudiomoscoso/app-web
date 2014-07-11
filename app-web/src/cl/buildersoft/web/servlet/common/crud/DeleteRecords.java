@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 
 import cl.buildersoft.lib.database.BSmySQL;
 import cl.buildersoft.lib.util.crud.BSTableConfig;
-import cl.buildersoft.web.servlet.common.AbstractServletUtil;
+import cl.buildersoft.web.servlet.common.BSHttpServlet;
 
 @WebServlet("/servlet/common/crud/DeleteRecords")
-public class DeleteRecords extends AbstractServletUtil {
+public class DeleteRecords extends BSHttpServlet {
 
 	private static final long serialVersionUID = -2340853411641380529L;
 
@@ -22,31 +22,22 @@ public class DeleteRecords extends AbstractServletUtil {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/jsp/common/no-access.jsp")
-				.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		BSTableConfig table = null;
 		synchronized (session) {
 			table = (BSTableConfig) session.getAttribute("BSTable");
 		}
 		BSmySQL mysql = new BSmySQL();
-		Connection  conn = mysql.getConnection(request);
-		
+		Connection conn = getConnection(request);
+
 		String idField = table.getIdField().getName();
 		String[] values = request.getParameterValues(idField);
-		
-		
+
 		if (table.getDeleteSP() != null) {
 			for (String value : values) {
 				Long id = Long.parseLong(value);
-				mysql.callSingleSP(conn, table.getDeleteSP() , id);
+				mysql.callSingleSP(conn, table.getDeleteSP(), id);
 			}
 
 		} else {
@@ -60,8 +51,7 @@ public class DeleteRecords extends AbstractServletUtil {
 		}
 		mysql.closeConnection(conn);
 
-		request.getRequestDispatcher(LoadTable.URL).forward(
-				request, response);
+		forward(request, response, LoadTable.URL);
 	}
 
 	private String getSQL4Search(BSTableConfig table, String idField) {

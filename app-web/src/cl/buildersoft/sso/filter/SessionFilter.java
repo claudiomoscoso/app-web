@@ -31,7 +31,7 @@ public class SessionFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
-		System.out.println("SessionFilter");
+//		System.out.println("SessionFilter");
 		HttpServletRequest request = (HttpServletRequest) rq;
 		HttpServletResponse response = (HttpServletResponse) rs;
 
