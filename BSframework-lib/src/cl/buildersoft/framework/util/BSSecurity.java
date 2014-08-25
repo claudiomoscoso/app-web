@@ -43,7 +43,7 @@ public class BSSecurity {
 	public static void main(String args[]) {
 		if (args.length != 2) {
 			System.out.println("Use la clase con 2 parámetros:\n" + "1.- ENC=Encriptar|DEC=Desencriptar\n"
-					+ "2.- Cadena a encriptrar/desencriptar\n" + "Ejemplo: BSSecurity END Hola\\ Mundo");
+					+ "2.- Cadena a encriptrar/desencriptar\n" + "Ejemplo: BSSecurity ENC Hola\\ Mundo");
 		}
 
 		String method = args[0];
