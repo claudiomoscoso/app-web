@@ -37,6 +37,10 @@ public class BSDateTimeUtil {
 		return date;
 	}
 
+	public static Timestamp calendar2Timestamp(Calendar calendar) {
+		return new Timestamp(calendar.getTimeInMillis());
+	}
+
 	public static Calendar date2Calendar(java.util.Date date) {
 		Calendar out = Calendar.getInstance();
 		out.setTimeInMillis(date.getTime());
@@ -69,13 +73,11 @@ public class BSDateTimeUtil {
 		} catch (ParseException e) {
 			out = Boolean.FALSE;
 		}
-		if (testDate != null) {
-			if (!sdf.format(testDate).equals(date)) {
-				out = Boolean.FALSE;
-			}
-		} else {
+
+		if (!sdf.format(testDate).equals(date)) {
 			out = Boolean.FALSE;
 		}
+
 		return out;
 	}
 
@@ -117,10 +119,12 @@ public class BSDateTimeUtil {
 
 	public static String getFormatDate(HttpServletRequest request) {
 		if (formatDate == null) {
-			BSmySQL mysql = new BSmySQL();
-			Connection conn = mysql.getConnection(request);
+			BSHttpServlet servlet = new BSHttpServlet();
+			// BSmySQL mysql = new BSmySQL();
+			Connection conn = servlet.getConnection(request);
+			// Connection conn = mysql.getConnection(request);
 			formatDate = getFormatDate(conn);
-			mysql.closeConnection(conn);
+			// mysql.closeConnection(conn);
 		}
 		return formatDate;
 	}

@@ -91,6 +91,10 @@ public class BSBeanUtils extends BSDataUtils {
 	}
 
 	public List<? extends BSBean> listAll(Connection conn, BSBean bean) {
+		return listAll(conn, bean, null);
+	}
+
+	public List<? extends BSBean> listAll(Connection conn, BSBean bean, String order) {
 		Class<? extends BSBean> theClass = bean.getClass();
 		List out = new ArrayList();
 
@@ -100,6 +104,9 @@ public class BSBeanUtils extends BSDataUtils {
 		String tableName = getTableName(theClass, bean);
 
 		String sql = buildSelectAllString(tableName, tableFields);
+		if (order != null) {
+			sql += buildOrderString(order);
+		}
 
 		ResultSet rs = queryResultSet(conn, sql, null);
 
@@ -118,6 +125,10 @@ public class BSBeanUtils extends BSDataUtils {
 			throw new BSDataBaseException(e);
 		}
 		return out;
+	}
+
+	private String buildOrderString(String order) {
+		return " ORDER BY " + order;
 	}
 
 	public List<? extends BSBean> list(Connection conn, BSBean bean, String where, Object... parameters) {
