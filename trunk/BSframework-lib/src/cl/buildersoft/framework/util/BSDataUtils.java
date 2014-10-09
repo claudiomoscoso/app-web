@@ -234,8 +234,7 @@ public class BSDataUtils {
 		return conn;
 
 	}
-
-	@Deprecated
+	
 	public Connection getConnection(String driverName, String serverName, String database, String password, String username) {
 		Connection connection = null;
 		try {
