@@ -104,8 +104,9 @@ public class BSMenuServiceImpl extends BSDataUtils implements BSMenuService {
 		}
 
 		if (type != null) {
-			sql += " AND o.cType=1 AND cEnable=TRUE";
+			sql += " AND o.cType=1";
 		}
+		sql += " AND cEnable=TRUE";
 		sql += " ORDER BY cOrder";
 		return getSubmenuFromDB(conn, sql, prms);
 
