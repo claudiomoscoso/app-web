@@ -1,8 +1,0 @@
-#SELECT * FROM bsframework.tDataType;
-SELECT cId INTO @booleanId FROM bsframework.tDataType WHERE cKey = 'BOOLEAN';
-INSERT INTO bsframework.tConfig(cKey, cLabel, cValue, cDataType) VALUES('USE_BOOTSTRAP', 'Indica el uso de Bootrsrat en el sitio', 'true', @booleanId);
-
-INSERT INTO tRol(cName) VALUES('Administrador');
-SET @rolId = LAST_INSERT_ID();
-SELECT cId INTO @userId FROM bsframework.tUser WHERE cMail = 'admin';
-INSERT INTO tR_UserRol(cUser, cRol) VALUES(@userId, @rolId);
