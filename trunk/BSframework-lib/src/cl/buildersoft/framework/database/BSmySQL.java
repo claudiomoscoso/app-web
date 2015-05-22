@@ -45,11 +45,10 @@ public class BSmySQL extends BSDataUtils {
 		return rs;
 	}
 
-	public List<Object> callComplexSP(Connection conn, String name, List<Object> parameter) {
-
+	public List<List<Object[]>> callComplexSP(Connection conn, String name, List<Object> parameter) {
 		String sqlStatement = getSQL4SP(name, parameter);
 
-		List<Object> out = new ArrayList<Object>();
+		List<List<Object[]>> out = new ArrayList<List<Object[]>>();
 
 		try {
 			this.callableStatement = conn.prepareCall(sqlStatement);
@@ -63,13 +62,14 @@ public class BSmySQL extends BSDataUtils {
 			Boolean isResultSet = this.callableStatement.execute();
 
 			ResultSet rs = this.callableStatement.getResultSet();
-			out.add(rs);
+			// out.add(rs);
+			// out.add(resultSet2Matrix(rs));
 
 			while (moreResults) {
 				if (isResultSet) {
 					rs = this.callableStatement.getResultSet();
-					out.add(rs);
-					out.add(resultSet2Map(rs));
+					// out.add(rs);
+					out.add(resultSet2Matrix(rs));
 					rs.close();
 				} else {
 					Integer rowsAffected = this.callableStatement.getUpdateCount();
