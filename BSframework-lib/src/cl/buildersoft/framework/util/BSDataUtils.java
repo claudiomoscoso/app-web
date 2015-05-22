@@ -284,7 +284,7 @@ public class BSDataUtils {
 		} catch (SQLException e) {
 			throw new BSDataBaseException(e);
 		}
-		this.closeSQL(rs);
+//		this.closeSQL(rs);
 
 		return out;
 	}
