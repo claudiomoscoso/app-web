@@ -46,6 +46,10 @@ public class BSmySQL extends BSDataUtils {
 	}
 
 	public List<List<Object[]>> callComplexSP(Connection conn, String name, List<Object> parameter) {
+		return callComplexSP(conn, name, parameter, false);
+	}
+
+	public List<List<Object[]>> callComplexSP(Connection conn, String name, List<Object> parameter, Boolean includeColumns) {
 		String sqlStatement = getSQL4SP(name, parameter);
 
 		List<List<Object[]>> out = new ArrayList<List<Object[]>>();
@@ -69,7 +73,7 @@ public class BSmySQL extends BSDataUtils {
 				if (isResultSet) {
 					rs = this.callableStatement.getResultSet();
 					// out.add(rs);
-					out.add(resultSet2Matrix(rs));
+					out.add(resultSet2Matrix(rs, includeColumns));
 					rs.close();
 				} else {
 					Integer rowsAffected = this.callableStatement.getUpdateCount();
