@@ -234,7 +234,7 @@ public class BSDataUtils {
 		return conn;
 
 	}
-	
+
 	public Connection getConnection(String driverName, String serverName, String database, String password, String username) {
 		Connection connection = null;
 		try {
@@ -254,37 +254,45 @@ public class BSDataUtils {
 	}
 
 	public List<Object[]> resultSet2Matrix(ResultSet rs) {
+		return resultSet2Matrix(rs, false);
+	}
+
+	public List<Object[]> resultSet2Matrix(ResultSet rs, Boolean includeColumns) {
 		List<Object[]> out = new ArrayList<Object[]>();
 
 		Integer i = 0;
 		Integer colCount = 0;
 		String[] colNames = null;
+		Object[] innerArray = null;
 		try {
 			ResultSetMetaData metaData = rs.getMetaData();
 			colCount = metaData.getColumnCount();
 			colNames = new String[colCount];
+			innerArray = new Object[colCount];
 			for (i = 1; i <= colCount; i++) {
 				colNames[i - 1] = metaData.getColumnName(i);
+				innerArray[i - 1] = metaData.getColumnLabel(i);
+			}
+			if (includeColumns) {
+				out.add(innerArray);
 			}
 		} catch (Exception e) {
 			throw new BSDataBaseException(e);
 		}
 
-		Object[] innerArray = null;
 		try {
 			while (rs.next()) {
-				i = 0;
+
 				innerArray = new Object[colCount];
-				for (String colName : colNames) {
-					innerArray[i] = rs.getObject(colName);
-					i++;
+				for (i = 1; i <= colCount; i++) {
+					innerArray[i - 1] = rs.getObject(i);
 				}
 				out.add(innerArray);
 			}
 		} catch (SQLException e) {
 			throw new BSDataBaseException(e);
 		}
-//		this.closeSQL(rs);
+		// this.closeSQL(rs);
 
 		return out;
 	}
