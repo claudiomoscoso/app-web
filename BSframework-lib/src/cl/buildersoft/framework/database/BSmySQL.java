@@ -245,4 +245,33 @@ public class BSmySQL extends BSDataUtils {
 			}
 		}
 	}
+	
+	public List<Object[]> resultSet2Matrix2(ResultSet rs) {
+		List<Object[]> out = new ArrayList<Object[]>();
+
+		Integer colCount = 0;
+		try {
+			ResultSetMetaData metaData = rs.getMetaData();
+			colCount = metaData.getColumnCount();
+		} catch (Exception e) {
+			throw new BSDataBaseException(e);
+		}
+
+		Object[] innerArray = null;
+		try {
+			while (rs.next()) {
+				innerArray = new Object[colCount];
+				for (Integer i = 1; i <= colCount; i++) {
+					innerArray[i - 1] = rs.getObject(i);
+
+				}
+				out.add(innerArray);
+			}
+		} catch (SQLException e) {
+			throw new BSDataBaseException(e);
+		}
+		this.closeSQL(rs);
+
+		return out;
+	}
 }
