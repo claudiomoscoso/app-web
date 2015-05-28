@@ -1,4 +1,4 @@
-package cl.buildersoft.framework.util.crud;
+package cl.buildersoft.framework.beans;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.util.BSConfig;
+import cl.buildersoft.framework.util.crud.BSField;
+import cl.buildersoft.framework.util.crud.BSTableConfig_deprecated;
 
 public class BSPaging {
 	private Boolean requiresPaging = null;
@@ -21,7 +23,7 @@ public class BSPaging {
 
 	// private Integer lastRecord = null;
 
-	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig table, HttpServletRequest request) {
+	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig_deprecated table, HttpServletRequest request) {
 		// ServletContext context = request.getServletContext();
 		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);
@@ -64,14 +66,14 @@ public class BSPaging {
 		return currentPageInteger;
 	}
 
-	private Integer recordCount(Connection conn, BSmySQL mysql, BSTableConfig table) {
+	private Integer recordCount(Connection conn, BSmySQL mysql, BSTableConfig_deprecated table) {
 		String sql = getSQLCount(conn, table);
 		Integer out = Integer.parseInt(mysql.queryField(conn, sql, getParams()));
 		mysql.closeSQL();
 		return out;
 	}
 
-	private String getSQLCount(Connection conn, BSTableConfig table) {
+	private String getSQLCount(Connection conn, BSTableConfig_deprecated table) {
 		BSField[] fields = table.getFields();
 
 		String firstFieldName = "1";
@@ -88,7 +90,7 @@ public class BSPaging {
 		return out;
 	}
 
-	public String getSQL(BSTableConfig table) {
+	public String getSQL(BSTableConfig_deprecated table) {
 		String sql = "SELECT " + unSplit(table, ",", false);
 		sql += " FROM " + table.getDatabase() + "." + table.getTableOrViewName();
 		sql += getWhere(table);
@@ -97,11 +99,11 @@ public class BSPaging {
 		return sql;
 	}
 
-	private String getOrder(BSTableConfig table) {
+	private String getOrder(BSTableConfig_deprecated table) {
 		return table.getSortField() != null ? " ORDER BY " + table.getSortField() : "";
 	}
 
-	private String getWhere(BSTableConfig table) {
+	private String getWhere(BSTableConfig_deprecated table) {
 		String out = "";
 		if (!this.search.equals("")) {
 			BSField[] fields = table.getFields();
@@ -112,7 +114,7 @@ public class BSPaging {
 		return out;
 	}
 
-	protected String unSplit(BSTableConfig table, String s, Boolean excludeBoolean) {
+	protected String unSplit(BSTableConfig_deprecated table, String s, Boolean excludeBoolean) {
 		String out = "";
 		for (BSField field : table.getFields()) {
 			if (excludeBoolean) {

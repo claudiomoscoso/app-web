@@ -1,6 +1,5 @@
-package cl.buildersoft.framework.util.crud;
+package cl.buildersoft.framework.beans;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -14,14 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cl.buildersoft.framework.dataType.BSDataType;
-import cl.buildersoft.framework.dataType.BSDataTypeUtil;
 import cl.buildersoft.framework.database.BSmySQL;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.exception.BSProgrammerException;
+import cl.buildersoft.framework.type.BSActionType;
+import cl.buildersoft.framework.type.BSFieldType;
 
-public class BSTableConfig implements Serializable {
-	private static final long serialVersionUID = -6147545302213822743L;
+
+
+public class BSTableConfig {
 	private String database = null;
 	private String tableName = null;
 	private String[] fields = null;
@@ -34,12 +34,12 @@ public class BSTableConfig implements Serializable {
 	private Set<String> tablesCommon = null;
 	private String pk = null;
 	private String key = null;
+	private String script = "";
 
 	private String viewName = null;
 	private String saveSP = null;
 	private String deleteSP = null;
 
-	@Deprecated
 	public BSTableConfig(String database) {
 		this.database = database;
 	}
@@ -94,15 +94,14 @@ public class BSTableConfig implements Serializable {
 	private void createInsert() {
 		BSAction insert = new BSAction("INSERT", BSActionType.Table);
 		insert.setLabel("Nuevo");
-		insert.setUrl("/servlet/common/crud/NewRecord");
-
+		insert.setUrl("/servlet/common/NewRecord");
 		this.addAction(insert);
 	}
 
 	private void createEdit() {
 		BSAction edit = new BSAction("EDIT", BSActionType.Record);
 		edit.setLabel("Modificar");
-		edit.setUrl("/servlet/common/crud/SearchRecord");
+		edit.setUrl("/servlet/common/SearchRecord");
 		this.addAction(edit);
 	}
 
@@ -147,7 +146,7 @@ public class BSTableConfig implements Serializable {
 		try {
 			metaData = resultSet.getMetaData();
 		} catch (SQLException e) {
-			throw new BSDataBaseException(e);
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 
 		String name = null;
@@ -157,7 +156,7 @@ public class BSTableConfig implements Serializable {
 			try {
 				n = metaData.getColumnCount();
 			} catch (SQLException e) {
-				throw new BSDataBaseException(e);
+				throw new BSDataBaseException("300", e.getMessage());
 			}
 
 			BSField field = null;
@@ -167,7 +166,7 @@ public class BSTableConfig implements Serializable {
 				try {
 					name = metaData.getColumnName(i);
 				} catch (SQLException e) {
-					throw new BSDataBaseException(e);
+					throw new BSDataBaseException("300", e.getMessage());
 				}
 				field = new BSField(name, name.substring(1));
 				addField(field);
@@ -175,7 +174,11 @@ public class BSTableConfig implements Serializable {
 				if (field.isPK() && !hasPK) {
 					hasPK = Boolean.TRUE;
 				}
-
+				try {
+					field.setIsNullable(metaData.isNullable(i) == ResultSetMetaData.columnNullable);
+				} catch (SQLException e) {
+					throw new BSDataBaseException(e);
+				}
 			}
 
 			if (!hasPK) {
@@ -246,12 +249,15 @@ public class BSTableConfig implements Serializable {
 				fieldFK = field.getFKField();
 
 				if (tableFK != null && fieldFK != null) {
-					String sql = "SELECT cId,cName ";
+					String sql = "SELECT cId, cName ";
 					sql += "FROM " + databaseFK + ".";
-					sql += field2Table(conn, field.getName());
+					sql += tableFK;
+					// sql += field2Table(conn, field.getName());
 					sql += " ORDER BY cName";
 
-					field.setFkData(mySQL.resultSet2Matrix(mySQL.queryResultSet(conn, sql, null)));
+					ResultSet data = mySQL.queryResultSet(conn, sql, null);
+
+					field.setFkData(mySQL.resultSet2Matrix(data));
 				}
 			}
 		}
@@ -312,7 +318,7 @@ public class BSTableConfig implements Serializable {
 				}
 
 			} catch (SQLException e) {
-				throw new BSDataBaseException(e);
+				throw new BSDataBaseException("", e.getMessage());
 			}
 		}
 
@@ -344,7 +350,7 @@ public class BSTableConfig implements Serializable {
 					tables.close();
 				}
 			} catch (SQLException e) {
-				throw new BSDataBaseException(e);
+				throw new BSDataBaseException("", e.getMessage());
 			}
 		}
 
@@ -381,7 +387,7 @@ public class BSTableConfig implements Serializable {
 				field.setLength(metaData.getColumnDisplaySize(i));
 			}
 		} catch (SQLException e) {
-			throw new BSDataBaseException(e);
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 
 	}
@@ -400,24 +406,25 @@ public class BSTableConfig implements Serializable {
 		String typeName;
 		try {
 			typeName = metaData.getColumnTypeName(i);
+			// System.out.println( metaData.getColumnClassName(i));
 		} catch (SQLException e) {
-			throw new BSDataBaseException(e);
+			throw new BSDataBaseException("300", e.getMessage());
 		}
 
 		if (typeName.equals("BIGINT")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.LONG));
+			field.setType(BSFieldType.Long);
 		} else if (typeName.equals("VARCHAR") || typeName.equals("CHAR")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.STRING));
+			field.setType(BSFieldType.String);
 		} else if (typeName.equals("DATE")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.DATE));
+			field.setType(BSFieldType.Date);
 		} else if (typeName.equals("TIMESTAMP")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.TIMESTAMP));
+			field.setType(BSFieldType.Timestamp);
 		} else if (typeName.equals("DOUBLE")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.DOUBLE));
+			field.setType(BSFieldType.Double);
 		} else if (typeName.equals("BIT")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.BOOLEAN));
+			field.setType(BSFieldType.Boolean);
 		} else if (typeName.equals("INT")) {
-			field.setType(BSDataTypeUtil.create(BSDataType.INTEGER));
+			field.setType(BSFieldType.Integer);
 		} else {
 			throw new BSProgrammerException("0110", "No está catalogado el tipo " + typeName
 					+ ", verifique método BSTableConfig.setRealType()");
@@ -564,7 +571,7 @@ public class BSTableConfig implements Serializable {
 				}
 				rs.close();
 			} catch (SQLException e) {
-				throw new BSDataBaseException(e);
+				throw new BSDataBaseException("", e.getMessage());
 			}
 			this.key = fieldName;
 		}
@@ -574,7 +581,7 @@ public class BSTableConfig implements Serializable {
 	public BSField getPKField(Connection conn) {
 		String fieldName = null;
 		BSField out = null;
-		if (this.pk == null) {
+		if (this.pk == null && this.viewName == null) {
 			DatabaseMetaData dbmd;
 			try {
 				dbmd = (DatabaseMetaData) conn.getMetaData();
@@ -585,7 +592,7 @@ public class BSTableConfig implements Serializable {
 				}
 				rs.close();
 			} catch (SQLException e) {
-				throw new BSDataBaseException(e);
+				throw new BSDataBaseException("", e.getMessage());
 			}
 			this.pk = fieldName;
 			out = getField(this.pk);
@@ -594,7 +601,11 @@ public class BSTableConfig implements Serializable {
 	}
 
 	public BSField getField(String name) {
-		return this.fieldsMap.get(name);
+		BSField out = this.fieldsMap.get(name);
+		if (out == null) {
+			throw new BSProgrammerException("Field '" + name + "' not found");
+		}
+		return out;
 	}
 
 	/**
@@ -660,6 +671,14 @@ public class BSTableConfig implements Serializable {
 
 	public void setDeleteSP(String deleteSP) {
 		this.deleteSP = deleteSP;
+	}
+
+	public String getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = script;
 	}
 
 }
