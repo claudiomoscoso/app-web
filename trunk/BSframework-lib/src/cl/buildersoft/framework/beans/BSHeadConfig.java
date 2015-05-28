@@ -1,6 +1,8 @@
 package cl.buildersoft.framework.beans;
 
-@Deprecated
+import java.util.ArrayList;
+import java.util.List;
+
 public class BSHeadConfig {
 	private BSScript script = null;
 	private BSCss css = null;
