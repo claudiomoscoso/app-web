@@ -12,7 +12,7 @@ import cl.buildersoft.framework.util.BSConfig;
 import cl.buildersoft.framework.util.crud.BSField;
 import cl.buildersoft.framework.util.crud.BSTableConfig_deprecated;
 
-public class BSPaging {
+public class BSPaging_deprecated {
 	private Boolean requiresPaging = null;
 	private Integer recordPerPage = null;
 	private Integer recordCount = null;
@@ -23,7 +23,7 @@ public class BSPaging {
 
 	// private Integer lastRecord = null;
 
-	public BSPaging(Connection conn, BSmySQL mysql, BSTableConfig_deprecated table, HttpServletRequest request) {
+	public BSPaging_deprecated(Connection conn, BSmySQL mysql, BSTableConfig_deprecated table, HttpServletRequest request) {
 		// ServletContext context = request.getServletContext();
 		this.search = getSearchValue(request);
 		this.currentPage = getCurrentPage(request);

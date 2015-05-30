@@ -12,10 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import cl.buildersoft.framework.beans.BSPaging;
+import cl.buildersoft.framework.beans.BSTableConfig;
 import cl.buildersoft.framework.exception.BSDataBaseException;
 import cl.buildersoft.framework.util.BSDataUtils;
-import cl.buildersoft.framework.util.crud.BSTableConfig_deprecated;
+import cl.buildersoft.framework.util.BSPaging;
 
 public class BSmySQL extends BSDataUtils {
 	CallableStatement callableStatement;
@@ -32,7 +32,7 @@ public class BSmySQL extends BSDataUtils {
 		super.closeSQL();
 	}
 
-	public ResultSet queryResultSet(Connection conn, BSTableConfig_deprecated table, BSPaging paging) {
+	public ResultSet queryResultSet(Connection conn, BSTableConfig table, BSPaging paging) {
 		String sql = paging.getSQL(table);
 		List<Object> prms = paging.getParams();
 
