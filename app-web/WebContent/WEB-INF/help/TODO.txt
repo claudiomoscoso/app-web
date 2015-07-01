@@ -1,7 +1,0 @@
-TODO:
-
-Cambiar por configuración el uso de bootstrap.
-
-Mejorar los objetos de beans para que puedan trabajar con cualquier definición de base de datos.
-Poner interfaz para que trabaje con bootstrap.
-Usar JSTL.
