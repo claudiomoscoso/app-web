@@ -44,6 +44,15 @@ public class BSUtils {
 		out = out.substring(0, out.length() - c.length());
 		return out;
 	}
-	
-	
+
+	public static Boolean isNumber(String value) {
+		Boolean out = true;
+		try {
+			Double.parseDouble(value);
+		} catch (Exception e) {
+			out = false;
+		}
+		return out;
+	}
+
 }

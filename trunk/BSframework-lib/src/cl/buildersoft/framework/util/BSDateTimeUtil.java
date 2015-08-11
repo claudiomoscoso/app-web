@@ -74,7 +74,7 @@ public class BSDateTimeUtil {
 			out = Boolean.FALSE;
 		}
 
-		if (!sdf.format(testDate).equals(date)) {
+		if (out && !sdf.format(testDate).equals(date)) {
 			out = Boolean.FALSE;
 		}
 
